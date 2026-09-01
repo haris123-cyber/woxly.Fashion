@@ -1,0 +1,38 @@
+[
+  {
+    "id": "blog-1",
+    "slug": "sustainable-fashion-guide",
+    "title": "The Complete Guide to Sustainable Fashion",
+    "excerpt": "Learn how to build a wardrobe that's kind to the planet without sacrificing style.",
+    "content": "## Why Sustainable Fashion Matters\n\nThe fashion industry is one of the largest polluters globally. By making conscious choices, we can reduce our environmental footprint significantly.\n\n## Tips for a Sustainable Wardrobe\n\n1. **Buy less, choose well** — Invest in quality pieces that last\n2. **Choose natural fibers** — Linen, organic cotton, and wool are biodegradable\n3. **Care for your clothes** — Proper washing extends garment life\n4. **Support ethical brands** — Look for GOTS, Fair Trade certifications\n\n## Woxly's Commitment\n\nAt Woxly, we're committed to sustainable sourcing and ethical manufacturing. Every product in our collection is chosen with care for both people and planet.",
+    "image": "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&h=500&fit=crop",
+    "category": "Sustainability",
+    "author": "Priya Sharma",
+    "publishedAt": "2026-08-15T10:00:00Z",
+    "readTime": 5
+  },
+  {
+    "id": "blog-2",
+    "slug": "summer-style-essentials",
+    "title": "10 Summer Style Essentials for 2026",
+    "excerpt": "From linen shirts to flowing maxi dresses, discover the must-have pieces for the season.",
+    "content": "## Summer is Here\n\nAs temperatures rise, it's time to refresh your wardrobe with breathable, stylish pieces.\n\n## Our Top Picks\n\n1. **Linen shirts** — The ultimate summer fabric\n2. **Maxi dresses** — Effortless elegance\n3. **Organic cotton tees** — Everyday basics\n4. **Silk scarves** — Versatile accessories\n5. **Lightweight sneakers** — Comfort meets style\n\n## Styling Tips\n\nLayer lightweight pieces, embrace natural fabrics, and don't forget sun protection accessories.",
+    "image": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&h=500&fit=crop",
+    "category": "Style Guide",
+    "author": "Ananya Patel",
+    "publishedAt": "2026-08-10T10:00:00Z",
+    "readTime": 4
+  },
+  {
+    "id": "blog-3",
+    "slug": "home-decor-trends",
+    "title": "Home Decor Trends: Earth Tones & Natural Materials",
+    "excerpt": "Transform your living space with the latest trends in home decor featuring natural materials.",
+    "content": "## The Rise of Earth Tones\n\nNatural, earthy palettes are dominating interior design in 2026. Think warm beiges, sage greens, and terracotta.\n\n## Key Trends\n\n- **Ceramic accents** — Handcrafted vases and bowls\n- **Linen textiles** — Cushion covers and throws\n- **Natural lighting** — Warm-toned lamps with linen shades\n- **Scented candles** — Create ambiance with natural fragrances\n\n## Shop the Look\n\nBrowse our Home & Living collection to bring these trends into your space.",
+    "image": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&h=500&fit=crop",
+    "category": "Home",
+    "author": "Rohan Mehta",
+    "publishedAt": "2026-08-05T10:00:00Z",
+    "readTime": 3
+  }
+]
