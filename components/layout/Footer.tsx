@@ -23,8 +23,8 @@ const FOOTER_LINKS = {
 
 export function Footer() {
   return (
-    <footer className="bg-background text-muted-foreground mt-auto">
-      <div className="container mx-auto px-8 py-20">
+    <footer className="bg-background text-muted-foreground mt-auto border-t-1 border-border ">
+      <div className="container mx-auto px-8 py-4">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-y-12 gap-x-4 lg:gap-24">
 
           <div className="col-span-2 flex flex-col items-start">
@@ -43,7 +43,7 @@ export function Footer() {
 
           {Object.entries(FOOTER_LINKS).map(([title, links]) => (
             <div key={title} className="col-span-1">
-              <h3 className="text-[#cfae70] font-bold text-[14px] tracking-[0.2em] uppercase mb-5">{title}</h3>
+              <h3 className="text-[#cfae70] font-bold text-[10px] tracking-[0.2em] uppercase mb-5">{title}</h3>
               <ul className="space-y-2">
                 {links.map((link) => (
                   <li key={link.href}>
@@ -61,7 +61,7 @@ export function Footer() {
 
           {/* Support Column */}
           <div className="col-span-2 md:col-span-1">
-            <h3 className="text-[#cfae70] font-bold text-[14px] tracking-[0.2em] uppercase mb-8">Support</h3>
+            <h3 className="text-[#cfae70] font-bold text-[10px] tracking-[0.2em] uppercase mb-8">Support</h3>
             <ul className="space-y-4">
               <li>
                 <Link href="mailto:info@woxly.in" className="flex items-center gap-3 text-[14px] text-black hover:text-foreground transition-colors">
@@ -87,13 +87,11 @@ export function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-24 pt-8 border-t border-border flex flex-col gap-8">
+        <div className="mt-4 pt-4 border-t border-border flex flex-col gap-8">
           {/* Secure Payments Row */}
           <div className="flex flex-col md:flex-row items-center justify-between md:justify-end gap-6 w-full">
-            <div className="text-[9px] font-bold tracking-[0.2em] uppercase text-foreground md:mr-2">
-              SECURE PAYMENTS
-            </div>
-            <div className="flex justify-center lg:justify-end mb-6">
+
+            <div className="flex justify-center lg:justify-end mb-2">
               <div className="flex flex-col items-center lg:items-end">
                 <span className="text-[10px] font-bold text-gray-500 tracking-[0.15em] uppercase mb-3 text-center lg:text-right">SECURE PAYMENTS</span>
                 <div className="flex flex-wrap justify-center lg:justify-end gap-2">
@@ -122,7 +120,7 @@ export function Footer() {
           </div>
 
           {/* Copyright & Links Row */}
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-6 border-t border-border/50">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-2 border-t border-border/50">
             <div className="text-[10px] tracking-[0.05em]">
               &copy; 2026 Mini Mart. All rights reserved.
             </div>
