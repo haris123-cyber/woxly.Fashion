@@ -55,7 +55,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
       <div className="grid lg:grid-cols-12 gap-12 lg:gap-24 mb-32">
         {/* Left: Gallery */}
         <div className="lg:col-span-7 flex flex-col md:flex-row gap-4">
-          <div className="relative flex-1 aspect-[3/4] bg-[#111] border border-[#1a1a1a]">
+          <div className="relative flex-1 aspect-[3/4] bg-secondary border border-border">
             <Image
               src={product.images[selectedImage]}
               alt={product.name}
@@ -65,7 +65,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
               priority
             />
             {product.isNew && (
-              <div className="absolute top-4 left-4 bg-[#0a0a0a] border border-[#cfae70] px-3 py-1">
+              <div className="absolute top-4 left-4 bg-background border border-[#cfae70] px-3 py-1">
                 <span className="text-[#cfae70] text-[9px] font-bold tracking-[0.15em] uppercase">New</span>
               </div>
             )}
@@ -78,8 +78,8 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                   key={i}
                   onClick={() => setSelectedImage(i)}
                   className={cn(
-                    "relative h-24 w-20 shrink-0 border transition-colors bg-[#111]",
-                    i === selectedImage ? "border-[#cfae70]" : "border-[#1a1a1a] hover:border-[#333]"
+                    "relative h-24 w-20 shrink-0 border transition-colors bg-secondary",
+                    i === selectedImage ? "border-[#cfae70]" : "border-border hover:border-border"
                   )}
                   aria-label={`View image ${i + 1}`}
                 >
@@ -92,7 +92,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
 
         {/* Right: Info */}
         <div className="lg:col-span-5 pt-4">
-          <p className="text-[#666] text-[9px] font-bold tracking-[0.2em] uppercase mb-4">
+          <p className="text-muted-foreground text-[9px] font-bold tracking-[0.2em] uppercase mb-4">
             {product.category}
           </p>
           <h1 className="text-4xl font-fraunces font-normal mb-4">{product.name}</h1>
@@ -100,14 +100,14 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
             ₹{product.price}
           </p>
 
-          <p className="text-[#8a8a8a] text-[13px] leading-relaxed mb-12 max-w-sm">
+          <p className="text-muted-foreground text-[13px] leading-relaxed mb-12 max-w-sm">
             {product.shortDescription}
           </p>
 
           {sizes.length > 0 && (
             <div className="mb-8">
               <div className="flex justify-between items-center mb-4">
-                <p className="text-[#f5f5f5] text-[9px] font-bold tracking-[0.2em] uppercase">Size</p>
+                <p className="text-foreground text-[9px] font-bold tracking-[0.2em] uppercase">Size</p>
                 <button className="text-[#cfae70] text-[9px] font-bold tracking-[0.2em] hover:text-[#e0c591] uppercase transition-colors">
                   Size Guide
                 </button>
@@ -120,10 +120,10 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                     onClick={() => setSelectedSize(size.value)}
                     className={cn(
                       "w-12 h-10 border text-[10px] uppercase font-bold transition-colors",
-                      !size.inStock ? "opacity-50 cursor-not-allowed border-[#222] text-[#444]" :
+                      !size.inStock ? "opacity-50 cursor-not-allowed border-border text-[#444]" :
                         selectedSize === size.value
                           ? "border-[#cfae70] text-[#cfae70]"
-                          : "border-[#222] text-[#666] hover:border-[#666]"
+                          : "border-border text-muted-foreground hover:border-[#666]"
                     )}
                   >
                     {size.label}
@@ -133,13 +133,38 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
             </div>
           )}
 
-
+          {colors.length > 0 && (
+            <div className="mb-12">
+              <p className="text-foreground text-[9px] font-bold tracking-[0.2em] uppercase mb-4">
+                Colour — {colors.find(c => c.value === selectedColor)?.label || 'Select'}
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {colors.map((color) => {
+                  const bg = colorMap[color.value.toLowerCase()] || color.value;
+                  return (
+                    <button
+                      key={color.id}
+                      disabled={!color.inStock}
+                      onClick={() => setSelectedColor(color.value)}
+                      className={cn(
+                        "w-5 h-5 rounded-full ring-2 ring-offset-2 ring-offset-[#0a0a0a] transition-all",
+                        !color.inStock ? "opacity-50 cursor-not-allowed" : "",
+                        selectedColor === color.value ? "ring-[#cfae70]" : "ring-[#222] hover:ring-[#444]"
+                      )}
+                      style={{ backgroundColor: bg }}
+                      aria-label={color.label}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           <div className="flex gap-4 mb-4">
             <button
               onClick={handleAddToCart}
               disabled={product.stock === 0}
-              className="flex-1 bg-[#cfae70] hover:bg-[#b5985d] disabled:bg-[#333] disabled:text-[#666] text-black h-12 text-[10px] font-bold tracking-[0.2em] uppercase transition-colors"
+              className="flex-1 bg-[#cfae70] hover:bg-[#b5985d] disabled:bg-[#333] disabled:text-muted-foreground text-black h-12 text-[10px] font-bold tracking-[0.2em] uppercase transition-colors"
             >
               {product.stock === 0 ? 'Out of Stock' : 'Add to Bag'}
             </button>
@@ -147,27 +172,27 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
               onClick={() => setIsWishlisted(!isWishlisted)}
               className={cn(
                 "w-12 h-12 border flex items-center justify-center transition-colors",
-                isWishlisted ? "border-[#cfae70] bg-[#cfae70]/10" : "border-[#333] hover:border-[#666]"
+                isWishlisted ? "border-[#cfae70] bg-[#cfae70]/10" : "border-border hover:border-[#666]"
               )}
             >
               <Heart className={cn("h-4 w-4", isWishlisted ? "text-[#cfae70] fill-[#cfae70]" : "text-[#cfae70]")} />
             </button>
           </div>
 
-          <button className="w-full border border-[#222] text-[#8a8a8a] hover:text-[#f5f5f5] hover:border-[#444] h-12 text-[10px] font-bold tracking-[0.2em] uppercase transition-colors mb-16">
+          <button className="w-full border border-border text-muted-foreground hover:text-foreground hover:border-[#444] h-12 text-[10px] font-bold tracking-[0.2em] uppercase transition-colors mb-16">
             View Bag
           </button>
 
           {/* Tabs */}
           <div>
-            <div className="border-b border-[#222] flex gap-8 mb-8">
+            <div className="border-b border-border flex gap-8 mb-8">
               {['DETAILS', 'CARE', 'DELIVERY'].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab as any)}
                   className={cn(
                     "pb-3 text-[9px] font-bold tracking-[0.2em] uppercase transition-colors border-b-2",
-                    activeTab === tab ? "border-[#cfae70] text-[#cfae70]" : "border-transparent text-[#666] hover:text-[#8a8a8a]"
+                    activeTab === tab ? "border-[#cfae70] text-[#cfae70]" : "border-transparent text-muted-foreground hover:text-muted-foreground"
                   )}
                 >
                   {tab}
@@ -175,26 +200,26 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
               ))}
             </div>
 
-            <div className="text-[11px] text-[#8a8a8a] space-y-4 tracking-[0.05em]">
+            <div className="text-[11px] text-muted-foreground space-y-4 tracking-[0.05em]">
               {activeTab === 'DETAILS' && (
                 <>
                   <div className="grid grid-cols-12">
                     <span className="col-span-4 uppercase tracking-[0.15em] text-[9px]">Material</span>
-                    <span className="col-span-8 text-[#f5f5f5]">Premium Organic Cotton / Merino Blend</span>
+                    <span className="col-span-8 text-foreground">Premium Organic Cotton / Merino Blend</span>
                   </div>
                   <div className="grid grid-cols-12">
                     <span className="col-span-4 uppercase tracking-[0.15em] text-[9px]">Colour</span>
-                    <span className="col-span-8 text-[#f5f5f5] capitalize">{selectedColor || product.variants.find(v => v.type === 'color')?.label}</span>
+                    <span className="col-span-8 text-foreground capitalize">{selectedColor || product.variants.find(v => v.type === 'color')?.label}</span>
                   </div>
                   <div className="grid grid-cols-12">
                     <span className="col-span-4 uppercase tracking-[0.15em] text-[9px]">Origin</span>
-                    <span className="col-span-8 text-[#f5f5f5]">Made in Italy</span>
+                    <span className="col-span-8 text-foreground">Made in Italy</span>
                   </div>
                   <div className="grid grid-cols-12">
                     <span className="col-span-4 uppercase tracking-[0.15em] text-[9px]">Ref.</span>
-                    <span className="col-span-8 text-[#f5f5f5] uppercase">{product.sku || 'MN-AW25-005'}</span>
+                    <span className="col-span-8 text-foreground uppercase">{product.sku || 'MN-AW25-005'}</span>
                   </div>
-                  <div className="mt-6 pt-6 border-t border-[#1a1a1a]">
+                  <div className="mt-6 pt-6 border-t border-border">
                     <p>{product.description}</p>
                   </div>
                 </>
@@ -202,18 +227,18 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
               {activeTab === 'CARE' && (
                 <div className="grid grid-cols-12">
                   <span className="col-span-4 uppercase tracking-[0.15em] text-[9px]">Care</span>
-                  <span className="col-span-8 text-[#f5f5f5]">Dry clean only. Do not tumble dry. Iron on low heat.</span>
+                  <span className="col-span-8 text-foreground">Dry clean only. Do not tumble dry. Iron on low heat.</span>
                 </div>
               )}
               {activeTab === 'DELIVERY' && (
                 <div className="space-y-4">
                   <div className="grid grid-cols-12">
                     <span className="col-span-4 uppercase tracking-[0.15em] text-[9px]">Standard</span>
-                    <span className="col-span-8 text-[#f5f5f5]">Free on orders over ₹999 (3-5 business days)</span>
+                    <span className="col-span-8 text-foreground">Free on orders over ₹999 (3-5 business days)</span>
                   </div>
                   <div className="grid grid-cols-12">
                     <span className="col-span-4 uppercase tracking-[0.15em] text-[9px]">Express</span>
-                    <span className="col-span-8 text-[#f5f5f5]">₹250 (1-2 business days)</span>
+                    <span className="col-span-8 text-foreground">₹250 (1-2 business days)</span>
                   </div>
                 </div>
               )}
@@ -222,7 +247,15 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
         </div>
       </div>
 
-
+      {/* Related Products */}
+      {related.length > 0 && (
+        <section className="mt-24 border-t border-border pt-16">
+          <h2 className="text-3xl font-fraunces font-normal text-foreground mb-12">You May Also Like</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {related.map((p) => <ProductCard key={p.id} product={p} />)}
+          </div>
+        </section>
+      )}
     </>
   );
 }

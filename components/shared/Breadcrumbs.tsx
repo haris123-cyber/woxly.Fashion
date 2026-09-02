@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ChevronRight, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface BreadcrumbItem {
@@ -14,34 +13,30 @@ interface BreadcrumbsProps {
 
 export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
   return (
-    <nav aria-label="Breadcrumb" className={cn("text-[9px] font-bold tracking-[0.2em] uppercase text-[#666]", className)}>
-      <ol className="flex flex-wrap items-center gap-2">
+    <nav aria-label="Breadcrumb" className={cn("flex items-center space-x-2 text-[9px] uppercase tracking-[0.2em] font-bold text-muted-foreground", className)}>
+      <ol className="flex items-center space-x-2">
         <li>
-          <Link
-            href="/"
-            className="hover:text-[#f5f5f5] transition-colors py-2"
-            aria-label="Home"
-          >
-            HOME
+          <Link href="/" className="hover:text-foreground transition-colors">
+            Home
           </Link>
         </li>
-        {items.map((item, index) => (
-          <li key={index} className="flex items-center gap-2">
-            <span aria-hidden>/</span>
-            {item.href ? (
-              <Link
-                href={item.href}
-                className="hover:text-[#f5f5f5] transition-colors py-2"
-              >
-                {item.label}
-              </Link>
-            ) : (
-              <span className="text-[#f5f5f5] py-2" aria-current="page">
-                {item.label}
-              </span>
-            )}
-          </li>
-        ))}
+        {items.map((item, index) => {
+          const isLast = index === items.length - 1;
+          return (
+            <li key={index} className="flex items-center space-x-2">
+              <span className="text-[#444] font-normal">/</span>
+              {item.href && !isLast ? (
+                <Link href={item.href} className="hover:text-foreground transition-colors">
+                  {item.label}
+                </Link>
+              ) : (
+                <span className={cn(isLast ? "text-[#cfae70]" : "")}>
+                  {item.label}
+                </span>
+              )}
+            </li>
+          );
+        })}
       </ol>
     </nav>
   );

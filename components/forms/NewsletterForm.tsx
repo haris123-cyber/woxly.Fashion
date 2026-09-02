@@ -28,19 +28,19 @@ export function NewsletterForm() {
           render={({ field }) => (
             <FormItem className="flex-1">
               <FormControl>
-                <Input 
-                  placeholder="Your email address" 
-                  type="email" 
-                  aria-label="Email address" 
-                  className="bg-[#050505] border-[#222] text-white rounded-none h-12 md:h-14 focus-visible:ring-[#cfae70] focus-visible:border-transparent text-sm"
-                  {...field} 
+                <Input
+                  placeholder="Your email address"
+                  type="email"
+                  aria-label="Email address"
+                  className="bg-white border-gray-400 border-1 text-foreground rounded-none h-12 md:h-14 focus-visible:ring-[#cfae70] focus-visible:border-transparent text-sm"
+                  {...field}
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button 
+        <Button
           type="submit"
           className="rounded-none h-12 md:h-14 px-8 bg-[#cfae70] hover:bg-[#b5985d] text-black font-bold text-[10px] tracking-[0.15em] uppercase"
         >
