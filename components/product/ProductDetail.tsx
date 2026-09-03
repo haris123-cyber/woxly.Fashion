@@ -127,7 +127,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
             ₹{product.price}
           </p>
 
-          <p className="text-muted-foreground text-[13px] leading-relaxed mb-12 max-w-sm">
+          <p className="text-foreground text-[13px] leading-relaxed mb-12 max-w-sm">
             {product.shortDescription}
           </p>
 
@@ -174,9 +174,9 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                       disabled={!color.inStock}
                       onClick={() => setSelectedColor(color.value)}
                       className={cn(
-                        "w-5 h-5 rounded-full ring-2 ring-offset-2 ring-offset-[#0a0a0a] transition-all",
+                        "w-5 h-5 rounded-full ring-2 ring-offset-2  transition-all",
                         !color.inStock ? "opacity-50 cursor-not-allowed" : "",
-                        selectedColor === color.value ? "ring-[#cfae70]" : "ring-[#222] hover:ring-[#444]"
+                        selectedColor === color.value ? "ring-[#cfae70]" : "ring-white hover:ring-[#444]"
                       )}
                       style={{ backgroundColor: bg }}
                       aria-label={color.label}

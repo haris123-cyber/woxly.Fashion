@@ -53,7 +53,7 @@ export function Header() {
                         href={link.href}
                         onClick={() => setMobileNavOpen(false)}
                         className={cn(
-                          "px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-5 flex items-center",
+                          "px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-medium uppercase transition-colors min-h-5 flex items-center",
                           pathname === link.href ? "text-foreground bg-muted" : "sm:text-muted-foreground hover:text-foreground hover:bg-muted"
                         )}
                       >
@@ -63,21 +63,21 @@ export function Header() {
                   </nav>
 
                   {/* Main Links */}
-                  <div className="pt-6 border-t border-border">
+                  <div className="pt-2 border-t border-border">
                     <nav className="flex flex-col gap-2">
-                      <Link href="/" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                      <Link href="/" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
                         Home
                       </Link>
-                      <Link href="/products" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                      <Link href="/products" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
                         Shop
                       </Link>
-                      <Link href="/account/wishlist" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                      <Link href="/account/wishlist" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
                         Wishlist
                       </Link>
-                      <Link href="/account/orders" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                      <Link href="/account/orders" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
                         Orders
                       </Link>
-                      <Link href="/account" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                      <Link href="/account" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
                         Sign in
                       </Link>
                     </nav>
@@ -87,31 +87,31 @@ export function Header() {
                   <div className="pt-6 border-t border-border">
                     <h4 className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.15em] mb-4 px-3">Help & Policies</h4>
                     <nav className="flex flex-col gap-2">
-                      <Link href="/privacy" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                      <Link href="/privacy" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
                         Privacy Policy
                       </Link>
-                      <Link href="/terms" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                      <Link href="/terms" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
                         Terms of Service
                       </Link>
-                      <Link href="/shipping" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                      <Link href="/shipping" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
                         Shipping Policy
                       </Link>
-                      <Link href="/returns" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                      <Link href="/returns" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
                         Return Policy
                       </Link>
-                      <Link href="/blog" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                      <Link href="/blog" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
                         Blog
                       </Link>
-                      <Link href="/about" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                      <Link href="/about" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
                         About
                       </Link>
-                      <Link href="/faq" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                      <Link href="/faq" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
                         FAQs
                       </Link>
-                      <Link href="/feedback" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                      <Link href="/feedback" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
                         Feedback
                       </Link>
-                      <Link href="/contact" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                      <Link href="/contact" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
                         Contact
                       </Link>
                     </nav>
@@ -120,7 +120,7 @@ export function Header() {
               </SheetContent>
             </Sheet>
 
-            <Link href="/" className="font-fraunces text-xl  tracking-[0.1em] text-foreground">
+            <Link href="/" className="font-fraunces text-2xl  tracking-[0.1em] text-foreground">
               {SITE_CONFIG.name}
             </Link>
           </div>
@@ -132,8 +132,8 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "text-[9px] tracking-[0.25em] uppercase transition-colors",
-                  pathname === link.href ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                  "text-[11px] tracking-[0.25em] uppercase transition-colors",
+                  pathname === link.href ? "text-foreground" : "text-foreground font-medium hover:text-foreground"
                 )}
               >
                 {link.label}
