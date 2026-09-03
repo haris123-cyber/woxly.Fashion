@@ -59,85 +59,95 @@ export function CartPage() {
     <div className="grid lg:grid-cols-3 gap-8">
       <div className="lg:col-span-2 space-y-4">
         {!qualified && (
-          <div className="p-4 rounded-lg bg-muted space-y-2">
-            <p className="text-sm">Add {formatPrice(remaining)} more for free shipping!</p>
-            <div className="h-2 rounded-full bg-background overflow-hidden">
-              <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${progress}%` }} />
+          <div className="p-6 border border-border bg-muted/10 space-y-4 mb-8">
+            <p className="text-[11px] uppercase tracking-[0.15em] font-bold">Add {formatPrice(remaining)} more for free shipping!</p>
+            <div className="h-1 bg-background overflow-hidden">
+              <div className="h-full bg-[#cfae70] transition-all" style={{ width: `${progress}%` }} />
             </div>
           </div>
         )}
 
-        {items.map((item) => {
-          const variantKey = `${item.variant?.size ?? ""}-${item.variant?.color ?? ""}`;
-          return (
-            <div key={`${item.productId}-${variantKey}`} className="flex gap-4 p-4 border rounded-lg">
-              <Link href={`/products/${item.slug}`} className="relative h-24 w-20 rounded overflow-hidden bg-muted shrink-0">
-                <Image src={item.image} alt={item.name} fill className="object-cover" sizes="80px" />
-              </Link>
-              <div className="flex-1">
-                <Link href={`/products/${item.slug}`} className="font-medium hover:text-primary">{item.name}</Link>
-                {item.variant && (
-                  <p className="text-sm text-muted-foreground">
-                    {[item.variant.size, item.variant.color].filter(Boolean).join(" / ")}
-                  </p>
-                )}
-                <Price amount={item.price} size="sm" className="mt-1" />
-                <div className="flex items-center gap-2 mt-2">
-                  <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => updateQuantity(item.productId, item.quantity - 1, variantKey)} aria-label="Decrease">
-                    <Minus className="h-3 w-3" />
-                  </Button>
-                  <span className="w-8 text-center text-sm">{item.quantity}</span>
-                  <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => updateQuantity(item.productId, item.quantity + 1, variantKey)} aria-label="Increase">
-                    <Plus className="h-3 w-3" />
-                  </Button>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 ml-auto" onClick={() => removeItem(item.productId, variantKey)} aria-label="Remove">
-                    <Trash2 className="h-3 w-3" />
-                  </Button>
+        <div className="space-y-4">
+          {items.map((item) => {
+            const variantKey = `${item.variant?.size ?? ""}-${item.variant?.color ?? ""}`;
+            return (
+              <div key={`${item.productId}-${variantKey}`} className="flex gap-6 p-6 border border-border bg-background group hover:border-[#cfae70] transition-colors">
+                <Link href={`/products/${item.slug}`} className="relative h-32 w-24 overflow-hidden bg-muted shrink-0">
+                  <Image src={item.image} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="96px" />
+                </Link>
+                <div className="flex-1 flex flex-col">
+                  <div className="flex justify-between items-start gap-4">
+                    <div>
+                      <Link href={`/products/${item.slug}`} className="text-[11px] uppercase tracking-[0.15em] font-bold hover:text-[#cfae70] transition-colors">{item.name}</Link>
+                      {item.variant && (
+                        <p className="text-[10px] uppercase tracking-[0.1em] text-muted-foreground mt-1">
+                          {[item.variant.size, item.variant.color].filter(Boolean).join(" / ")}
+                        </p>
+                      )}
+                    </div>
+                    <div className="text-right">
+                      <p className="font-fraunces font-medium text-foreground">{formatPrice(item.price)}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-4 mt-auto pt-4">
+                    <div className="flex items-center border border-border">
+                      <button className="h-8 w-8 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onClick={() => updateQuantity(item.productId, item.quantity - 1, variantKey)} aria-label="Decrease">
+                        <Minus className="h-3 w-3" />
+                      </button>
+                      <span className="w-8 text-center text-[10px] font-bold">{item.quantity}</span>
+                      <button className="h-8 w-8 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onClick={() => updateQuantity(item.productId, item.quantity + 1, variantKey)} aria-label="Increase">
+                        <Plus className="h-3 w-3" />
+                      </button>
+                    </div>
+                    <button className="h-8 w-8 flex items-center justify-center text-muted-foreground hover:text-[#cfae70] transition-colors ml-auto" onClick={() => removeItem(item.productId, variantKey)} aria-label="Remove">
+                      <Trash2 className="h-4 w-4" strokeWidth={1.5} />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
 
         {upsells.length > 0 && (
-          <div className="mt-8">
-            <h3 className="font-semibold mb-4">You might also like</h3>
+          <div className="mt-12 pt-12 border-t border-border">
+            <h3 className="font-fraunces text-2xl font-normal text-foreground mb-8">You might also like</h3>
             <div className="grid grid-cols-2 gap-4">
-              {upsells.map((p) => <ProductCard key={p.id} product={p} />)}
+              {upsells.map((p) => <ProductCard key={p.id} product={p} showDetails={true} />)}
             </div>
           </div>
         )}
       </div>
 
       <div className="space-y-4">
-        <div className="p-6 border rounded-lg space-y-4 sticky top-24">
-          <h2 className="font-semibold text-lg">Order Summary</h2>
-          <div className="flex gap-2">
+        <div className="p-8 border border-border bg-background sticky top-24 space-y-6">
+          <h2 className="font-fraunces text-xl font-normal text-foreground border-b border-border pb-4">Order Summary</h2>
+          <div className="flex gap-0">
             <Input
-              placeholder="Promo code"
+              placeholder="PROMO CODE"
+              className="rounded-none border-border focus-visible:ring-0 focus-visible:border-[#cfae70] text-[10px] uppercase tracking-[0.1em]"
               value={promoInput}
               onChange={(e) => setPromoInput(e.target.value)}
               aria-label="Promo code"
             />
-            <Button variant="outline" onClick={applyPromo}>
+            <button className="bg-muted px-4 hover:bg-[#cfae70] hover:text-white transition-colors border border-l-0 border-border" onClick={applyPromo}>
               <Tag className="h-4 w-4" />
-            </Button>
+            </button>
           </div>
-          {promoCode && <p className="text-sm text-success">Code {promoCode} applied</p>}
-          <Separator />
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between"><span>Subtotal</span><span>{formatPrice(subtotal)}</span></div>
+          {promoCode && <p className="text-[10px] uppercase tracking-[0.1em] text-success font-bold">Code {promoCode} applied</p>}
+          <div className="space-y-4 text-[11px] uppercase tracking-[0.1em] text-muted-foreground pt-4">
+            <div className="flex justify-between"><span>Subtotal</span><span className="text-foreground">{formatPrice(subtotal)}</span></div>
             {discount > 0 && <div className="flex justify-between text-success"><span>Discount</span><span>-{formatPrice(discount)}</span></div>}
-            <div className="flex justify-between"><span>Shipping</span><span>{qualified ? "Free" : formatPrice(49)}</span></div>
-            <Separator />
-            <div className="flex justify-between font-semibold text-base">
+            <div className="flex justify-between"><span>Shipping</span><span className="text-foreground">{qualified ? "Free" : formatPrice(49)}</span></div>
+            <div className="pt-4 border-t border-border flex justify-between font-bold text-foreground text-[12px] tracking-[0.15em]">
               <span>Total</span>
-              <span>{formatPrice(subtotal - discount + (qualified ? 0 : 49))}</span>
+              <span className="font-fraunces text-lg font-medium">{formatPrice(subtotal - discount + (qualified ? 0 : 49))}</span>
             </div>
           </div>
-          <Button asChild className="w-full" size="lg">
-            <Link href="/checkout">Proceed to Checkout</Link>
-          </Button>
+          <Link href="/checkout" className="flex items-center justify-center bg-foreground text-background hover:bg-[#cfae70] hover:text-white transition-colors px-8 py-4 text-[10px] uppercase tracking-[0.2em] font-bold w-full mt-6">
+            Proceed to Checkout
+          </Link>
         </div>
       </div>
     </div>

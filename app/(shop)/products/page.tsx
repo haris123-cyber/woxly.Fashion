@@ -18,9 +18,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <div className="bg-background min-h-screen text-foreground">
-      <div className="container mx-auto px-4 md:px-8 py-12">
-        <Breadcrumbs items={[{ label: "Shop" }]} className="mb-12" />
-        <h1 className="text-4xl md:text-5xl font-fraunces font-normal mb-16 text-foreground">All Products</h1>
+      <div className="container mx-auto px-4 md:px-8 py-6">
+        <Breadcrumbs items={[{ label: "Shop" }]} className="mb-6" />
+        <h1 className="text-4xl md:text-5xl font-fraunces font-normal mb-10 text-foreground">All Products</h1>
         <Suspense fallback={<ProductGridSkeleton />}>
           <ProductListing searchParams={params} />
         </Suspense>

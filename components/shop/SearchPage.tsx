@@ -13,7 +13,7 @@ function highlightMatch(text: string, query: string) {
   const regex = new RegExp(`(${query})`, "gi");
   const parts = text.split(regex);
   return parts.map((part, i) =>
-    regex.test(part) ? <mark key={i} className="bg-accent/30 rounded px-0.5">{part}</mark> : part
+    regex.test(part) ? <mark key={i} className="text-[#cfae70] bg-transparent font-bold">{part}</mark> : part
   );
 }
 
@@ -55,26 +55,26 @@ export function SearchPage() {
   return (
     <div className="space-y-8">
       <div className="relative max-w-xl mx-auto">
-        <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+        <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
         <Input
-          placeholder="Search products..."
+          placeholder="SEARCH PRODUCTS..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="pl-10 h-12 text-base"
+          className="pl-12 h-14 rounded-none border-border focus-visible:ring-[#cfae70] uppercase tracking-[0.1em] text-[10px] font-bold"
           aria-label="Search products"
           autoFocus
         />
       </div>
 
       {recentSearches.length > 0 && !query && (
-        <div className="text-center">
-          <p className="text-sm text-muted-foreground mb-2">Recent searches</p>
-          <div className="flex flex-wrap justify-center gap-2">
+        <div className="text-center mt-12">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mb-6">Recent Searches</p>
+          <div className="flex flex-wrap justify-center gap-3">
             {recentSearches.map((s) => (
               <button
                 key={s}
                 onClick={() => setQuery(s)}
-                className="px-3 py-1.5 text-sm border rounded-full hover:bg-muted transition-colors min-h-11"
+                className="px-6 py-3 border border-border bg-background hover:border-[#cfae70] hover:text-[#cfae70] transition-colors rounded-none text-[9px] uppercase tracking-[0.1em]"
               >
                 {s}
               </button>
@@ -90,23 +90,21 @@ export function SearchPage() {
           description={`No products match "${query}"`}
           actionLabel="Browse All Products"
           actionHref="/products"
+          className="mt-12"
         />
       )}
 
       {results.length > 0 && (
-        <>
-          <p className="text-sm text-muted-foreground">{results.length} results for &ldquo;{query}&rdquo;</p>
+        <div className="mt-12">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mb-8 text-center">{results.length} results for &ldquo;{query}&rdquo;</p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {results.map((product) => (
               <div key={product.id}>
                 <ProductCard product={product} />
-                <p className="text-xs text-muted-foreground mt-1 px-1">
-                  {highlightMatch(product.name, query)}
-                </p>
               </div>
             ))}
           </div>
-        </>
+        </div>
       )}
     </div>
   );

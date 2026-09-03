@@ -33,35 +33,49 @@ export default function HomePage() {
       <HeroCarousel />
 
       {/* Categories */}
+      {/* Categories */}
       <section className="bg-background pt-8 pb-8">
         <div className="container mx-auto px-8">
+
+          {/* Header */}
           <div className="flex items-end justify-between mb-6">
-            <h2 className="text-3xl font-fraunces font-normal text-foreground">Shop by Category</h2>
-            <Link href="/products" className="text-muted-foreground hover:text-foreground text-[9px] font-bold tracking-[0.2em] uppercase transition-colors flex items-center">
-              View All <ArrowRight className="ml-2 h-3 w-3" />
+            <h2 className="text-3xl font-fraunces font-normal text-foreground">
+              Shop by Category
+            </h2>
+
+            <Link
+              href="/products"
+              className="text-muted-foreground hover:text-foreground text-[9px] font-bold tracking-[0.2em] uppercase transition-colors flex items-center"
+            >
+              View All
+              <ArrowRight className="ml-2 h-3 w-3" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {categories.map((cat) => (
-              <Link
-                key={cat.id}
-                href={`/products?category=${cat.slug}`}
-                className="group relative aspect-[3/4] overflow-hidden bg-secondary"
-              >
-                <Image
-                  src={cat.image}
-                  alt={cat.name}
-                  fill
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/90 via-[#0a0a0a]/20 to-transparent opacity-80" />
-                <div className="absolute bottom-3 left-3 text-foreground z-10">
-                  <p className="text-[#cfae70] text-[9px] font-bold tracking-[0.2em] uppercase mb-1">Explore</p>
-                  <h3 className="font-fraunces text-xl text-[#cfae70] font-normal">{cat.name}</h3>
-                </div>
-              </Link>
-            ))}
+
+          {/* Categories */}
+          <div className="overflow-x-auto scrollbar-none -mx-8 px-8 mr-1 " >
+            <div className="grid grid-flow-col auto-cols-[calc((100vw-4rem)/2)] grid-rows-2 gap-4 w-max md:flex  md:flex-nowrap md:gap-4" >
+              {categories.map((cat) => (
+                <Link
+                  key={cat.id}
+                  href={`/products?category=${cat.slug}`}
+                  className=" group relative aspect-[3/4] overflow-hidden bg-secondary shrink-0 md:w-[calc((90vw-8rem)/4)] lg:w-[calc((80vw-10rem)/4)] "
+                >
+                  <Image src={cat.image} alt={cat.name} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/90 via-[#0a0a0a]/20 to-transparent opacity-80" />
+
+                  <div className="absolute bottom-3 left-3 text-foreground z-10">
+                    <p className="text-[#cfae70] text-[9px] font-bold tracking-[0.2em] uppercase mb-1">
+                      Explore
+                    </p>
+
+                    <h3 className="font-fraunces text-xl text-[#cfae70] font-normal">
+                      {cat.name}
+                    </h3>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>

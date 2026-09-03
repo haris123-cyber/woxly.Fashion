@@ -3,10 +3,9 @@ export function formatPrice(
   currency = "INR",
   locale = "en-IN"
 ): string {
-  return new Intl.NumberFormat(locale, {
-    style: "currency",
-    currency,
-    minimumFractionDigits: 0,
+  const formatted = new Intl.NumberFormat(locale, {
+    minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amount);
+  return `Rs.${formatted}`;
 }

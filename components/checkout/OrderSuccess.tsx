@@ -25,7 +25,7 @@ export function OrderSuccessClient({ orderNumber }: OrderSuccessProps) {
       <div className="mx-auto w-16 h-16 border border-[#cfae70] flex items-center justify-center rounded-full mb-6">
         <Check className="h-8 w-8 text-[#cfae70]" strokeWidth={1.5} />
       </div>
-      
+
       <div>
         <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground mb-4">Order Successful</p>
         <h1 className="text-4xl md:text-5xl font-fraunces font-normal text-foreground leading-tight">
@@ -40,16 +40,16 @@ export function OrderSuccessClient({ orderNumber }: OrderSuccessProps) {
         <p className="text-lg text-foreground">{estimatedDelivery}</p>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-        <Link 
+      <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 ">
+        <Link
           href={`/track-order?order=${orderNumber}`}
-          className="flex-1 border border-[#cfae70] bg-[#cfae70] hover:bg-[#b5985d] text-black h-12 flex items-center justify-center text-[10px] font-bold uppercase tracking-[0.2em] transition-colors"
+          className="flex-1 border border-[#cfae70] bg-[#cfae70] p-2  hover:bg-[#b5985d] text-black  flex items-center justify-center text-[10px] font-bold uppercase tracking-[0.2em] transition-colors"
         >
           <Truck className="h-4 w-4 mr-3" /> Track Order
         </Link>
-        <Link 
+        <Link
           href="/products"
-          className="flex-1 border border-border hover:border-[#cfae70] text-muted-foreground hover:text-foreground h-12 flex items-center justify-center text-[10px] font-bold uppercase tracking-[0.2em] transition-colors bg-transparent"
+          className="flex-1 border border-border p-2 hover:border-[#cfae70] text-muted-foreground hover:text-foreground h-12 flex items-center justify-center text-[10px] font-bold uppercase tracking-[0.2em] transition-colors bg-transparent"
         >
           Continue Shopping
         </Link>

@@ -73,7 +73,7 @@ export const MOCK_PRODUCTS: Product[] = [
     description: "Soft organic cotton t-shirt with a relaxed fit. GOTS certified sustainable fabric.",
     shortDescription: "GOTS certified organic cotton t-shirt",
     price: 899,
-    images: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&h=1000&fit=crop", "https://images.unsplash.com/photo-1562157873-4d8c4f06f25f?w=800&h=1000&fit=crop"],
+    images: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&h=1000&fit=crop", "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&h=1000&fit=crop"],
     category: "Men", categorySlug: "men", brand: "Woxly", rating: 4.5, reviewCount: 312, stock: 45,
     variants: makeVariants(), tags: ["tee", "cotton", "basics"], isNew: true, sku: "WOX-MT-001",
   },

@@ -23,10 +23,15 @@ export default function WishlistPage() {
   }
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-semibold">Wishlist ({products.length})</h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {products.map((p) => <ProductCard key={p.id} product={p} />)}
+    <div>
+      <div className="bg-background flex items-center justify-between mb-8 gap-4 border-b border-border pb-6">
+        <h2 className="font-fraunces text-2xl font-normal text-foreground">Wishlist</h2>
+        <p className="text-muted-foreground text-[10px] uppercase tracking-[0.2em] font-bold">
+          {products.length} {products.length === 1 ? 'Item' : 'Items'}
+        </p>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-x-6 md:gap-y-12">
+        {products.map((p) => <ProductCard key={p.id} product={p} showDetails={true} />)}
       </div>
     </div>
   );

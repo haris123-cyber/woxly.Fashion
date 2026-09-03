@@ -100,7 +100,7 @@ export function ProductListing({ searchParams }: ProductListingProps) {
           <>
             <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-x-6 md:gap-y-12">
               {result.data.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={product} showDetails={true} />
               ))}
             </div>
             {result.totalPages > 1 && (
@@ -110,9 +110,9 @@ export function ProductListing({ searchParams }: ProductListingProps) {
                     key={i}
                     onClick={() => updateParams({ page: String(i + 1) })}
                     className={cn(
-                      "h-12 w-12 flex items-center justify-center font-fraunces text-lg transition-colors border",
-                      result.page === i + 1 
-                        ? "border-[#cfae70] text-[#cfae70] bg-[#cfae70]/10" 
+                      "h-6 w-6 md:h-12 md:w-12 flex items-center justify-center font-fraunces text-sm md:text-lg transition-colors border",
+                      result.page === i + 1
+                        ? "border-[#cfae70] text-[#cfae70] bg-[#cfae70]/10"
                         : "border-border text-muted-foreground hover:border-[#cfae70] hover:text-foreground"
                     )}
                   >

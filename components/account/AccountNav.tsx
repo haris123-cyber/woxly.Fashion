@@ -18,7 +18,7 @@ export function AccountNav() {
 
   return (
     <>
-      <nav className="hidden md:flex flex-col gap-1 w-48 shrink-0">
+      <nav className="hidden md:flex flex-col w-48 shrink-0">
         {NAV.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
@@ -27,18 +27,18 @@ export function AccountNav() {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-2 px-3 py-2.5 rounded-md text-sm font-medium transition-colors min-h-11",
-                isActive ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                "flex items-center gap-4 px-4 py-4 text-[10px] uppercase tracking-[0.15em] font-bold transition-all border-l-2",
+                isActive ? "border-[#cfae70] text-[#cfae70] bg-muted/30" : "border-transparent text-muted-foreground hover:text-foreground hover:border-border hover:bg-muted/10"
               )}
             >
-              <Icon className="h-4 w-4" />
+              <Icon className="h-4 w-4" strokeWidth={1.5} />
               {item.label}
             </Link>
           );
         })}
       </nav>
 
-      <nav className="md:hidden flex gap-1 overflow-x-auto pb-4 -mx-4 px-4">
+      <nav className="md:hidden flex overflow-x-auto pb-4 -mx-4 px-4 border-b border-border mb-6">
         {NAV.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
@@ -47,11 +47,11 @@ export function AccountNav() {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-medium whitespace-nowrap min-h-11",
-                isActive ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                "flex items-center gap-2 px-4 py-4 text-[9px] uppercase tracking-[0.15em] font-bold whitespace-nowrap border-b-2 -mb-[2px] transition-colors",
+                isActive ? "border-[#cfae70] text-[#cfae70]" : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
               )}
             >
-              <Icon className="h-3.5 w-3.5" />
+              <Icon className="h-3.5 w-3.5" strokeWidth={1.5} />
               {item.label}
             </Link>
           );

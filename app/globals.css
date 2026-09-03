@@ -102,8 +102,6 @@
 
 body {
   font-family: var(--font-inter-next);
-  background-color: #0a0a0a;
-  color: var(--foreground);
   font-feature-settings: "rlig" 1, "calt" 1;
   min-height: 100vh;
   overflow-x: hidden;

@@ -28,9 +28,9 @@ export function Header() {
   const setMobileNavOpen = useUIStore((s) => s.setMobileNavOpen);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background">
-      <div className="container mx-auto px-4 md:px-8">
-        <div className="flex h-15 items-center justify-between gap-4">
+    <header className="sticky top-0 z-50 border-b border-border bg-background ">
+      <div className="container mx-auto px-4 md:px-8 scrollbar-none">
+        <div className="flex h-15 items-center justify-between gap-4 ">
 
           {/* Left: Logo */}
           <div className="flex-1 flex items-center">
@@ -44,21 +44,79 @@ export function Header() {
                 <SheetHeader>
                   <SheetTitle className="text-foreground font-fraunces  tracking-widest">{SITE_CONFIG.name}</SheetTitle>
                 </SheetHeader>
-                <nav className="flex flex-col gap-1 mt-6">
-                  {NAV_LINKS.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setMobileNavOpen(false)}
-                      className={cn(
-                        "px-3 py-3 rounded-md text-[10px] tracking-[0.2em] uppercase transition-colors min-h-11 flex items-center",
-                        pathname === link.href ? "text-foreground bg-muted" : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                      )}
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </nav>
+                <div className="flex flex-col gap-2 h-full overflow-y-auto pb-8 hide-scrollbar">
+                  {/* Categories */}
+                  <nav className="flex flex-col gap-1 mt-6 ">
+                    {NAV_LINKS.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        onClick={() => setMobileNavOpen(false)}
+                        className={cn(
+                          "px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-5 flex items-center",
+                          pathname === link.href ? "text-foreground bg-muted" : "sm:text-muted-foreground hover:text-foreground hover:bg-muted"
+                        )}
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </nav>
+
+                  {/* Main Links */}
+                  <div className="pt-6 border-t border-border">
+                    <nav className="flex flex-col gap-2">
+                      <Link href="/" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        Home
+                      </Link>
+                      <Link href="/products" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        Shop
+                      </Link>
+                      <Link href="/account/wishlist" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        Wishlist
+                      </Link>
+                      <Link href="/account/orders" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        Orders
+                      </Link>
+                      <Link href="/account" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        Sign in
+                      </Link>
+                    </nav>
+                  </div>
+
+                  {/* Help & Policies */}
+                  <div className="pt-6 border-t border-border">
+                    <h4 className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.15em] mb-4 px-3">Help & Policies</h4>
+                    <nav className="flex flex-col gap-2">
+                      <Link href="/privacy" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        Privacy Policy
+                      </Link>
+                      <Link href="/terms" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        Terms of Service
+                      </Link>
+                      <Link href="/shipping" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        Shipping Policy
+                      </Link>
+                      <Link href="/returns" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        Return Policy
+                      </Link>
+                      <Link href="/blog" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        Blog
+                      </Link>
+                      <Link href="/about" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        About
+                      </Link>
+                      <Link href="/faq" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        FAQs
+                      </Link>
+                      <Link href="/feedback" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        Feedback
+                      </Link>
+                      <Link href="/contact" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[10px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        Contact
+                      </Link>
+                    </nav>
+                  </div>
+                </div>
               </SheetContent>
             </Sheet>
 
@@ -102,9 +160,24 @@ export function Header() {
               )}
             </Link>
 
+            {/* Mobile Cart Link */}
+            <Link
+              href="/cart"
+              className="md:hidden relative text-muted-foreground hover:text-foreground transition-colors"
+              aria-label={`Cart, ${cartCount} items`}
+            >
+              <ShoppingBag className="h-[18px] w-[18px]" strokeWidth={1.5} />
+              {cartCount > 0 && (
+                <span className="absolute -top-1.5 -right-2 flex h-[14px] w-[14px] items-center justify-center rounded-full bg-[#cfae70] text-[8px] font-bold text-black border border-border">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+
+            {/* Desktop Cart Button */}
             <button
               onClick={() => setCartDrawerOpen(true)}
-              className="relative text-muted-foreground hover:text-foreground transition-colors"
+              className="hidden md:block relative text-muted-foreground hover:text-foreground transition-colors"
               aria-label={`Cart, ${cartCount} items`}
             >
               <ShoppingBag className="h-[18px] w-[18px]" strokeWidth={1.5} />

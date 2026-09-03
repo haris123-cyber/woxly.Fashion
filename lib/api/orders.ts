@@ -1,7 +1,7 @@
 import type { Order, CreateOrderInput } from "@/types/order";
 import { PROMO_CODES } from "@/lib/constants";
 
-const orders: Order[] = [
+let memoryOrders: Order[] = [
   {
     id: "ord-1",
     orderNumber: "WOXLY-2026-001",
@@ -39,17 +39,51 @@ const orders: Order[] = [
   },
 ];
 
-export function getOrder(orderNumber: string, email: string): Order | undefined {
-  return orders.find(
-    (o) => o.orderNumber.toLowerCase() === orderNumber.toLowerCase() && o.email.toLowerCase() === email.toLowerCase()
-  );
+const LOCAL_STORAGE_KEY = "woxly_orders";
+
+function getOrders(): Order[] {
+  if (typeof window !== "undefined") {
+    try {
+      const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (stored) {
+        return JSON.parse(stored) as Order[];
+      } else {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(memoryOrders));
+      }
+    } catch (e) {
+      console.error("Failed to parse orders from localStorage");
+    }
+  }
+  return memoryOrders;
+}
+
+function saveOrders(orders: Order[]) {
+  memoryOrders = orders;
+  if (typeof window !== "undefined") {
+    try {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(orders));
+    } catch (e) {}
+  }
+}
+
+export function getOrder(orderNumber: string, email?: string): Order | undefined {
+  const orders = getOrders();
+  return orders.find((o) => {
+    const matchOrder = o.orderNumber.toLowerCase() === orderNumber.toLowerCase();
+    if (email) {
+      return matchOrder && o.email.toLowerCase() === email.toLowerCase();
+    }
+    return matchOrder;
+  });
 }
 
 export function getOrdersByEmail(email: string): Order[] {
+  const orders = getOrders();
   return orders.filter((o) => o.email.toLowerCase() === email.toLowerCase());
 }
 
 export function createOrder(input: CreateOrderInput): Order {
+  const orders = getOrders();
   const subtotal = input.items.reduce((sum, i) => sum + i.price * i.quantity, 0);
   let discount = 0;
   if (input.promoCode && PROMO_CODES[input.promoCode.toUpperCase()]) {
@@ -84,5 +118,6 @@ export function createOrder(input: CreateOrderInput): Order {
   };
 
   orders.push(order);
+  saveOrders(orders);
   return order;
 }

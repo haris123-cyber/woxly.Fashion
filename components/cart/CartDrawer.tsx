@@ -29,13 +29,14 @@ export function CartDrawer() {
         </SheetHeader>
 
         {items.length === 0 ? (
-          <EmptyState
-            icon={ShoppingBag}
-            title="Your cart is empty"
-            description="Add some products to get started"
-            actionLabel="Continue Shopping"
-            actionHref="/products"
-          />
+            <EmptyState
+              icon={ShoppingBag}
+              title="Your cart is empty"
+              description="Add some products to get started"
+              actionLabel="Continue Shopping"
+              actionHref="/products"
+              className="border-0 bg-transparent py-12"
+            />
         ) : (
           <>
             <div className="flex-1 overflow-y-auto -mx-6 px-6 space-y-8 hide-scrollbar">

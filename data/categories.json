@@ -30,5 +30,37 @@
     "description": "Curated home essentials",
     "image": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&h=400&fit=crop",
     "productCount": 4
+  },
+  {
+    "id": "cat-5",
+    "name": "Shoes",
+    "slug": "shoes",
+    "description": "Step into style",
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=400&fit=crop",
+    "productCount": 10
+  },
+  {
+    "id": "cat-6",
+    "name": "Bags",
+    "slug": "bags",
+    "description": "Carry your essentials in style",
+    "image": "https://images.unsplash.com/photo-1584916201218-f4242ceb4809?w=600&h=400&fit=crop",
+    "productCount": 7
+  },
+  {
+    "id": "cat-7",
+    "name": "Jewelry",
+    "slug": "jewelry",
+    "description": "Sparkle and shine",
+    "image": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=400&fit=crop",
+    "productCount": 12
+  },
+  {
+    "id": "cat-8",
+    "name": "Watches",
+    "slug": "watches",
+    "description": "Timeless elegance",
+    "image": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=600&h=400&fit=crop",
+    "productCount": 5
   }
 ]

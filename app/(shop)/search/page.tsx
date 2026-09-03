@@ -9,8 +9,10 @@ export const metadata: Metadata = {
 
 export default function Search() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-fraunces font-bold mb-8 text-center">Search</h1>
+    <div className="container mx-auto px-4 py-12 md:py-16">
+      <div className="border-b border-border pb-6 mb-8 max-w-xl mx-auto text-center">
+        <h1 className="text-4xl md:text-5xl font-fraunces font-normal text-foreground">Search</h1>
+      </div>
       <Suspense>
         <SearchPage />
       </Suspense>

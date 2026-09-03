@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ClientShell } from "@/components/layout/ClientShell";
 import { Toaster } from "sonner";
+import { WhatsAppWidget } from "@/components/shared/WhatsAppWidget";
 import { SITE_CONFIG } from "@/lib/constants";
 import "./globals.css";
 
@@ -35,13 +36,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning className={`${fraunces.variable} ${inter.variable} h-full`}>
       <head>
       </head>
-      <body className="min-h-full flex flex-col font-inter antialiased">
+      <body className="min-h-full flex flex-col font-inter antialiased bg-background text-foreground">
         <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light" disableTransitionOnChange>
           <AnnouncementBar />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
           <ClientShell />
+          <WhatsAppWidget />
           <Toaster position="top-center" richColors />
         </ThemeProvider>
       </body>

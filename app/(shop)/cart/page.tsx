@@ -9,9 +9,11 @@ export const metadata: Metadata = {
 
 export default function Cart() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Breadcrumbs items={[{ label: "Cart" }]} className="mb-6" />
-      <h1 className="text-3xl font-fraunces font-bold mb-8">Shopping Cart</h1>
+    <div className="container mx-auto px-4 py-12 md:py-16">
+      <div className="border-b border-border pb-6 mb-8">
+        <Breadcrumbs items={[{ label: "Cart" }]} className="mb-2 text-[10px] uppercase tracking-[0.1em]" />
+        <h1 className="text-4xl md:text-5xl font-fraunces font-normal text-foreground">Shopping Cart</h1>
+      </div>
       <CartPage />
     </div>
   );
