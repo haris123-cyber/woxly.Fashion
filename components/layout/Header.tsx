@@ -36,7 +36,7 @@ export function Header() {
           <div className="flex-1 flex items-center">
             <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
               <SheetTrigger asChild className="lg:hidden mr-4">
-                <button className="text-muted-foreground hover:text-foreground transition-colors p-2 -ml-2" aria-label="Open menu">
+                <button className="text-muted-foreground hover:text-foreground border-none transition-colors p-2 -ml-2" aria-label="Open menu">
                   <Menu className="h-5 w-5" />
                 </button>
               </SheetTrigger>

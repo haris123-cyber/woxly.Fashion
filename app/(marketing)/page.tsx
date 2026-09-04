@@ -9,6 +9,7 @@ import { getCategories, getFeaturedProducts, getNewArrivals } from "@/lib/api/pr
 import { SITE_CONFIG } from "@/lib/constants";
 
 import { HeroCarousel } from "@/components/marketing/HeroCarousel";
+import { PromoBanners } from "@/components/marketing/PromoBanners";
 
 export default function HomePage() {
   const categories = getCategories();
@@ -120,6 +121,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Promotional Banners */}
+      <PromoBanners />
 
       {/* Newsletter */}
       <section className="bg-secondary py-24 border-t border-border">

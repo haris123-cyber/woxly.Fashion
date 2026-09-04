@@ -43,8 +43,8 @@ const REVIEW_POOL = [
     title: "Perfect staple piece",
     content: "I've worn this almost every day since I bought it. It washes incredibly well and still looks brand new. Attaching a pic from my vacation!",
     images: [
-      "https://images.unsplash.com/photo-1434389670869-c80327f90f15?w=400&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1520975954732-57dd998e1f54?w=400&h=400&fit=crop"
+      "https://images.unsplash.com/photo-1475180098004-ca77a66827be?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1475180098004-ca77a66827be?w=400&h=400&fit=crop"
     ],
   },
   {
