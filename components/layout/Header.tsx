@@ -160,11 +160,11 @@ export function Header() {
               <Search className="h-[18px] w-[18px]" strokeWidth={1.5} />
             </Link>
 
-            <Link href="/account" className="text-muted-foreground hover:text-foreground transition-colors hidden sm:flex" aria-label="Account">
+            <Link href="/account" className="text-muted-foreground hover:text-foreground transition-colors " aria-label="Account">
               <User className="h-[18px] w-[18px]" strokeWidth={1.5} />
             </Link>
 
-            <Link href="/account/wishlist" className="relative text-muted-foreground hover:text-foreground transition-colors">
+            <Link href="/account/wishlist" className="relative text-muted-foreground hover:text-foreground transition-colors hidden sm:flex">
               <Heart className="h-[18px] w-[18px]" strokeWidth={1.5} />
               {wishlistCount > 0 && (
                 <span className="absolute -top-1.5 -right-2 flex h-[14px] w-[14px] items-center justify-center rounded-full bg-[#cfae70] text-[8px] font-bold text-black border border-border">

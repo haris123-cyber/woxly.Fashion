@@ -51,16 +51,20 @@ export default function OrdersPage() {
         <div className="space-y-4">
           {orders.map((order) => (
             <Link key={order.id} href={`/account/orders/${order.id}`} className="block p-6 border border-border bg-background hover:border-[#cfae70] transition-colors">
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
-                <div className="relative">
-                  <p className="text-[11px] uppercase tracking-[0.15em] font-bold text-foreground mb-1">{order.orderNumber}</p>
-                  <p className="text-[10px] uppercase tracking-[0.1em] text-muted-foreground mb-4">{formatDate(order.createdAt)}</p>
-
-                  <span className={`px-3 py-1  right-3 top-3 absolute ${getStatusColor(order.status)} text-[9px] font-bold tracking-[0.15em] uppercase sm:mb-2`}>
+              <div className="flex flex-col gap-4">
+                {/* Header Row */}
+                <div className="flex justify-between items-start gap-4">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.15em] font-bold text-foreground mb-1">{order.orderNumber}</p>
+                    <p className="text-[10px] uppercase tracking-[0.1em] text-muted-foreground">{formatDate(order.createdAt)}</p>
+                  </div>
+                  <span className={`px-3 py-1 ${getStatusColor(order.status)} text-[9px] font-bold tracking-[0.15em] uppercase shrink-0`}>
                     {order.status}
                   </span>
+                </div>
 
-                  {/* Product Images Row */}
+                {/* Content Row */}
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mt-2">
                   <div className="flex flex-wrap gap-2">
                     {order.items.map((item, index) => (
                       <div key={`${item.productId}-${index}`} className="relative w-32 h-36 bg-muted rounded-sm overflow-hidden border border-border">
@@ -68,11 +72,9 @@ export default function OrdersPage() {
                       </div>
                     ))}
                   </div>
-                </div>
-
-                <div className="text-left sm:text-right flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-4 sm:gap-0 mt-2 sm:mt-0">
-
-                  <p className="font-fraunces font-medium text-foreground text-sm">{formatPrice(order.total)}</p>
+                  <div className="text-right mt-2 sm:mt-0">
+                    <p className="font-fraunces font-medium text-foreground text-sm">{formatPrice(order.total)}</p>
+                  </div>
                 </div>
               </div>
             </Link>

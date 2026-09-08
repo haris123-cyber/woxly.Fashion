@@ -141,7 +141,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
         <>
             <div className="grid lg:grid-cols-12 gap-12 lg:gap-24 mb-32 min-w-0">
                 {/* Left: Gallery */}
-                <div className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-4 min-w-0">
+                <div className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-4 h-[60vh] lg:h-[80vh] lg:sticky lg:top-24 min-w-0 mb-8 lg:mb-0">
                     {product.images.length > 1 && (
                         <div className="flex md:flex-col gap-4 overflow-x-auto md:w-20 shrink-0 hide-scrollbar">
                             {product.images.map((img, i) => (
@@ -161,7 +161,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                     )}
 
                     <div
-                        className="relative flex-1 aspect-[3/4] bg-secondary border border-border min-w-0 touch-pan-y overflow-hidden"
+                        className="relative flex-1 aspect-[3/4] bg-secondary border border-border min-w-0 touch-pan-y overflow-hidden w-full"
                         onTouchStart={onTouchStart}
                         onTouchMove={onTouchMove}
                         onTouchEnd={onTouchEnd}
@@ -198,13 +198,28 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                 </div>
 
                 {/* Right: Info */}
-                <div className="lg:col-span-5 pt-4">
-                    <p className="text-muted-foreground text-[9px] font-bold tracking-[0.2em] uppercase mb-4">
-                        {product.category}
-                    </p>
+                <div className="lg:col-span-5 pt-1 min-w-0">
+                    <div className="flex items-center gap-2 justify-between">
+                        <p className="text-muted-foreground text-[9px] font-bold tracking-[0.2em] uppercase mb-4">
+                            {product.category}
+                        </p>
+
+                        <div className="flex items-center gap-2">
+                            <span
+                                className={cn(
+                                    "w-2 h-2 ",
+                                    product.stock > 0 ? "bg-green-500" : "bg-red-500"
+                                )}
+                            />
+                            <span className="text-[11px] font-bold tracking-[0.1em] uppercase text-muted-foreground">
+                                {product.stock > 0 ? "In Stock" : "Out of Stock"}
+                            </span>
+                        </div>
+                    </div>
+
                     <div className="flex flex-wrap gap-2 mb-4">
                         {product.isSale && (
-                            <span className="bg-red-500 text-white text-[9px] font-bold px-2 py-1 uppercase tracking-wider">Hot Deal</span>
+                            <span className="bg-red-500 border border-[#cfae70] text-white text-[9px] font-bold px-2 py-1 uppercase tracking-wider">Hot Deal</span>
                         )}
                         {product.isNew && (
                             <span className="bg-[#cfae70] text-black text-[9px] font-bold px-2 py-1 uppercase tracking-wider">New</span>
@@ -219,17 +234,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                             {product.name}
                         </h1>
 
-                        <div className="flex items-center gap-2">
-                            <span
-                                className={cn(
-                                    "w-2 h-2 ",
-                                    product.stock > 0 ? "bg-green-500" : "bg-red-500"
-                                )}
-                            />
-                            <span className="text-[11px] font-bold tracking-[0.1em] uppercase text-muted-foreground">
-                                {product.stock > 0 ? "In Stock" : "Out of Stock"}
-                            </span>
-                        </div>
+
                     </div>
                     <div className="flex items-center gap-3 mb-8">
                         <p className="text-[#cfae70] font-fraunces text-2xl">
@@ -252,6 +257,8 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                             }
                             return null;
                         })()}
+
+
                     </div>
 
                     <p className="text-foreground text-[13px] leading-relaxed mb-8 max-w-sm">
@@ -482,7 +489,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
 
                     {/* Tabs */}
                     <div>
-                        <div className="border-b border-border flex gap-8 mb-8">
+                        <div className="border-b border-border flex gap-4 sm:gap-8 mb-8 flex-wrap">
                             {['DETAILS', 'CARE', 'DELIVERY'].map((tab) => (
                                 <button
                                     key={tab}

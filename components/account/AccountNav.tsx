@@ -2,16 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Package, MapPin, Heart, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, Package, MapPin, Heart, Settings, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-
+  { href: "/account/settings", label: "Profile", icon: User },
   { href: "/account/orders", label: "Orders", icon: Package },
   { href: "/account/addresses", label: "Addresses", icon: MapPin },
   { href: "/account/wishlist", label: "Wishlist", icon: Heart },
-  { href: "/account/settings", label: "Settings", icon: Settings },
-  { href: "/account/logout", label: "Logout", icon: LogOut },
+
+  { href: "/logout", label: "Logout", icon: LogOut },
 
 ];
 

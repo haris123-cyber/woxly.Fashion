@@ -151,18 +151,30 @@ export function ProductCard({ product, className, priority = false, showDetails 
                         <h3 className="font-fraunces text-[11px] md:text-xs  font-medium uppercase tracking-wider truncate">
                             {product.name}
                         </h3>
-                        <div className="text-[11px] md:text-xs font-medium ">
-                            {formatPrice(product.price)}
+                        <div className="flex items-center gap-1.5 mt-0.5">
+                            <span className="text-[11px] md:text-xs font-medium text-foreground">
+                                {formatPrice(product.price)}
+                            </span>
+                            {product.compareAtPrice && product.compareAtPrice > product.price && (
+                                <>
+                                    <span className="text-[9px] md:text-[10px] text-muted-foreground line-through">
+                                        {formatPrice(product.compareAtPrice)}
+                                    </span>
+                                    <span className="text-[9px] md:text-[10px] text-[#cfae70] font-bold">
+                                        -{Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)}%
+                                    </span>
+                                </>
+                            )}
                         </div>
                         {(() => {
                             const colors = product.variants?.filter((v) => v.type === "color") || [];
                             if (colors.length === 0) return null;
                             return (
-                                <div className="flex items-center gap-[4px] pt-1.5 flex-wrap">
+                                <div className="flex items-center gap-[4px] pt-1.5 flex-wrap ">
                                     {colors.slice(0, 3).map((color, idx) => (
                                         <div
                                             key={idx}
-                                            className="w-[12px] h-[12px] border border-[#ccc]"
+                                            className="w-[12px] h-[12px] border rounded-full border-[#cfae70]"
                                             style={{ backgroundColor: color.value }}
                                             title={color.label}
                                         />
