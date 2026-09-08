@@ -58,14 +58,12 @@ export function CategoryCarousel({ categories }: CategoryCarouselProps) {
       <div
         ref={containerRef}
         onScroll={checkScroll}
-        className="overflow-x-auto scrollbar-none flex gap-4 md:gap-6 snap-x snap-mandatory py-2 px-1"
-      >
+        className="grid grid-rows-2 grid-flow-col auto-cols-[40vw] sm:auto-cols-[calc(50vw-2rem)] md:auto-cols-[calc(33.333vw-2rem)] lg:auto-cols-[calc(25vw-2rem)] gap-4 md:gap-6 overflow-x-auto scrollbar-none py-2 px-1"      >
         {categories.map((cat, idx) => (
           <Link
             key={cat.id}
             href={`/products?category=${cat.slug}`}
-            className="group relative aspect-[3/4.5] overflow-hidden bg-slate-100 shrink-0 w-[40vw] sm:w-[calc(50vw-2rem)] md:w-[calc(33.333vw-2rem)] lg:w-[calc(25vw-2rem)]  snap-start"
-          >
+            className="group relative aspect-[3/4.5] overflow-hidden bg-slate-100 snap-start"          >
             <Image
               src={cat.image}
               alt={cat.name}
