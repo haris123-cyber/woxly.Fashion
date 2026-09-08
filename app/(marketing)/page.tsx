@@ -43,7 +43,9 @@ export default function HomePage() {
 
       <HeroCarousel />
 
-      {/* Categories */}
+      {/* Promotional Banners */}
+      <StackedPromoBanners />
+
       {/* Categories */}
       <section className="bg-background pt-8 pb-8">
         <div className="container mx-auto px-8">
@@ -70,7 +72,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <MidnightCollectionBanner />
+
 
       {/* Featured / Best Sellers */}
       <section className="bg-background py-8 border-t border-border">
@@ -114,9 +116,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <WoxlyEditionSplitGrid />
+      <RedSaleBanner />
 
-      {/* Promotional Banners */}
-      <StackedPromoBanners />
+
 
       {/* Newsletter */}
       <section className="bg-secondary py-24 border-t border-border">
