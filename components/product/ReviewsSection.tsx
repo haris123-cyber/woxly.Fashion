@@ -10,7 +10,7 @@ import { ReviewStars } from "@/components/trust/ReviewStars";
 import { reviewSchema, type ReviewFormData } from "@/lib/validations/forms";
 import { formatDate } from "@/lib/utils";
 import type { Product } from "@/types/product";
-import { toast } from "sonner";
+import { showCustomToast } from "@/components/shared/CustomToast";
 
 interface ReviewsSectionProps {
   product: Product;
@@ -26,7 +26,11 @@ export function ReviewsSection({ product }: ReviewsSectionProps) {
   });
 
   const onSubmit = (_data: ReviewFormData) => {
-    toast.success("Review submitted!", { description: "Thank you for your feedback (mock submission)" });
+    showCustomToast({ 
+      title: "Review submitted!", 
+      description: "Thank you for your feedback (mock submission)",
+      type: "success"
+    });
     form.reset();
     setShowForm(false);
   };

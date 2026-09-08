@@ -4,15 +4,52 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
+import { showCustomToast } from "@/components/shared/CustomToast";
 
 const MOCK_ADDRESSES = [
   { id: "1", name: "Home", line1: "123 Fashion Street", city: "Mumbai", state: "Maharashtra", pin: "400001", isDefault: true },
 ];
 
 export default function AddressesPage() {
-  const [addresses] = useState(MOCK_ADDRESSES);
+  const [addresses, setAddresses] = useState(MOCK_ADDRESSES);
   const [showForm, setShowForm] = useState(false);
+  
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    line1: "",
+    line2: "",
+    city: "",
+    state: "",
+    pin: ""
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSave = () => {
+    if (!formData.name || !formData.line1 || !formData.city || !formData.state || !formData.pin) {
+      showCustomToast({ title: "Please fill in all required fields.", type: "error" });
+      return;
+    }
+    
+    const newAddress = {
+      id: Date.now().toString(),
+      name: formData.name, // Or we could use a label like "Work" / "Home", but using name for now
+      line1: formData.line1 + (formData.line2 ? `, ${formData.line2}` : ""),
+      city: formData.city,
+      state: formData.state,
+      pin: formData.pin,
+      isDefault: addresses.length === 0
+    };
+    
+    setAddresses([...addresses, newAddress]);
+    showCustomToast({ title: "Address saved successfully", type: "success" });
+    setShowForm(false);
+    setFormData({ name: "", phone: "", line1: "", line2: "", city: "", state: "", pin: "" });
+  };
 
   return (
     <div className="space-y-8">
@@ -31,22 +68,40 @@ export default function AddressesPage() {
 
       {showForm && (
         <div className="p-6 border border-border bg-muted/30 space-y-4">
-          <div className="space-y-2">
-            <Label className="text-[10px] uppercase tracking-[0.1em] font-bold">Address Line</Label>
-            <Input className="rounded-none border-border focus-visible:ring-[#cfae70]" placeholder="Street address" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label className="text-[10px] uppercase tracking-[0.1em] font-bold">Full Name</Label>
+              <Input name="name" value={formData.name} onChange={handleInputChange} className="rounded-none border-border focus-visible:ring-[#cfae70]" placeholder="John Doe" />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-[10px] uppercase tracking-[0.1em] font-bold">Phone Number</Label>
+              <Input name="phone" value={formData.phone} onChange={handleInputChange} className="rounded-none border-border focus-visible:ring-[#cfae70]" placeholder="+91 98765 43210" />
+            </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-[10px] uppercase tracking-[0.1em] font-bold">Address Line 1</Label>
+            <Input name="line1" value={formData.line1} onChange={handleInputChange} className="rounded-none border-border focus-visible:ring-[#cfae70]" placeholder="Flat, House no., Building, Apartment" />
+          </div>
+          <div className="space-y-2">
+            <Label className="text-[10px] uppercase tracking-[0.1em] font-bold">Address Line 2 (Optional)</Label>
+            <Input name="line2" value={formData.line2} onChange={handleInputChange} className="rounded-none border-border focus-visible:ring-[#cfae70]" placeholder="Area, Street, Sector, Village" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label className="text-[10px] uppercase tracking-[0.1em] font-bold">City</Label>
-              <Input className="rounded-none border-border focus-visible:ring-[#cfae70]" />
+              <Input name="city" value={formData.city} onChange={handleInputChange} className="rounded-none border-border focus-visible:ring-[#cfae70]" />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-[10px] uppercase tracking-[0.1em] font-bold">State</Label>
+              <Input name="state" value={formData.state} onChange={handleInputChange} className="rounded-none border-border focus-visible:ring-[#cfae70]" />
             </div>
             <div className="space-y-2">
               <Label className="text-[10px] uppercase tracking-[0.1em] font-bold">PIN Code</Label>
-              <Input className="rounded-none border-border focus-visible:ring-[#cfae70]" />
+              <Input name="pin" value={formData.pin} onChange={handleInputChange} className="rounded-none border-border focus-visible:ring-[#cfae70]" />
             </div>
           </div>
           <button 
-            onClick={() => { toast.success("Address saved (mock)"); setShowForm(false); }}
+            onClick={handleSave}
             className="mt-4 inline-flex items-center justify-center bg-foreground text-background hover:bg-[#cfae70] hover:text-white transition-colors px-8 py-3 text-[10px] uppercase tracking-[0.2em] font-bold"
           >
             Save Address
@@ -66,7 +121,7 @@ export default function AddressesPage() {
             </div>
             <button 
               className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground hover:text-[#cfae70] transition-colors underline underline-offset-4"
-              onClick={() => toast.info("Edit address (mock)")}
+              onClick={() => showCustomToast({ title: "Edit address (mock)", type: "info" })}
             >
               Edit
             </button>

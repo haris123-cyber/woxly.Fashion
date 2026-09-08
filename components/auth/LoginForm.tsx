@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { loginSchema, type LoginFormData } from "@/lib/validations/auth";
-import { toast } from "sonner";
+import { showCustomToast } from "@/components/shared/CustomToast";
 
 export function LoginForm() {
   const router = useRouter();
@@ -25,60 +25,63 @@ export function LoginForm() {
   const onSubmit = async (_data: LoginFormData) => {
     // Mock auth — no real backend
     await new Promise((r) => setTimeout(r, 500));
-    toast.success("Logged in (mock)", { description: "Auth is a UI stub — no real session created" });
-    router.push("/account");
+    showCustomToast({ title: "Welcome back to Woxly!", type: "success" });
+    router.push("/account/orders");
   };
 
   return (
-    <div className="max-w-md mx-auto space-y-6">
-      <div className="text-center">
-        <h1 className="text-2xl font-fraunces font-bold">Welcome Back</h1>
-        <p className="text-muted-foreground mt-1">Sign in to your account</p>
+    <div className="max-w-md mx-auto space-y-8 py-10">
+      <div className="text-center space-y-2">
+        <h1 className="font-fraunces text-3xl md:text-4xl">Login</h1>
+        <p className="text-muted-foreground text-sm tracking-wide">Please enter your e-mail and password:</p>
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField control={form.control} name="email" render={({ field }) => (
-            <FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" {...field} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="password" render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <Input type={showPassword ? "text" : "password"} {...field} />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 min-h-11 min-w-11 flex items-center justify-center" aria-label={showPassword ? "Hide password" : "Show password"}>
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )} />
-          <div className="text-right">
-            <Link href="/forgot-password" className="text-sm text-primary hover:underline">Forgot password?</Link>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mt-10">
+          <div className="space-y-4">
+            <FormField control={form.control} name="email" render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input type="email" placeholder="Email" className="rounded-none border-border h-12 px-4 focus-visible:ring-[#cfae70]" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="password" render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <div className="relative">
+                    <Input type={showPassword ? "text" : "password"} placeholder="Password" className="rounded-none border-border h-12 px-4 focus-visible:ring-[#cfae70]" {...field} />
+                    <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 min-h-11 min-w-11 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors" aria-label={showPassword ? "Hide password" : "Show password"}>
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
           </div>
-          <Button type="submit" className="w-full">Sign In</Button>
+
+          <button 
+            type="submit" 
+            className="w-full h-12 bg-foreground text-background hover:bg-[#cfae70] hover:text-white transition-colors text-[10px] tracking-[0.2em] font-bold uppercase mt-6"
+          >
+            Login
+          </button>
         </form>
       </Form>
 
-      <div className="relative">
-        <Separator />
-        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-2 text-xs text-muted-foreground">or</span>
+      <div className="text-center space-y-4 pt-4">
+        <p className="text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer tracking-wider">
+          <Link href="/forgot-password">Forgot password?</Link>
+        </p>
+        <p className="text-sm">
+          Don't have an account?{" "}
+          <Link href="/signup" className="text-foreground border-b border-foreground hover:text-[#cfae70] hover:border-[#cfae70] transition-colors pb-0.5">
+            Create one
+          </Link>
+        </p>
       </div>
-
-      <div className="space-y-2">
-        <Button variant="outline" className="w-full" disabled title="Social login is a UI stub">
-          Continue with Google (stub)
-        </Button>
-        <Button variant="outline" className="w-full" disabled title="Social login is a UI stub">
-          Continue with Apple (stub)
-        </Button>
-      </div>
-
-      <p className="text-center text-sm text-muted-foreground">
-        Don&apos;t have an account? <Link href="/signup" className="text-primary hover:underline">Sign up</Link>
-      </p>
     </div>
   );
 }

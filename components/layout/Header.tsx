@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, ShoppingBag, Heart, User, Menu } from "lucide-react";
+import { Search, ShoppingBag, Heart, User, Menu, HomeIcon, UserIcon, HeartIcon, PackageIcon, } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { useCartStore, selectCartItemCount } from "@/store/cart-store";
 import { useWishlistStore } from "@/store/wishlist-store";
 import { useUIStore } from "@/store/ui-store";
@@ -28,7 +29,7 @@ export function Header() {
   const setMobileNavOpen = useUIStore((s) => s.setMobileNavOpen);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background ">
+    <header className="sticky top-0 z-50 border-b border-border bg-background  ">
       <div className="container mx-auto px-4 md:px-8 scrollbar-none">
         <div className="flex h-15 items-center justify-between gap-4 ">
 
@@ -40,53 +41,65 @@ export function Header() {
                   <Menu className="h-5 w-5" />
                 </button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-80 bg-background border-r border-border">
+              <SheetContent side="left" className="w-80  border-r-2 border-border border-[#cfae70]   bg-background">
                 <SheetHeader>
                   <SheetTitle className="text-foreground font-fraunces  tracking-widest">{SITE_CONFIG.name}</SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col gap-2 h-full overflow-y-auto pb-8 hide-scrollbar">
                   {/* Categories */}
-                  <nav className="flex flex-col gap-1 mt-6 ">
-                    {NAV_LINKS.map((link) => (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        onClick={() => setMobileNavOpen(false)}
-                        className={cn(
-                          "px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-medium uppercase transition-colors min-h-5 flex items-center",
-                          pathname === link.href ? "text-foreground bg-muted" : "sm:text-muted-foreground hover:text-foreground hover:bg-muted"
-                        )}
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
+                  <nav className="flex flex-col mt-6 ">
+                    <Accordion type="single" collapsible className="w-full">
+                      <AccordionItem value="categories" className="border-b-0">
+                        <AccordionTrigger className="hover:no-underline px-3 py-3 transition-colors hover:bg-muted/50 rounded-md">
+                          <span className="text-[12px] tracking-[0.2em] font-bold uppercase transition-colors text-foreground">
+                            EXPLORE COLLECTIONS
+                          </span>
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-3 pl-6 pr-3 space-y-3 mt-1">
+                          {NAV_LINKS.map((link) => (
+                            <Link
+                              key={link.href}
+                              href={link.href}
+                              onClick={() => setMobileNavOpen(false)}
+                              className={cn(
+                                "block text-[11px] tracking-[0.15em] uppercase transition-colors py-1.5",
+                                pathname === link.href ? "text-[#cfae70] font-bold" : "text-muted-foreground hover:text-foreground font-semibold"
+                              )}
+                            >
+                              {link.label}
+                            </Link>
+                          ))}
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
                   </nav>
 
                   {/* Main Links */}
                   <div className="pt-2 border-t border-border">
-                    <nav className="flex flex-col gap-2">
-                      <Link href="/" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
-                        Home
+                    <nav className="flex flex-col gap-2  text-muted-foreground">
+
+                      <Link href="/" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] gap-2 tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        <HomeIcon className=" mr-2" size={18} />Home
                       </Link>
-                      <Link href="/products" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
-                        Shop
+                      <Link href="/products" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] gap-2 tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        <ShoppingBag className=" mr-2" size={18} />Shop
                       </Link>
-                      <Link href="/account/wishlist" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
-                        Wishlist
+                      <Link href="/account/wishlist" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] gap-2 tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        <HeartIcon className=" mr-2" size={18} />Wishlist
                       </Link>
-                      <Link href="/account/orders" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
-                        Orders
+                      <Link href="/account/orders" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] gap-2 tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        <PackageIcon className=" mr-2" size={18} />Orders
                       </Link>
-                      <Link href="/account" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
-                        Sign in
+                      <Link href="/login" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] gap-2 tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
+                        <UserIcon className=" mr-2" size={18} />Sign in
                       </Link>
                     </nav>
                   </div>
 
                   {/* Help & Policies */}
-                  <div className="pt-6 border-t border-border">
+                  <div className="pt-6 border-t border-border ">
                     <h4 className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.15em] mb-4 px-3">Help & Policies</h4>
-                    <nav className="flex flex-col gap-2">
+                    <nav className="flex flex-col gap-2 text-muted-foreground">
                       <Link href="/privacy" onClick={() => setMobileNavOpen(false)} className="px-3 py-3 rounded-md text-[12px] tracking-[0.2em] font-bold uppercase transition-colors min-h-11 flex items-center">
                         Privacy Policy
                       </Link>

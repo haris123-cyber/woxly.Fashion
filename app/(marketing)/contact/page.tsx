@@ -4,7 +4,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { contactSchema, type ContactFormData } from "@/lib/validations/forms";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { showCustomToast } from "@/components/shared/CustomToast";
 import Image from "next/image";
 import { SITE_CONFIG } from "@/lib/constants";
 import { Mail, Phone, MapPin } from "lucide-react";
@@ -16,7 +17,11 @@ export default function ContactPage() {
   });
 
   const onSubmit = () => {
-    toast.success("Message sent", { description: "We'll get back to you soon!" });
+    showCustomToast({ 
+      title: "Message sent", 
+      description: "We'll get back to you soon!",
+      type: "success"
+    });
     form.reset();
   };
 

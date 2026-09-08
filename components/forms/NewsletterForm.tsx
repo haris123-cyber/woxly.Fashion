@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { newsletterSchema, type NewsletterFormData } from "@/lib/validations/forms";
-import { toast } from "sonner";
+import { showCustomToast } from "@/components/shared/CustomToast";
 
 export function NewsletterForm() {
   const form = useForm<NewsletterFormData>({
@@ -15,7 +15,10 @@ export function NewsletterForm() {
   });
 
   const onSubmit = (data: NewsletterFormData) => {
-    toast.success("Subscribed!", { description: `Thanks for subscribing with ${data.email}` });
+    showCustomToast({ 
+      title: "Subscribed!", 
+      description: `Thanks for subscribing with ${data.email}` 
+    });
     form.reset();
   };
 

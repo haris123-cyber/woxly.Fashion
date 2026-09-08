@@ -9,7 +9,17 @@ import { getCategories, getFeaturedProducts, getNewArrivals } from "@/lib/api/pr
 import { SITE_CONFIG } from "@/lib/constants";
 
 import { HeroCarousel } from "@/components/marketing/HeroCarousel";
-import { PromoBanners } from "@/components/marketing/PromoBanners";
+import { CategoryCarousel } from "@/components/marketing/CategoryCarousel";
+import { StackedPromoBanners } from "@/components/marketing/StackedPromoBanners";
+import {
+  RedSaleBanner,
+  FallCollectionBanner,
+  MidnightCollectionBanner,
+  ThinPromoStrip,
+  SeasonalSplitGrid,
+  InteriorBanner,
+  WoxlyEditionSplitGrid,
+} from "@/components/marketing/StackedPromoBanners";
 
 export default function HomePage() {
   const categories = getCategories();
@@ -53,33 +63,14 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* Categories */}
-          <div className="overflow-x-auto scrollbar-none -mx-8 px-8 mr-1 " >
-            <div className="grid grid-flow-col auto-cols-[calc((100vw-4rem)/2)] grid-rows-2 gap-4 w-max md:flex  md:flex-nowrap md:gap-4" >
-              {categories.map((cat) => (
-                <Link
-                  key={cat.id}
-                  href={`/products?category=${cat.slug}`}
-                  className=" group relative aspect-[3/4] overflow-hidden bg-secondary shrink-0 md:w-[calc((90vw-8rem)/4)] lg:w-[calc((80vw-10rem)/4)] "
-                >
-                  <Image src={cat.image} alt={cat.name} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/90 via-[#0a0a0a]/20 to-transparent opacity-80" />
-
-                  <div className="absolute bottom-3 left-3 text-foreground z-10">
-                    <p className="text-[#cfae70] text-[9px] font-bold tracking-[0.2em] uppercase mb-1">
-                      Explore
-                    </p>
-
-                    <h3 className="font-fraunces text-xl text-[#cfae70] font-normal">
-                      {cat.name}
-                    </h3>
-                  </div>
-                </Link>
-              ))}
-            </div>
+          {/* Categories Carousel */}
+          <div className="-mx-8 px-8 relative">
+            <CategoryCarousel categories={categories} />
           </div>
         </div>
       </section>
+
+      <MidnightCollectionBanner />
 
       {/* Featured / Best Sellers */}
       <section className="bg-background py-8 border-t border-border">
@@ -98,6 +89,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <FallCollectionBanner />
 
       {/* New Arrivals */}
       <section className="bg-background py-8 border-t border-border">
@@ -123,7 +116,7 @@ export default function HomePage() {
       </section>
 
       {/* Promotional Banners */}
-      <PromoBanners />
+      <StackedPromoBanners />
 
       {/* Newsletter */}
       <section className="bg-secondary py-24 border-t border-border">

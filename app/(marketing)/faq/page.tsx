@@ -58,9 +58,8 @@ export default function FAQPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <StaticPageLayout title="Frequently Asked Questions">
-        <div className="container mx-auto px-4 py-12 md:py-20 max-w-3xl min-h-[70vh]">
+        <div className="container mx-auto px-4 py-1 md:py-20 max-w-3xl min-h-[70vh]">
           <div className="flex flex-col items-center text-center mb-10">
-            <h1 className="text-3xl font-bold text-[#111827] mb-3 self-start">FAQs</h1>
             <p className="text-gray-500 text-[15px] self-start">
               Answers about orders, delivery, returns, and payments at <span className="font-semibold text-gray-800">Woxly</span>.
             </p>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { StaticPageLayout } from "@/components/layout/StaticPageLayout";
 import { SITE_CONFIG } from "@/lib/constants";
+import { FeedbackForm } from "@/components/marketing/FeedbackForm";
 
 export const metadata: Metadata = { title: "Feedback | " + SITE_CONFIG.name };
 
@@ -29,35 +30,7 @@ export default function FeedbackPage() {
               Your feedback helps us improve {SITE_CONFIG.name}. Please let us know how we're doing, what you love, and where we can do better.
             </p>
 
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-medium text-foreground">Name</label>
-                  <input type="text" id="name" className="w-full p-3 border border-border  bg-background text-foreground focus:outline-none focus:ring-0 focus:border-border transition-colors" placeholder="Your name" />
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium text-foreground">Email</label>
-                  <input type="email" id="email" className="w-full p-3 border border-border  bg-background text-foreground focus:outline-none focus:ring-0 focus:border-border transition-colors" placeholder="Your email address" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="category" className="text-sm font-medium text-foreground">Feedback Category</label>
-                <select id="category" className="w-full p-3 border border-border  bg-background text-foreground focus:outline-none focus:ring-0 focus:border-border transition-colors">
-                  <option>General Feedback</option>
-                  <option>Product Suggestion</option>
-                  <option>Website Issue</option>
-                  <option>Customer Service</option>
-                </select>
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="message" className="text-sm font-medium text-foreground">Message</label>
-                <textarea id="message" rows={6} className="w-full p-3 border border-border  bg-background text-foreground focus:outline-none focus:ring-0 focus:border-border transition-colors resize-y" placeholder="Tell us what you think..."></textarea>
-              </div>
-
-              <button type="button" className="w-full bg-foreground text-background hover:bg-[#cfae70] hover:text-black font-bold uppercase tracking-[0.1em] text-[12px] py-4  transition-colors">
-                Submit Feedback
-              </button>
-            </form>
+            <FeedbackForm />
           </div>
         </div>
       </section>

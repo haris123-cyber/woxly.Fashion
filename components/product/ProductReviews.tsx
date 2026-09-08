@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import Image from "next/image";
 import { Star, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
+import { showCustomToast } from "@/components/shared/CustomToast";
 
 const REVIEW_POOL = [
   {
@@ -79,7 +79,27 @@ export function ProductReviews({ productId }: { productId: string }) {
 
   // Review form state
   const [isWritingReview, setIsWritingReview] = useState(false);
-  const [reviewForm, setReviewForm] = useState({ name: "", title: "", content: "", rating: 5 });
+  const [reviewForm, setReviewForm] = useState({ name: "", title: "", content: "", rating: 5, images: [] as string[] });
+
+  // Mock purchase state
+  const [hasPurchased, setHasPurchased] = useState(false);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    // Simulate image upload by creating local object URLs
+    const newImages = Array.from(files).map(file => URL.createObjectURL(file));
+    setReviewForm(prev => ({ ...prev, images: [...prev.images, ...newImages] }));
+  };
+
+  const removeUploadedImage = (index: number) => {
+    setReviewForm(prev => {
+      const updated = [...prev.images];
+      updated.splice(index, 1);
+      return { ...prev, images: updated };
+    });
+  };
 
   const handleNextImage = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -98,15 +118,17 @@ export function ProductReviews({ productId }: { productId: string }) {
   const handleSubmitReview = (e: React.FormEvent) => {
     e.preventDefault();
     if (!reviewForm.name || !reviewForm.title || !reviewForm.content) {
-      toast.error("Please fill out all fields");
+      showCustomToast({ title: "Please fill out all fields", type: "error" });
       return;
     }
 
-    toast.success("Thank you for your review!", {
-      description: "It has been submitted for approval and will appear soon."
+    showCustomToast({
+      title: "Thank you for your review!",
+      description: "It will be published once approved.",
+      type: "success"
     });
     setIsWritingReview(false);
-    setReviewForm({ name: "", title: "", content: "", rating: 5 });
+    setReviewForm({ name: "", title: "", content: "", rating: 5, images: [] });
   };
 
   return (
@@ -151,16 +173,51 @@ export function ProductReviews({ productId }: { productId: string }) {
               })}
             </div>
 
-            <button
-              onClick={() => setIsWritingReview(true)}
-              className="w-full sm:w-auto inline-flex items-center justify-center bg-foreground text-background hover:bg-[#cfae70] hover:text-white transition-colors px-8 py-4 text-[10px] uppercase tracking-[0.2em] font-bold"
-            >
-              Write a Review
-            </button>
+            {!hasPurchased ? (
+              <div className="w-full sm:w-auto text-center border border-border p-6 bg-secondary/30">
+                <p className="text-[11px] text-muted-foreground uppercase tracking-[0.1em] mb-4 font-medium">Only verified buyers can leave a review.</p>
+                <button
+                  onClick={() => setHasPurchased(true)}
+                  className="text-[9px] uppercase tracking-[0.2em] font-bold text-[#cfae70] hover:text-foreground transition-colors"
+                >
+                  (Demo: Click to simulate purchase)
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsWritingReview(true)}
+                className="w-full sm:w-auto inline-flex items-center justify-center bg-foreground text-background hover:bg-[#cfae70] hover:text-white transition-colors px-8 py-4 text-[10px] uppercase tracking-[0.2em] font-bold"
+              >
+                Write a Review
+              </button>
+            )}
           </div>
 
           {/* Right: Review List */}
           <div className="lg:col-span-8 space-y-8">
+            {/* Customer Photos Gallery */}
+            {(() => {
+              const allReviewImages = reviews.flatMap(r => r.images || []);
+              if (allReviewImages.length === 0) return null;
+
+              return (
+                <div className="mb-8">
+                  <h3 className="text-[10px] uppercase tracking-[0.2em] font-bold text-foreground mb-4">Customer Photos</h3>
+                  <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-2">
+                    {allReviewImages.map((img, i) => (
+                      <button
+                        key={i}
+                        className="relative h-24 w-24 shrink-0 border border-border hover:border-[#cfae70] transition-colors cursor-zoom-in"
+                        onClick={() => setLightboxState({ images: allReviewImages, index: i })}
+                      >
+                        <Image src={img} alt="Customer review photo" fill className="object-cover p-1" sizes="96px" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
+
             {reviews.map((review) => (
               <div key={review.id} className="border border-border p-6 bg-background">
                 <div className="flex justify-between items-start mb-4">
@@ -203,11 +260,7 @@ export function ProductReviews({ productId }: { productId: string }) {
                 </p>
               </div>
             ))}
-            <div className="text-center pt-8">
-              <button className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#cfae70] hover:text-foreground transition-colors pb-1 border-b border-[#cfae70] hover:border-border">
-                Load More Reviews
-              </button>
-            </div>
+
           </div>
         </div>
       </section>
@@ -276,6 +329,38 @@ export function ProductReviews({ productId }: { productId: string }) {
                   placeholder="How was the fit? The quality? Tell us more..."
                   required
                 />
+              </div>
+
+              <div>
+                <label className="block text-[9px] uppercase tracking-[0.2em] font-bold text-foreground mb-2">Add Photos</label>
+                <div className="flex flex-wrap gap-4 items-center">
+                  {reviewForm.images.map((img, i) => (
+                    <div key={i} className="relative h-20 w-20 border border-border group">
+                      <Image src={img} alt="Upload preview" fill className="object-cover p-1" />
+                      <button
+                        type="button"
+                        onClick={() => removeUploadedImage(i)}
+                        className="absolute -top-2 -right-2 bg-black text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </div>
+                  ))}
+                  {reviewForm.images.length < 3 && (
+                    <div className="relative h-20 w-20 border border-dashed border-muted-foreground flex items-center justify-center hover:border-[#cfae70] transition-colors cursor-pointer bg-secondary/20">
+                      <input
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="absolute inset-0 opacity-0 cursor-pointer"
+                        title="Upload photos"
+                      />
+                      <span className="text-2xl text-muted-foreground font-light">+</span>
+                    </div>
+                  )}
+                </div>
+                <p className="text-[9px] text-muted-foreground mt-2 uppercase tracking-[0.1em]">Upload up to 3 photos (optional)</p>
               </div>
 
               <button

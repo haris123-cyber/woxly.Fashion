@@ -17,7 +17,7 @@ import { checkoutSchema, type CheckoutFormData } from "@/lib/validations/checkou
 import { createOrder } from "@/lib/api/orders";
 import { formatPrice, cn } from "@/lib/utils";
 import { SHIPPING_METHODS, PARTIAL_COD_PERCENTAGE } from "@/lib/constants";
-import { toast } from "sonner";
+import { showCustomToast } from "@/components/shared/CustomToast";
 
 // Custom Minimal Input
 const MinimalInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
@@ -90,7 +90,7 @@ export function CheckoutForm() {
       partialCod,
     });
     clearCart();
-    toast.success("Order placed successfully!");
+    showCustomToast({ title: "Order placed successfully!", type: "success" });
     router.push(`/order-success/${order.orderNumber}`);
   };
 

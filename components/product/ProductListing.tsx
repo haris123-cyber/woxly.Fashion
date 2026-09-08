@@ -1,7 +1,8 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { SlidersHorizontal, Package } from "lucide-react";
+import { SlidersHorizontal, Package, Loader2 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { ProductCard } from "@/components/product/ProductCard";
@@ -20,6 +21,30 @@ export function ProductListing({ searchParams }: ProductListingProps) {
   const router = useRouter();
   const filterOptions = getFilterOptions();
 
+  const [page, setPage] = useState(1);
+  const observerTarget = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setPage(1);
+  }, [searchParams]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setPage((p) => p + 1);
+        }
+      },
+      { rootMargin: "100px" }
+    );
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   const filters: ProductFilters = {
     category: searchParams.category,
     minPrice: searchParams.minPrice ? Number(searchParams.minPrice) : undefined,
@@ -28,11 +53,12 @@ export function ProductListing({ searchParams }: ProductListingProps) {
     color: searchParams.color,
     minRating: searchParams.minRating ? Number(searchParams.minRating) : undefined,
     sort: (searchParams.sort as ProductFilters["sort"]) ?? "popularity",
-    page: searchParams.page ? Number(searchParams.page) : 1,
-    limit: 12,
+    page: 1,
+    limit: page * 12,
   };
 
   const result = getProducts(filters);
+  const hasMore = result.total > result.data.length;
 
   const updateParams = (updates: Record<string, string | undefined>) => {
     const params = new URLSearchParams();
@@ -40,8 +66,8 @@ export function ProductListing({ searchParams }: ProductListingProps) {
     Object.entries(merged).forEach(([key, val]) => {
       if (val) params.set(key, val);
     });
-    if (!updates.page) params.delete("page");
-    router.push(`/products?${params.toString()}`);
+    params.delete("page"); // Remove page from URL, managed locally now
+    router.push(`/products?${params.toString()}`, { scroll: false });
   };
 
   return (
@@ -103,22 +129,9 @@ export function ProductListing({ searchParams }: ProductListingProps) {
                 <ProductCard key={product.id} product={product} showDetails={true} />
               ))}
             </div>
-            {result.totalPages > 1 && (
-              <div className="flex justify-center gap-3 mt-16 pt-8 border-t border-border">
-                {Array.from({ length: result.totalPages }).map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => updateParams({ page: String(i + 1) })}
-                    className={cn(
-                      "h-6 w-6 md:h-12 md:w-12 flex items-center justify-center font-fraunces text-sm md:text-lg transition-colors border",
-                      result.page === i + 1
-                        ? "border-[#cfae70] text-[#cfae70] bg-[#cfae70]/10"
-                        : "border-border text-muted-foreground hover:border-[#cfae70] hover:text-foreground"
-                    )}
-                  >
-                    {i + 1}
-                  </button>
-                ))}
+            {hasMore && (
+              <div ref={observerTarget} className="flex justify-center mt-16 py-8">
+                <Loader2 className="w-8 h-8 animate-spin text-[#cfae70]" />
               </div>
             )}
           </>

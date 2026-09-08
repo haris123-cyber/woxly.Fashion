@@ -13,7 +13,7 @@ import { useCartStore, selectCartSubtotal, selectFreeShippingProgress } from "@/
 import { formatPrice } from "@/lib/utils";
 import { PROMO_CODES } from "@/lib/constants";
 import { getFeaturedProducts } from "@/lib/api/products";
-import { toast } from "sonner";
+import { showCustomToast } from "@/components/shared/CustomToast";
 import { useState } from "react";
 
 export function CartPage() {
@@ -31,9 +31,9 @@ export function CartPage() {
     const code = promoInput.toUpperCase();
     if (PROMO_CODES[code]) {
       setPromoCode(code);
-      toast.success("Promo code applied!");
+      showCustomToast({ title: "Promo code applied!", type: "success" });
     } else {
-      toast.error("Invalid promo code");
+      showCustomToast({ title: "Invalid promo code", type: "error" });
     }
   };
 

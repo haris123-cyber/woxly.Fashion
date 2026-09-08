@@ -6,7 +6,7 @@ import { Search as SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { ProductCard } from "@/components/product/ProductCard";
 import { EmptyState } from "@/components/shared/EmptyState";
-import { searchProducts } from "@/lib/api/products";
+import { searchProducts, getFeaturedProducts } from "@/lib/api/products";
 
 function highlightMatch(text: string, query: string) {
   if (!query) return text;
@@ -53,7 +53,7 @@ export function SearchPage() {
   }, [query, initialQuery, handleSearch]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 mb-30">
       <div className="relative max-w-xl mx-auto">
         <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
         <Input
@@ -66,19 +66,60 @@ export function SearchPage() {
         />
       </div>
 
-      {recentSearches.length > 0 && !query && (
-        <div className="text-center mt-12">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mb-6">Recent Searches</p>
-          <div className="flex flex-wrap justify-center gap-3">
-            {recentSearches.map((s) => (
-              <button
-                key={s}
-                onClick={() => setQuery(s)}
-                className="px-6 py-3 border border-border bg-background hover:border-[#cfae70] hover:text-[#cfae70] transition-colors rounded-none text-[9px] uppercase tracking-[0.1em]"
-              >
-                {s}
-              </button>
-            ))}
+      {!query && (
+        <div className="mt-12 space-y-16">
+          {recentSearches.length > 0 && (
+            <div className="text-center">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mb-6">Recent Searches</p>
+              <div className="flex flex-wrap justify-center gap-3">
+                {recentSearches.map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => setQuery(s)}
+                    className="px-6 py-3 border border-border bg-background hover:border-[#cfae70] hover:text-[#cfae70] transition-colors rounded-none text-[9px] uppercase tracking-[0.1em]"
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="text-center">
+            {/* Headline removed per request */}
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mb-6">Popular Searches</p>
+            <div className="flex flex-wrap justify-center gap-3">
+              {getFeaturedProducts(5).map((p) => (
+                <button
+                  key={p.name}
+                  onClick={() => setQuery(p.name)}
+                  className="px-6 py-3 border border-border bg-background hover:border-[#cfae70] hover:text-[#cfae70] transition-colors rounded-none text-[9px] uppercase tracking-[0.1em]"
+                >
+
+                  {p.name}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="text-center">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mb-6">Trending Categories</p>
+            <div className="flex flex-wrap justify-center gap-6">
+              {[
+                { name: "Women", slug: "women" },
+                { name: "Men", slug: "men" },
+                { name: "Accessories", slug: "accessories" },
+                { name: "Sale", slug: "sale" }
+              ].map((cat) => (
+                <button
+                  key={cat.slug}
+                  onClick={() => router.push(`/products?category=${cat.slug}`)}
+                  className="text-foreground hover:text-[#cfae70] transition-colors text-sm font-medium"
+                >
+                  {cat.name}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       )}
