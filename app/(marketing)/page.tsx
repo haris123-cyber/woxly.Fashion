@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/product/ProductCard";
 import { TrustBadges } from "@/components/trust/TrustBadges";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
-import { getCategories, getFeaturedProducts, getNewArrivals } from "@/lib/api/products";
+import { getCategories, getFeaturedProducts, getNewArrivals, getProducts } from "@/lib/api/products";
 import { SITE_CONFIG } from "@/lib/constants";
 
 import { HeroCarousel } from "@/components/marketing/HeroCarousel";
@@ -19,12 +19,16 @@ import {
   SeasonalSplitGrid,
   InteriorBanner,
   WoxlyEditionSplitGrid,
+  NewsletterPromoStrip,
+  SpringCollectionSplitGrid,
+  PersonalizedSaleSplitGrid,
 } from "@/components/marketing/StackedPromoBanners";
 
 export default function HomePage() {
   const categories = getCategories();
   const featured = getFeaturedProducts(8);
   const newArrivals = getNewArrivals(4);
+  const justForYou = getProducts({ sort: "price-asc", limit: 4 }).data;
 
   const orgJsonLd = {
     "@context": "https://schema.org",
@@ -72,7 +76,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      <InteriorBanner />
 
+      <NewsletterPromoStrip />
 
       {/* Featured / Best Sellers */}
       <section className="bg-background py-8 border-t border-border">
@@ -116,6 +122,28 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <SpringCollectionSplitGrid />
+
+      {/* Just For You Products */}
+      <section className="bg-background py-8 border-t border-border">
+        <div className="container mx-auto px-8">
+          <div className="flex items-end justify-between mb-6">
+            <div>
+              <p className="text-[#cfae70] text-[9px] font-bold tracking-[0.2em] uppercase mb-2">Curated Matches</p>
+              <h2 className="text-3xl font-fraunces font-normal text-foreground">Just for You</h2>
+            </div>
+            <div className="flex gap-6 hidden md:flex">
+              <Link href="/products" className="text-muted-foreground hover:text-foreground text-[9px] font-bold tracking-[0.2em] uppercase transition-colors">Update Preferences</Link>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {justForYou.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       <WoxlyEditionSplitGrid />
       <RedSaleBanner />
 

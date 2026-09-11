@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, ShoppingBag } from "lucide-react";
+import { Heart, ShoppingBag, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Price } from "@/components/shared/Price";
 import { ReviewStars } from "@/components/trust/ReviewStars";
 import { useCartStore } from "@/store/cart-store";
@@ -20,9 +21,10 @@ interface ProductCardProps {
     className?: string;
     priority?: boolean;
     showDetails?: boolean;
+    isWishlistContext?: boolean;
 }
 
-export function ProductCard({ product, className, priority = false, showDetails = false }: ProductCardProps) {
+export function ProductCard({ product, className, priority = false, showDetails = false, isWishlistContext = false }: ProductCardProps) {
     const addItem = useCartStore((s) => s.addItem);
     const toggleWishlist = useWishlistStore((s) => s.toggle);
     const isInWishlist = useWishlistStore((s) => s.isInWishlist(product.id));
@@ -89,6 +91,35 @@ export function ProductCard({ product, className, priority = false, showDetails 
         });
     };
 
+    const [showConfirm, setShowConfirm] = useState(false);
+
+    const handleRemove = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setShowConfirm(true);
+    };
+
+    const confirmRemove = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleWishlist(product.id);
+        setShowConfirm(false);
+        showCustomToast({
+            title: "Removed from wishlist",
+            product: {
+                name: product.name,
+                price: product.price,
+                image: product.images[0],
+            }
+        });
+    };
+
+    const cancelRemove = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setShowConfirm(false);
+    };
+
     return (
         <div className={cn("group relative", className)}>
             <Link href={`/products/${product.slug}`} className="block">
@@ -123,17 +154,28 @@ export function ProductCard({ product, className, priority = false, showDetails 
                             </span>
                         )}
                     </div>
-                    <button
-                        onClick={handleWishlist}
-                        className={cn(
-                            "absolute top-2 right-2 sm:top-4 sm:right-4 flex h-6 w-6 items-center justify-center transition-opacity",
-                            isMobileVisible ? "opacity-100" : "opacity-0",
-                            "md:opacity-0 md:group-hover:opacity-100"
-                        )}
-                        aria-label={isWishlistActive ? "Remove from wishlist" : "Add to wishlist"}
-                    >
-                        <Heart className={cn("h-5 w-5 sm:h-6 sm:w-6 text-white hover:text-[#cfae70]", isWishlistActive && "fill-[#cfae70] text-[#cfae70]")} />
-                    </button>
+
+                    {isWishlistContext ? (
+                        <button
+                            onClick={handleRemove}
+                            className="absolute top-2 right-2 sm:top-4 sm:right-4 flex h-8 w-8 items-center justify-center transition-all bg-white hover:bg-red-50 rounded-full shadow-sm z-10 opacity-100"
+                            aria-label="Remove from wishlist"
+                        >
+                            <Trash2 className="h-4 w-4 text-gray-400 hover:text-red-500 transition-colors" />
+                        </button>
+                    ) : (
+                        <button
+                            onClick={handleWishlist}
+                            className={cn(
+                                "absolute top-2 right-2 sm:top-4 sm:right-4 flex h-6 w-6 items-center justify-center transition-opacity",
+                                isMobileVisible ? "opacity-100" : "opacity-0",
+                                "md:opacity-0 md:group-hover:opacity-100"
+                            )}
+                            aria-label={isWishlistActive ? "Remove from wishlist" : "Add to wishlist"}
+                        >
+                            <Heart className={cn("h-5 w-5 sm:h-6 sm:w-6 text-white hover:text-[#cfae70]", isWishlistActive && "fill-[#cfae70] text-[#cfae70]")} />
+                        </button>
+                    )}
 
                     <button
                         className={cn(
@@ -190,6 +232,37 @@ export function ProductCard({ product, className, priority = false, showDetails 
                     </div>
                 )}
             </Link>
+
+            <Dialog open={showConfirm} onOpenChange={setShowConfirm}>
+                <DialogContent className="sm:max-w-[400px] flex flex-col  items-center justify-center p-8 pt-10 gap-2  text-center border-none shadow-2xl">
+                    <DialogTitle className="sr-only">Confirm Wishlist Removal</DialogTitle>
+                    <DialogDescription className="sr-only">Are you sure you want to remove this item from your wishlist?</DialogDescription>
+
+                    <div className="relative mb-2">
+                        <Trash2 className="w-7 h-7 text-[#cfae70]" strokeWidth={1.5} />
+                    </div>
+
+                    <h2 className="text-lg font-bold text-foreground">Confirm Item Removal?</h2>
+                    <p className="text-[13px] text-muted-foreground mb-4 leading-relaxed">
+                        Are you sure you want to remove <span className="font-bold">"{product.name}"</span> from your wishlist?<br />This action cannot be undone.
+                    </p>
+
+                    <div className="flex gap-3 w-full mt-2">
+                        <button
+                            onClick={cancelRemove}
+                            className="flex-1 py-2.5 px-4 text-[13px] font-bold border border-[#cfae70]   bg-[#cfae70] hover:bg-red-50 transition-colors "
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={confirmRemove}
+                            className="flex-1 py-2.5 px-4 text-[13px] font-bold bg-red-500 text-white hover:bg-red-600 transition-colors  shadow-sm"
+                        >
+                            Delete
+                        </button>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

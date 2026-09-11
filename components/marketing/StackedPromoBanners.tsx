@@ -169,10 +169,8 @@ export function SpringCollectionSplitGrid() {
           fill
           className="object-cover"
         />
-
         {/* Overlay */}
         <div className="absolute inset-0 bg-white/40" />
-
         {/* Content */}
         <div className="relative z-10 flex flex-col items-center">
           <h4 className="font-fraunces text-3xl mb-6 text-[#4a4a4a] max-w-md">
@@ -191,16 +189,31 @@ export function SpringCollectionSplitGrid() {
   );
 }
 
+export function PersonalizedSaleSplitGrid() {
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-2">
+      <div className="bg-[#f8f7f5] flex flex-col items-center justify-center py-24 px-8 text-center border-b md:border-b-0 md:border-r border-border">
+        <h3 className="text-3xl md:text-4xl font-fraunces font-normal mb-4 text-foreground">JUST FOR YOU</h3>
+        <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">Personalized products</p>
+      </div>
+      <div className="bg-[#cc0000] text-white flex flex-col items-center justify-center py-24 px-8 text-center">
+        <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-4">SALE</p>
+        <h3 className="text-4xl md:text-5xl font-black tracking-tight mb-8">UP TO 50% OFF</h3>
+        <Link href="/products?category=sale" className="bg-white text-black px-8 py-3 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-gray-100 transition-colors">
+          Shop Sale &rarr;
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export function StackedPromoBanners() {
   return (
     <div className="w-full flex flex-col">
       <ThinPromoStrip />
       <MidnightCollectionBanner />
       <SeasonalSplitGrid />
-      <InteriorBanner />
-      <AccessoriesHeroBanner />
-      <NewsletterPromoStrip />
-      <SpringCollectionSplitGrid />
+
     </div>
   );
 }

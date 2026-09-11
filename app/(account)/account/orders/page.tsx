@@ -18,12 +18,12 @@ export default function OrdersPage() {
 
   function getStatusColor(status: OrderStatus) {
     switch (status) {
-      case 'delivered': return 'bg-green-100 text-green-800 border-green-200 hover:bg-green-100';
-      case 'cancelled': return 'bg-red-100 text-red-800 border-red-200 hover:bg-red-100';
-      case 'placed': return 'bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-100';
-      case 'shipped': return 'bg-yellow-100 text-yellow-800 border-yellow-200 hover:bg-yellow-100';
-      case 'packed': return 'bg-orange-100 text-orange-800 border-orange-200 hover:bg-orange-100';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200 hover:bg-gray-100';
+      case 'delivered': return 'bg-transparent text-foreground border border-foreground';
+      case 'cancelled': return 'bg-transparent text-muted-foreground border border-border';
+      case 'placed': return 'bg-[#cfae70] text-white border border-[#cfae70]';
+      case 'shipped': return 'bg-foreground text-background border border-foreground';
+      case 'packed': return 'bg-secondary text-foreground border border-border';
+      default: return 'bg-transparent text-muted-foreground border border-border';
     }
   }
 
@@ -64,7 +64,7 @@ export default function OrdersPage() {
                 </div>
 
                 {/* Content Row */}
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mt-2">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2 mt-2">
                   <div className="flex flex-wrap gap-2">
                     {order.items.map((item, index) => (
                       <div key={`${item.productId}-${index}`} className="relative w-32 h-36 bg-muted rounded-sm overflow-hidden border border-border">
