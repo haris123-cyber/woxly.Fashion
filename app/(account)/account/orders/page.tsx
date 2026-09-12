@@ -39,7 +39,7 @@ export default function OrdersPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-2">
       <div className="border-b border-border pb-6">
         <h2 className="font-fraunces text-2xl font-normal text-foreground mb-2">Order History</h2>
         <p className="text-muted-foreground text-[11px] uppercase tracking-[0.1em]">View and track your recent orders.</p>
@@ -50,10 +50,10 @@ export default function OrdersPage() {
       ) : (
         <div className="space-y-4">
           {orders.map((order) => (
-            <Link key={order.id} href={`/account/orders/${order.id}`} className="block p-6 border border-border bg-background hover:border-[#cfae70] transition-colors">
-              <div className="flex flex-col gap-4">
+            <Link key={order.id} href={`/account/orders/${order.id}`} className="block p-4 border border-border bg-background hover:border-[#cfae70] transition-colors">
+              <div className="flex flex-col gap-1">
                 {/* Header Row */}
-                <div className="flex justify-between items-start gap-4">
+                <div className="flex justify-between items-start gap-2">
                   <div>
                     <p className="text-[11px] uppercase tracking-[0.15em] font-bold text-foreground mb-1">{order.orderNumber}</p>
                     <p className="text-[10px] uppercase tracking-[0.1em] text-muted-foreground">{formatDate(order.createdAt)}</p>
@@ -64,15 +64,15 @@ export default function OrdersPage() {
                 </div>
 
                 {/* Content Row */}
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2 mt-2">
-                  <div className="flex flex-wrap gap-2">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-1 mt-0">
+                  <div className="flex flex-wrap gap-1">
                     {order.items.map((item, index) => (
-                      <div key={`${item.productId}-${index}`} className="relative w-32 h-36 bg-muted rounded-sm overflow-hidden border border-border">
+                      <div key={`${item.productId}-${index}`} className="relative w-24 h-28 bg-muted rounded-sm overflow-hidden border border-border">
                         <img src={item.image} alt={item.name} className="absolute inset-0 w-full h-full object-cover" />
                       </div>
                     ))}
                   </div>
-                  <div className="text-right mt-2 sm:mt-0">
+                  <div className="text-right -mt-6 sm:mt-0">
                     <p className="font-fraunces font-medium text-foreground text-sm">{formatPrice(order.total)}</p>
                   </div>
                 </div>

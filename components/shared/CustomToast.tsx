@@ -30,9 +30,9 @@ export function showCustomToast(props: CustomToastProps) {
   const titleColor = type === 'success' ? 'text-[#cfae70]' : type === 'error' ? 'text-red-500' : 'text-blue-500';
 
   toast.custom((t) => (
-    <div className="flex bg-white text-black p-3 md:p-4 w-[300px] sm:w-[350px] md:w-[400px] shadow-sm font-inter rounded-sm pointer-events-auto relative ml-auto border border-border">
+    <div className="flex bg-white text-black p-3 md:p-4 w-[300px] sm:w-[350px] md:w-[400px] shadow-sm font-inter  pointer-events-auto relative ml-auto border border-border">
       {props.product?.image && (
-        <div className="relative w-[66px] h-[76px] md:w-[72px] md:h-[96px] shrink-0 bg-white rounded-sm overflow-hidden border border-border">
+        <div className="relative w-[66px] h-[76px] md:w-[72px] md:h-[96px] shrink-0 bg-white  overflow-hidden border border-border">
           <Image src={props.product.image} alt={props.product.name || ""} fill className="object-cover" />
         </div>
       )}
@@ -44,15 +44,15 @@ export function showCustomToast(props: CustomToastProps) {
         </div>
 
         {props.description && (
-          <p className="text-black/80 text-[12px] mb-2 leading-tight pr-4">{props.description}</p>
+          <p className="text-foreground text-[12px] mb-2 leading-tight pr-4">{props.description}</p>
         )}
 
         {props.product && (
-          <p className="text-[#cfae70] tracking-[1px] text-[13px] mb-2 leading-tight">{props.product.name}</p>
+          <p className="text-foreground tracking-[1px] text-[13px] mb-2 leading-tight">{props.product.name}</p>
         )}
 
         {props.product?.price && (
-          <p className="text-[#cfae70] font-bold text-[15px] mb-1">{formatPrice(props.product.price)}</p>
+          <p className="text-foreground font-bold text-[15px] mb-1">{formatPrice(props.product.price)}</p>
         )}
 
         {(props.variant?.color || props.variant?.size || props.quantity) && (

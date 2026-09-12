@@ -421,7 +421,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                         <button
                             onClick={handleAddToCart}
                             disabled={product.stock === 0}
-                            className="flex-1 border-2 border-[#cfae70]/80 hover:border-[#cfae70]/60  hover:bg-[#b5985d] disabled:bg-[#333] disabled:text-muted-foreground text-black h-12 text-[10px] font-bold tracking-[0.2em] uppercase transition-colors"
+                            className="flex-1 border-1 border-[#cfae70]/80 hover:border-[#cfae70]/60  hover:bg-[#b5985d] disabled:bg-[#333] disabled:text-muted-foreground text-black h-12 text-[10px] font-bold tracking-[0.2em] uppercase transition-colors"
                         >
                             {product.stock === 0 ? 'Out of Stock' : 'Add to Bag'}
                         </button>
@@ -458,8 +458,8 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                         className={cn(
                             "w-full border-2 h-12 text-[10px] font-bold tracking-[0.2em] uppercase transition-colors mb-16",
                             justAdded
-                                ? "border-[#cfae70] text-[#cfae70] hover:bg-[#cfae70]/10"
-                                : " bg-[#cfae70] border-border border-gray-300  text-foreground hover:text-foreground hover:border-[#444]"
+                                ? "border-[#cfae70] bg-[#cfae70] text-white hover:bg-[#cfae70]/10"
+                                : " bg-foreground border-border border-gray-300  text-white hover:text-foreground hover:border-[#444]"
                         )}
                     >
                         View Bag

@@ -89,7 +89,7 @@ export function CartPage() {
                       <p className="font-fraunces font-medium text-foreground">{formatPrice(item.price)}</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center gap-4 mt-auto pt-4">
                     <div className="flex items-center border border-border">
                       <button className="h-8 w-8 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onClick={() => updateQuantity(item.productId, item.quantity - 1, variantKey)} aria-label="Decrease">
@@ -110,14 +110,7 @@ export function CartPage() {
           })}
         </div>
 
-        {upsells.length > 0 && (
-          <div className="mt-12 pt-12 border-t border-border">
-            <h3 className="font-fraunces text-2xl font-normal text-foreground mb-8">You might also like</h3>
-            <div className="grid grid-cols-2 gap-4">
-              {upsells.map((p) => <ProductCard key={p.id} product={p} showDetails={true} />)}
-            </div>
-          </div>
-        )}
+
       </div>
 
       <div className="space-y-4">
@@ -150,6 +143,17 @@ export function CartPage() {
           </Link>
         </div>
       </div>
+
+      {upsells.length > 0 && (
+        <div className="mt-12 pt-12 border-t border-border">
+          <h3 className="font-fraunces text-2xl font-normal text-foreground mb-8">You might also like</h3>
+          <div className="grid grid-cols-2 gap-4">
+            {upsells.map((p) => <ProductCard key={p.id} product={p} showDetails={false} />)}
+          </div>
+        </div>
+      )}
     </div>
+
+
   );
 }

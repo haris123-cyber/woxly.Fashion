@@ -17,7 +17,7 @@ export const checkoutSchema = z.object({
   email: z.string().email("Please enter a valid email"),
   shippingAddress: addressSchema,
   shippingMethod: z.string().min(1, "Please select a shipping method"),
-  paymentMethod: z.enum(["card", "upi", "cod", "partial-cod"]),
+  paymentMethod: z.enum(["card", "upi", "cod", "partial-cod", "online"]),
   promoCode: z.string().optional(),
   partialCod: z.boolean().optional(),
 });
