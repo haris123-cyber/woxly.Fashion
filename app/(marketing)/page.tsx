@@ -10,6 +10,7 @@ import { SITE_CONFIG } from "@/lib/constants";
 
 import { HeroCarousel } from "@/components/marketing/HeroCarousel";
 import { CategoryCarousel } from "@/components/marketing/CategoryCarousel";
+import { BeautyArrivalsCarousel } from "@/components/marketing/BeautyArrivalsCarousel";
 import { StackedPromoBanners } from "@/components/marketing/StackedPromoBanners";
 import {
   RedSaleBanner,
@@ -22,7 +23,6 @@ import {
   NewsletterPromoStrip,
   SpringCollectionSplitGrid,
   PersonalizedSaleSplitGrid,
-  BeautyArrivalsGrid,
   HelloNewBeautySection,
   AccessoriesHeroBanner
 } from "@/components/marketing/StackedPromoBanners";
@@ -152,7 +152,7 @@ export default function HomePage() {
       <WoxlyEditionSplitGrid />
 
 
-      <BeautyArrivalsGrid products={newArrivals} />
+      <BeautyArrivalsCarousel products={newArrivals} />
       <SpringCollectionSplitGrid />
       <HelloNewBeautySection products={featured} />
       <AccessoriesHeroBanner />

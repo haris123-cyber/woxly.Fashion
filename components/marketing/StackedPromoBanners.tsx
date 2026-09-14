@@ -254,7 +254,7 @@ export function BeautyArrivalsGrid({ products }: { products?: Product[] }) {
 }
 
 export function HelloNewBeautySection({ products }: { products?: Product[] }) {
-  const displayProducts = products?.slice(0, 3) || [];
+  const displayProducts = products?.slice(0, 6) || [];
 
   if (displayProducts.length === 0) return null;
 
@@ -278,9 +278,9 @@ export function HelloNewBeautySection({ products }: { products?: Product[] }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 md:grid-cols-3 gap-3 w-full  max-w-6xl mb-10">
+      <div className="grid grid-cols-3 md:grid-cols-5 gap-2 w-full  max-w-6xl mb-10">
         {displayProducts.map((product) => (
-          <div key={product.id} className="flex flex-col items-center text-center bg-white  overflow-hidden shadow-sm hover:shadow-md transition-shadow p-1">
+          <div key={product.id} className="flex flex-col items-center text-center bg-white  overflow-hidden shadow-sm hover:shadow-md transition-shadow p-0">
             <div className="relative w-full aspect-square mb-2 mt-2">
               <Link href={`/products/${product.slug}`}>
                 <Image src={product.images[0]} alt={product.name} fill className="object-contain " />
