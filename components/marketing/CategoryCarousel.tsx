@@ -21,24 +21,22 @@ export function CategoryCarousel({ categories }: CategoryCarouselProps) {
     if (!container) return;
 
     const { scrollLeft, scrollWidth, clientWidth } = container;
+    
+    // Check if we can scroll right
+    const maxScrollLeft = scrollWidth - clientWidth;
+    setCanScrollRight(Math.ceil(scrollLeft) < maxScrollLeft - 5);
 
-    setCanScrollRight(
-      Math.ceil(scrollLeft + clientWidth) < scrollWidth - 5
-    );
-
-    const firstCard = container.children[0] as HTMLElement;
-
-    if (firstCard) {
-      const cardWidth = firstCard.offsetWidth;
-
-      // Detect actual gap instead of hard-coding 24px
-      const styles = window.getComputedStyle(container);
-      const gap = parseFloat(styles.columnGap || "0");
-
-      const index = Math.round(scrollLeft / (cardWidth + gap));
-
+    if (maxScrollLeft <= 0) {
+      setActiveIndex(0);
+    } else {
+      // Calculate scroll progress ratio (0 to 1)
+      const scrollRatio = scrollLeft / maxScrollLeft;
+      
+      // Map ratio to dot index (0 to length - 1)
+      const calculatedIndex = Math.round(scrollRatio * (categories.length - 1));
+      
       setActiveIndex(
-        Math.min(Math.max(index, 0), categories.length - 1)
+        Math.min(Math.max(calculatedIndex, 0), categories.length - 1)
       );
     }
   };

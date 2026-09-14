@@ -13,7 +13,7 @@ let memoryOrders: Order[] = [
         name: "Classic Linen Shirt",
         price: 2499,
         quantity: 1,
-        image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=400&fit=crop",
+        image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400&h=400&fit=crop",
         variant: { size: "M", color: "White" },
       },
     ],
@@ -48,7 +48,7 @@ let memoryOrders: Order[] = [
         name: "Slim Fit Chinos",
         price: 1999,
         quantity: 2,
-        image: "https://images.unsplash.com/photo-1624378439575-d1ead6bb24ac?w=400&h=400&fit=crop",
+        image: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=400&h=400&fit=crop",
         variant: { size: "32", color: "Navy" },
       },
     ],
@@ -83,7 +83,7 @@ let memoryOrders: Order[] = [
         name: "Premium Leather Belt",
         price: 1299,
         quantity: 1,
-        image: "https://images.unsplash.com/photo-1624378439575-d1ead6bb24ac?w=400&h=400&fit=crop", // Add appropriate generic image if needed
+        image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop", // Add appropriate generic image if needed
         variant: { size: "L", color: "Brown" },
       },
     ],
@@ -118,7 +118,7 @@ let memoryOrders: Order[] = [
         name: "Aviator Sunglasses",
         price: 899,
         quantity: 1,
-        image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&h=400&fit=crop",
+        image: "https://images.unsplash.com/photo-1577803645773-f96470509666?w=400&h=400&fit=crop",
       },
     ],
     subtotal: 899,
@@ -143,7 +143,7 @@ let memoryOrders: Order[] = [
   }
 ];
 
-const LOCAL_STORAGE_KEY = "woxly_orders_v2";
+const LOCAL_STORAGE_KEY = "woxly_orders_v3";
 
 function getOrders(): Order[] {
   if (typeof window !== "undefined") {

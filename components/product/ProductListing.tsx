@@ -72,15 +72,17 @@ export function ProductListing({ searchParams }: ProductListingProps) {
 
   return (
     <div className="flex gap-12">
+
       <aside className="hidden lg:block w-64 shrink-0">
         <ProductFiltersPanel filters={filters} filterOptions={filterOptions} onUpdate={updateParams} />
+
       </aside>
+
 
       <div className="flex-1">
         <div className="flex items-center justify-between mb-8 gap-4 border-b border-border pb-6">
-          <p className="text-muted-foreground text-[10px] uppercase tracking-[0.2em] font-bold">
-            {result.total} {result.total === 1 ? 'Product' : 'Products'}
-          </p>
+
+
           <div className="flex items-center gap-4">
             <Sheet>
               <SheetTrigger className="lg:hidden h-10 px-4 border border-border text-foreground hover:border-[#cfae70] flex items-center justify-center text-[10px] uppercase tracking-[0.1em] font-bold transition-colors">

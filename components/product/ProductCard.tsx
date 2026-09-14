@@ -121,7 +121,7 @@ export function ProductCard({ product, className, priority = false, showDetails 
     };
 
     return (
-        <div className={cn("group relative", className)}>
+        <div className={cn("group relative min-w-0", className)}>
             <Link href={`/products/${product.slug}`} className="block">
                 <div ref={cardRef} className="relative aspect-[3/4] overflow-hidden bg-secondary">
                     <Image
@@ -193,7 +193,7 @@ export function ProductCard({ product, className, priority = false, showDetails 
                         <h3 className="font-fraunces text-[11px] md:text-xs  font-medium uppercase tracking-wider truncate">
                             {product.name}
                         </h3>
-                        <div className="flex items-center gap-1.5 mt-0.5">
+                        <div className="flex flex-wrap items-center gap-1 md:gap-1.5 mt-0.5">
                             <span className="text-[11px] md:text-xs font-medium text-foreground">
                                 {formatPrice(product.price)}
                             </span>

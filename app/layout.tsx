@@ -36,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning className={`${fraunces.variable} ${inter.variable} h-full`}>
       <head>
       </head>
-      <body className="min-h-full flex flex-col font-inter antialiased bg-background text-foreground">
+      <body className="min-h-full flex flex-col font-inter antialiased bg-background text-foreground overflow-x-hidden">
         <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light" disableTransitionOnChange>
           <AnnouncementBar />
           <Header />

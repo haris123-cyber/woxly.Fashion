@@ -36,7 +36,7 @@ export function FallCollectionBanner() {
 export function MidnightCollectionBanner() {
   return (
     <div className="relative w-full aspect-[4/5] md:aspect-[21/9]">
-      <Image src="https://images.unsplash.com/photo-1550614000-4b95d4ebf04f?q=80&w=2000" alt="New Launch" fill className="object-cover object-top" />
+      <Image src="https://images.unsplash.com/photo-1571924848943-25c2c95bbb4b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="New Launch" fill className="object-cover object-top" />
       <div className="absolute inset-0 flex flex-col items-end justify-center pr-6 md:pr-24 bg-black/30 md:bg-black/10 text-white text-right">
         <p className="text-[10px] uppercase tracking-[0.2em] font-bold mb-3 shadow-sm">New Launch</p>
         <h3 className="text-4xl md:text-6xl font-bold tracking-tight mb-8 max-w-[300px] md:max-w-md shadow-sm leading-[1.1] uppercase">The Midnight Collection</h3>
@@ -60,7 +60,7 @@ export function SeasonalSplitGrid() {
   return (
     <div className="grid grid-cols-2 md:grid-cols-2">
       <div className="relative w-full aspect-[4/5] md:aspect-square">
-        <Image src="https://images.unsplash.com/photo-1542157643-4ce43f11bc02?q=80&w=1000" alt="Kids Costume" fill className="object-cover" />
+        <Image src="https://images.unsplash.com/photo-1589363358751-ab05797e5629?q=80&w=2127&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Kids Costume" fill className="object-cover" />
         <div className="absolute inset-0 flex flex-col items-center justify-end pb-16 bg-gradient-to-t from-black/70 via-black/20 to-transparent text-white text-center px-6">
           <p className="text-[10px] uppercase tracking-[0.2em] font-bold mb-3 shadow-sm">Online Only</p>
           <h3 className="text-3xl md:text-4xl font-bold uppercase tracking-widest mb-8 shadow-sm">Time to Dress Up</h3>
