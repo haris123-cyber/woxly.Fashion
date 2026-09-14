@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Product } from "@/types/product";
 
 export function RedSaleBanner() {
   return (
@@ -108,10 +109,10 @@ export function WoxlyEditionSplitGrid() {
           <div className="absolute -top-32 -left-32 w-[600px] h-[600px] bg-[#c4a98a] rounded-full blur-[80px]"></div>
           <div className="absolute -bottom-32 -right-32 w-[600px] h-[600px] bg-[#e3c49e] rounded-full blur-[80px]"></div>
         </div>
-        <div className="relative z-10 flex flex-col items-center">
-          <h3 className="text-5xl md:text-7xl font-black tracking-tighter mb-12">WOXLY<br />EDITION</h3>
-          <p className="text-[10px] uppercase tracking-[0.2em] font-bold mb-3">New Collection</p>
-          <p className="text-[11px] md:text-xs font-bold tracking-widest uppercase mb-10 text-gray-800">Available Online Now</p>
+        <div className="relative z-10 flex flex-col items-center h-full w-full">
+          <h3 className="text-5xl md:text-7xl font-black tracking-tighter mb-2 sm:mb-12">WOXLY<br />EDITION</h3>
+          <p className="text-[10px] uppercase tracking-[0.2em] font-bold mb-1">New Collection</p>
+          <p className="text-[11px] md:text-xs font-bold tracking-widest uppercase mb-4 sm:mb-10 text-gray-800">Available Online Now</p>
           <Link href="/products" className="bg-black text-white px-10 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-gray-800 transition-colors">Buy</Link>
         </div>
       </div>
@@ -212,8 +213,83 @@ export function StackedPromoBanners() {
     <div className="w-full flex flex-col">
       <ThinPromoStrip />
       <MidnightCollectionBanner />
-      <SeasonalSplitGrid />
 
+
+    </div>
+  );
+}
+
+export function BeautyArrivalsGrid({ products }: { products?: Product[] }) {
+  const displayProducts = products?.slice(0, 3) || [];
+
+  if (displayProducts.length === 0) return null;
+
+  return (
+    <div className="w-full bg-gradient-to-b from-[#fde7f9] to-white py-12 px-4 md:px-8 flex flex-col items-center border-b border-border">
+      <div className="text-center mb-10">
+        <h2 className="text-3xl md:text-4xl font-bold mb-2 text-[#001f3f]">
+          New At <span className="italic font-serif">WOXLY</span>
+        </h2>
+        <p className="text-[#001f3f] text-sm md:text-base">Latest  Arrivals You'll Want To Own</p>
+      </div>
+
+      <div className="grid grid-cols-3 md:grid-cols-3 gap-3 w-full  max-w-6xl mb-10">
+        {displayProducts.map((product) => (
+          <div key={product.id} className="flex flex-col items-center text-center bg-white  overflow-hidden shadow-sm hover:shadow-md transition-shadow p-1">
+            <div className="relative w-full aspect-square mb-2 mt-2">
+              <Image src={product.images[0]} alt={product.name} fill className="object-contain " />
+
+            </div>
+
+          </div>
+        ))}
+      </div>
+
+      <Link href="/products" className="bg-white text-black px-8 py-3 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-gray-100 transition-colors">
+        View All <span className="ml-2">&rarr;</span>
+      </Link>
+
+    </div>
+  );
+}
+
+export function HelloNewBeautySection({ products }: { products?: Product[] }) {
+  const displayProducts = products?.slice(0, 3) || [];
+
+  if (displayProducts.length === 0) return null;
+
+  return (
+    <div className="w-full bg-white py-16 px-4 md:px-8 flex flex-col items-center border-b border-border">
+      <div className="text-center mb-8 relative w-full max-w-4xl flex justify-center items-center">
+        <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#8b653a] tracking-wider text-center flex flex-col">
+          <span>HELLO</span>
+          <span>NEW TRENDS</span>
+        </h2>
+      </div>
+
+      <div className="w-full max-w-6xl mb-6">
+        <div className="relative w-full aspect-[16/9] md:aspect-[21/9]  overflow-hidden shadow-md">
+          <Image src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?q=80&w=2000" alt="New Beauty Campaign" fill className="object-cover" />
+          <div className="absolute inset-0 flex items-center justify-center bg-black/10">
+            <h3 className="text-5xl md:text-7xl font-black text-white drop-shadow-lg tracking-tighter flex items-center text-center">
+              <span className="text-blue-500 mr-2 text-6xl">✨</span> OUR FAVORITES
+            </h3>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 md:grid-cols-3 gap-3 w-full  max-w-6xl mb-10">
+        {displayProducts.map((product) => (
+          <div key={product.id} className="flex flex-col items-center text-center bg-white  overflow-hidden shadow-sm hover:shadow-md transition-shadow p-1">
+            <div className="relative w-full aspect-square mb-2 mt-2">
+              <Link href={`/products/${product.slug}`}>
+                <Image src={product.images[0]} alt={product.name} fill className="object-contain " />
+              </Link>
+            </div>
+
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

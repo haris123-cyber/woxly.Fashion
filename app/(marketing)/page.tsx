@@ -22,6 +22,9 @@ import {
   NewsletterPromoStrip,
   SpringCollectionSplitGrid,
   PersonalizedSaleSplitGrid,
+  BeautyArrivalsGrid,
+  HelloNewBeautySection,
+  AccessoriesHeroBanner
 } from "@/components/marketing/StackedPromoBanners";
 
 export default function HomePage() {
@@ -46,6 +49,7 @@ export default function HomePage() {
       />
 
       <HeroCarousel />
+
 
       {/* Promotional Banners */}
       <StackedPromoBanners />
@@ -78,7 +82,7 @@ export default function HomePage() {
 
       <InteriorBanner />
 
-      <NewsletterPromoStrip />
+
 
       {/* Featured / Best Sellers */}
       <section className="bg-background py-8 border-t border-border">
@@ -122,7 +126,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <SpringCollectionSplitGrid />
+      <SeasonalSplitGrid />
+      <NewsletterPromoStrip />
 
       {/* Just For You Products */}
       <section className="bg-background py-8 border-t border-border">
@@ -145,6 +150,12 @@ export default function HomePage() {
       </section>
 
       <WoxlyEditionSplitGrid />
+
+
+      <BeautyArrivalsGrid products={newArrivals} />
+      <SpringCollectionSplitGrid />
+      <HelloNewBeautySection products={featured} />
+      <AccessoriesHeroBanner />
       <RedSaleBanner />
 
 
