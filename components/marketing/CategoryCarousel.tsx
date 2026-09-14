@@ -100,7 +100,7 @@ export function CategoryCarousel({ categories }: CategoryCarouselProps) {
           sm:auto-cols-[calc(50vw-2rem)]
           md:auto-cols-[calc(33.333vw-2rem)]
           lg:auto-cols-[calc(25vw-2rem)]
-          gap-4 md:gap-6
+          gap-3 md:gap-6
           overflow-x-auto
           scrollbar-none
           py-2
@@ -188,11 +188,12 @@ export function CategoryCarousel({ categories }: CategoryCarouselProps) {
             bottom-0
             z-20
             flex
-            w-16
-            md:w-48
+            w-14
+            md:w-28
             items-center
             justify-center
             md:justify-end
+            pr-1
             md:pr-8
             transition-opacity duration-500 ease-in-out
           `,
@@ -205,32 +206,16 @@ export function CategoryCarousel({ categories }: CategoryCarouselProps) {
               absolute
               inset-0
               bg-gradient-to-l
-              from-background/95
+              from-background/100
               md:from-background
-              via-background/50
-              md:via-background/80
+              via-background/20
+              md:via-background/50
               to-transparent
             "
         />
 
-        {/* Luxury button */}
-        <style>{`
-            @keyframes bounceRight {
-              0%, 100% { transform: translateX(0); }
-              50% { transform: translateX(3px); }
-            }
-            .animate-bounce-right {
-              animation: bounceRight 1.5s infinite ease-in-out;
-            }
-          `}</style>
-        <div className="relative flex items-center justify-center p-2.5 md:px-5 md:py-2.5 ">
 
-          <ArrowRight
-            size={14}
-            strokeWidth={1.5}
-            className="text-foreground animate-bounce-right ml-10"
-          />
-        </div>
+
       </div>
 
       {/* Progress Indicators */}
@@ -245,7 +230,7 @@ export function CategoryCarousel({ categories }: CategoryCarouselProps) {
                 "h-2 transition-all duration-300",
                 activeIndex === idx
                   ? "w-5 bg-foreground"
-                  : "w-2 bg-muted-foreground/20 hover:bg-muted-foreground/50"
+                  : "w-5 bg-muted-foreground/20 hover:bg-muted-foreground/50"
               )}
             />
           ))}
