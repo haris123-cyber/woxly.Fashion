@@ -261,6 +261,13 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
 
                     </div>
 
+                    {product.slug === "classic-linen-shirt" && (
+                        <div className="mb-8 flex items-center justify-center gap-3 text-red-500 bg-red-500/5 px-4 py-3 border border-red-500/20 w-fit">
+                            <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse shrink-0" />
+                            <span className="text-[10px] font-bold tracking-[0.15em] uppercase mt-0.5">Hurry up! 2 items left</span>
+                        </div>
+                    )}
+
                     <p className="text-foreground text-[13px] leading-relaxed mb-8 max-w-sm">
                         {product.shortDescription}
                     </p>
