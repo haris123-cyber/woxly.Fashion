@@ -144,13 +144,14 @@ export function ProductCard({ product, className, priority = false, showDetails 
                     )}
                     <div className="absolute top-2 left-2 sm:top-4 sm:left-4 flex flex-col gap-2">
                         {product.isNew && (
-                            <span className="bg-muted text-[#cfae70] text-[9px] font-bold tracking-[0.15em] uppercase px-3 py-1">
+                            <span className="bg-muted text-[#cfae70] text-[9px] font-bold tracking-[0.15em] uppercase px-3 py-1 shadow-sm">
                                 New
                             </span>
                         )}
-                        {product.isSale && (
-                            <span className="bg-muted text-[#cfae70] text-[9px] font-bold tracking-[0.15em] uppercase px-3 py-1">
-                                Sale
+
+                        {product.compareAtPrice && product.compareAtPrice > product.price && (
+                            <span className="bg-red-500 text-white text-[9px] font-bold tracking-[0.15em] uppercase px-3 py-1 shadow-sm">
+                                {Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)}% OFF
                             </span>
                         )}
                     </div>

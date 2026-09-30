@@ -152,9 +152,11 @@ export function CheckoutForm() {
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-24 items-start">
           <div className="lg:col-span-7">
             <Accordion type="multiple" defaultValue={["contact", "shipping", "delivery", "payment"]} className="space-y-0">
-              <AccordionItem value="contact" className="border-b border-border px-0">
+
+
+              <AccordionItem value="shipping" className="border-b border-border px-0">
                 <AccordionTrigger className="font-fraunces text-2xl text-foreground hover:text-[#cfae70] transition-colors py-6 hover:no-underline">
-                  Contact Information
+                  Shipping Address
                 </AccordionTrigger>
                 <AccordionContent className="space-y-6 pb-8">
                   <p className="text-[11px] uppercase tracking-[0.1em] text-muted-foreground">Guest checkout — no account required</p>
@@ -166,12 +168,6 @@ export function CheckoutForm() {
                     </FormItem>
                   )} />
                 </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="shipping" className="border-b border-border px-0">
-                <AccordionTrigger className="font-fraunces text-2xl text-foreground hover:text-[#cfae70] transition-colors py-6 hover:no-underline">
-                  Shipping Address
-                </AccordionTrigger>
                 <AccordionContent className="space-y-6 pb-8">
                   <div className="mb-6 space-y-4 ">
                     <p className="text-[11px] uppercase tracking-[0.1em] text-muted-foreground font-bold">Use a saved address</p>
