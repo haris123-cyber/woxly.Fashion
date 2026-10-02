@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, ShoppingBag, Trash2 } from "lucide-react";
+import { Heart, ShoppingBag, Trash2, BadgePercent } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
@@ -142,16 +142,20 @@ export function ProductCard({ product, className, priority = false, showDetails 
                             aria-hidden
                         />
                     )}
-                    <div className="absolute top-2 left-2 sm:top-4 sm:left-4 flex flex-col gap-2">
+                    {product.compareAtPrice && product.compareAtPrice > product.price && (
+                        <div className="absolute left-0 top-0 bottom-0 w-8 bg-[#1a2f26] flex items-center justify-center z-1">
+                            <div className="flex items-center gap-1.5 -rotate-90 whitespace-nowrap">
+                                <BadgePercent className="h-4 w-4 text-[#cfae70] rotate-90" strokeWidth={2.5} />
+                                <span className="text-[#cfae70] text-[10px] font-bold tracking-[0.25em]">
+                                    LIMITED OFFER
+                                </span>
+                            </div>
+                        </div>
+                    )}
+                    <div className={cn("absolute top-2 sm:top-4 flex flex-col gap-2 z-10", product.compareAtPrice && product.compareAtPrice > product.price ? "left-10 sm:left-12" : "left-2 sm:left-4")}>
                         {product.isNew && (
                             <span className="bg-muted text-[#cfae70] text-[9px] font-bold tracking-[0.15em] uppercase px-3 py-1 shadow-sm">
                                 New
-                            </span>
-                        )}
-
-                        {product.compareAtPrice && product.compareAtPrice > product.price && (
-                            <span className="bg-red-500 text-white text-[9px] font-bold tracking-[0.15em] uppercase px-3 py-1 shadow-sm">
-                                {Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)}% OFF
                             </span>
                         )}
                     </div>
@@ -180,7 +184,7 @@ export function ProductCard({ product, className, priority = false, showDetails 
 
                     <button
                         className={cn(
-                            "absolute bottom-0 left-0 right-0 bg-muted/90 backdrop-blur-sm text-foreground py-4 text-[10px] font-bold tracking-[0.15em] uppercase transition-all duration-300",
+                            "absolute bottom-0 left-0 right-0 bg-muted/90 backdrop-blur-sm text-foreground py-4 text-[10px] z-2 font-bold tracking-[0.15em] uppercase transition-all duration-300",
                             isMobileVisible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0",
                             "md:translate-y-full md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100"
                         )}
@@ -194,17 +198,17 @@ export function ProductCard({ product, className, priority = false, showDetails 
                         <h3 className="font-fraunces text-[11px] md:text-xs  font-medium uppercase tracking-wider truncate">
                             {product.name}
                         </h3>
-                        <div className="flex flex-wrap items-center gap-1 md:gap-1.5 mt-0.5">
-                            <span className="text-[11px] md:text-xs font-medium text-foreground">
+                        <div className="flex items-center gap-1 md:gap-1 mt-0.5 w-full">
+                            <span className="text-[11px] md:text-[13px] font-medium text-foreground whitespace-nowrap">
                                 {formatPrice(product.price)}
                             </span>
                             {product.compareAtPrice && product.compareAtPrice > product.price && (
                                 <>
-                                    <span className="text-[9px] md:text-[10px] text-muted-foreground line-through">
+                                    <span className="text-[9px] md:text-[11px] text-muted-foreground line-through whitespace-nowrap hidden min-[350px]:inline-block">
                                         {formatPrice(product.compareAtPrice)}
                                     </span>
-                                    <span className="text-[9px] md:text-[10px] text-[#cfae70] font-bold">
-                                        -{Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)}%
+                                    <span className="bg-[#1a2f26] text-[#cfae70] text-[8px] md:text-[10px] font-bold tracking-wider px-1 py-0.5 md:px-0.5 ml-0 md:ml-0 whitespace-nowrap shrink-0">
+                                        SAVE {formatPrice(product.compareAtPrice - product.price)}
                                     </span>
                                 </>
                             )}
