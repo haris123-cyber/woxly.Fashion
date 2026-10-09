@@ -4,11 +4,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { contactSchema, type ContactFormData } from "@/lib/validations/forms";
-import { Button } from "@/components/ui/button";
 import { showCustomToast } from "@/components/shared/CustomToast";
 import Image from "next/image";
 import { SITE_CONFIG } from "@/lib/constants";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 
 export default function ContactPage() {
   const form = useForm<ContactFormData>({
@@ -57,9 +56,9 @@ export default function ContactPage() {
             {/* Contact Info */}
             <div className="md:col-span-1 space-y-8">
               <div>
-                <h3 className="text-2xl font-fraunces text-foreground mb-6">Let's talk.</h3>
+                <h3 className="text-2xl font-fraunces text-foreground mb-6">Let&apos;s talk.</h3>
                 <p className="text-muted-foreground leading-relaxed text-sm">
-                  Have a question, feedback, or need assistance? We'd love to hear from you. Fill out the form or reach out using the details below.
+                  Have a question, feedback, or need assistance? We&apos;d love to hear from you. Fill out the form or reach out using the details below.
                 </p>
               </div>
 
@@ -70,7 +69,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#cfae70] mb-1">Email</p>
-                    <a href="mailto:info@woxly.in" className="text-sm text-foreground hover:opacity-80 transition-opacity">info@woxly.in</a>
+                    <a href={`mailto:${SITE_CONFIG.email}`} className="text-sm text-foreground hover:opacity-80 transition-opacity">{SITE_CONFIG.email}</a>
                   </div>
                 </div>
                 
@@ -80,17 +79,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#cfae70] mb-1">Phone</p>
-                    <a href="tel:+917306347297" className="text-sm text-foreground hover:opacity-80 transition-opacity">+91 73063 47297</a>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center shrink-0">
-                    <MapPin className="w-4 h-4 text-foreground" />
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#cfae70] mb-1">Location</p>
-                    <p className="text-sm text-foreground">Bangalore, India</p>
+                    <a href={`tel:${SITE_CONFIG.phone.replace(/[^+\d]/g, "")}`} className="text-sm text-foreground hover:opacity-80 transition-opacity">{SITE_CONFIG.phone}</a>
                   </div>
                 </div>
               </div>

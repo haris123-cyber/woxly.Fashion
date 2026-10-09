@@ -16,6 +16,7 @@ export interface ProductReview {
   body: string;
   date: string;
   verified: boolean;
+  images?: string[];
 }
 
 export interface Product {
@@ -39,6 +40,10 @@ export interface Product {
   isSale?: boolean;
   saleEndsAt?: string;
   sku: string;
+  material?: string;
+  careInstructions?: string;
+  countryOfOrigin?: string;
+  returnEligible?: boolean;
   reviews?: ProductReview[];
   relatedSlugs?: string[];
   fbtSlugs?: string[];

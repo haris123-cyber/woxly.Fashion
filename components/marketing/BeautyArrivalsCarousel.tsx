@@ -3,15 +3,14 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import type { Product } from "@/types/product";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export function BeautyArrivalsCarousel({ products }: { products?: Product[] }) {
   const displayProducts = products || [];
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(1);
-
-  if (displayProducts.length === 0) return null;
 
   const handleScroll = () => {
     const container = containerRef.current;
@@ -41,13 +40,15 @@ export function BeautyArrivalsCarousel({ products }: { products?: Product[] }) {
     handleScroll();
   }, []);
 
+  if (displayProducts.length === 0) return null;
+
   return (
     <div className="w-full bg-gradient-to-b from-[#fde7f9] to-white py-12 px-4 md:px-8 flex flex-col items-center border-b border-border overflow-hidden">
       <div className="text-center mb-10">
         <h2 className="text-3xl md:text-4xl font-bold mb-2 text-[#001f3f]">
-          New At <span className="italic font-serif">WOXLY</span>
+          New At <span className="italic font-serif">{SITE_CONFIG.name}</span>
         </h2>
-        <p className="text-[#001f3f] text-sm md:text-base">Latest Arrivals You'll Want To Own</p>
+        <p className="text-[#001f3f] text-sm md:text-base">Latest Arrivals You&apos;ll Want To Own</p>
       </div>
 
       <div
@@ -77,7 +78,7 @@ export function BeautyArrivalsCarousel({ products }: { products?: Product[] }) {
                 {/* Always render text to maintain consistent height, just toggle opacity */}
                 <div className={cn("text-center pb-2 transition-opacity duration-500", isActive ? "opacity-100" : "opacity-0 pointer-events-none")}>
                   <h4 className="text-[#001f3f] font-bold text-sm md:text-lg truncate max-w-full px-2">{product.name}</h4>
-                  <p className="text-[#cfae70] font-bold text-xs">${product.price.toFixed(2)}</p>
+                  <p className="text-[#cfae70] font-bold text-xs">{formatPrice(product.price)}</p>
                 </div>
               </div>
             );

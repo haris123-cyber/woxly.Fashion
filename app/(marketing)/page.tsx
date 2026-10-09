@@ -1,9 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 import { ProductCard } from "@/components/product/ProductCard";
-import { TrustBadges } from "@/components/trust/TrustBadges";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
 import { getCategories, getFeaturedProducts, getNewArrivals, getProducts } from "@/lib/api/products";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -11,18 +8,14 @@ import { SITE_CONFIG } from "@/lib/constants";
 import { HeroCarousel } from "@/components/marketing/HeroCarousel";
 import { CategoryCarousel } from "@/components/marketing/CategoryCarousel";
 import { BeautyArrivalsCarousel } from "@/components/marketing/BeautyArrivalsCarousel";
-import { StackedPromoBanners } from "@/components/marketing/StackedPromoBanners";
 import {
+  StackedPromoBanners,
   RedSaleBanner,
   FallCollectionBanner,
-  MidnightCollectionBanner,
-  ThinPromoStrip,
   SeasonalSplitGrid,
-  InteriorBanner,
   WoxlyEditionSplitGrid,
   NewsletterPromoStrip,
   SpringCollectionSplitGrid,
-  PersonalizedSaleSplitGrid,
   HelloNewBeautySection,
   AccessoriesHeroBanner
 } from "@/components/marketing/StackedPromoBanners";
@@ -51,9 +44,6 @@ export default function HomePage() {
       <HeroCarousel />
 
 
-      {/* Promotional Banners */}
-      <StackedPromoBanners />
-
       {/* Categories */}
       <section className="bg-background pt-8 pb-8">
         <div className="container mx-auto px-8">
@@ -80,10 +70,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      <InteriorBanner />
-
-
-
       {/* Featured / Best Sellers */}
       <section className="bg-background py-8 border-t border-border">
         <div className="container mx-auto px-8">
@@ -101,6 +87,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* One supporting campaign after customers have seen categories and products. */}
+      <StackedPromoBanners />
 
       <FallCollectionBanner />
 

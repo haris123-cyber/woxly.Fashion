@@ -4,12 +4,9 @@ import { useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, ShoppingBag, Trash2, BadgePercent } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { Heart, Trash2, BadgePercent } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
-import { Price } from "@/components/shared/Price";
-import { ReviewStars } from "@/components/trust/ReviewStars";
 import { useCartStore } from "@/store/cart-store";
 import { useWishlistStore } from "@/store/wishlist-store";
 import { cn, formatPrice } from "@/lib/utils";
@@ -25,6 +22,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, className, priority = false, showDetails = false, isWishlistContext = false }: ProductCardProps) {
+    const router = useRouter();
     const addItem = useCartStore((s) => s.addItem);
     const toggleWishlist = useWishlistStore((s) => s.toggle);
     const isInWishlist = useWishlistStore((s) => s.isInWishlist(product.id));
@@ -59,6 +57,10 @@ export function ProductCard({ product, className, priority = false, showDetails 
     const handleQuickAdd = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
+        if (product.variants.length > 0) {
+            router.push(`/products/${product.slug}`);
+            return;
+        }
         addItem({
             productId: product.id,
             slug: product.slug,
@@ -172,7 +174,7 @@ export function ProductCard({ product, className, priority = false, showDetails 
                         <button
                             onClick={handleWishlist}
                             className={cn(
-                                "absolute top-2 right-2 sm:top-4 sm:right-4 flex h-6 w-6 items-center justify-center transition-opacity",
+                                "absolute top-1 right-1 sm:top-2 sm:right-2 flex h-11 w-11 items-center justify-center transition-opacity",
                                 isMobileVisible ? "opacity-100" : "opacity-0",
                                 "md:opacity-0 md:group-hover:opacity-100"
                             )}
@@ -190,12 +192,12 @@ export function ProductCard({ product, className, priority = false, showDetails 
                         )}
                         onClick={handleQuickAdd}
                     >
-                        Add to Bag
+                        {product.variants.length > 0 ? "Choose options" : "Add to Bag"}
                     </button>
                 </div>
                 {showDetails && (
                     <div className="bg-background text-foreground p-1 md:p-1 space-y-0 md:space-y-1">
-                        <h3 className="font-fraunces text-[11px] md:text-xs  font-medium uppercase tracking-wider truncate">
+                        <h3 className="font-fraunces text-[11px] md:text-xs font-medium uppercase tracking-wider line-clamp-2 min-h-[2.5em]">
                             {product.name}
                         </h3>
                         <div className="flex items-center gap-1 md:gap-1 mt-0.5 w-full">
@@ -249,7 +251,7 @@ export function ProductCard({ product, className, priority = false, showDetails 
 
                     <h2 className="text-lg font-bold text-foreground">Confirm Item Removal?</h2>
                     <p className="text-[13px] text-muted-foreground mb-4 leading-relaxed">
-                        Are you sure you want to remove <span className="font-bold">"{product.name}"</span> from your wishlist?<br />This action cannot be undone.
+                        Are you sure you want to remove <span className="font-bold">&ldquo;{product.name}&rdquo;</span> from your wishlist?<br />This action cannot be undone.
                     </p>
 
                     <div className="flex gap-3 w-full mt-2">

@@ -29,6 +29,7 @@ export const MOCK_PRODUCTS: Product[] = [
     images: ["https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&h=1000&fit=crop", "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800&h=1000&fit=crop"],
     category: "Men", categorySlug: "men", brand: "Woxly", rating: 4.8, reviewCount: 124, stock: 15,
     variants: makeVariants(), tags: ["linen", "shirt", "summer"], isNew: true, isSale: true, sku: "WOX-MS-001",
+    material: "100% European linen", careInstructions: "Machine wash cold with similar colours. Line dry and iron on low heat.",
     relatedSlugs: ["slim-fit-chinos", "leather-belt", "cotton-tee"],
     fbtSlugs: ["slim-fit-chinos", "leather-belt"],
     reviews: [
@@ -151,7 +152,7 @@ export const MOCK_PRODUCTS: Product[] = [
     images: ["https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=800&h=1000&fit=crop", "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&h=1000&fit=crop"],
     category: "Home & Living", categorySlug: "home-living", brand: "Woxly", rating: 4.3, reviewCount: 48, stock: 40,
     variants: [{ id: "color-natural", type: "color", value: "natural", label: "Natural", inStock: true }, { id: "color-sage", type: "color", value: "sage", label: "Sage", inStock: true }],
-    tags: ["cushion", "linen", "home"], sku: "WOX-HC-001",
+    tags: ["cushion", "linen", "home"], sku: "WOX-HC-001", material: "100% linen shell", careInstructions: "Machine wash cold on a gentle cycle. Line dry. Do not bleach.",
   },
   {
     id: "prod-14", slug: "running-sneakers", name: "Running Sneakers",

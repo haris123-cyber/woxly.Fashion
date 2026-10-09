@@ -1,11 +1,14 @@
+import { SITE_CONFIG } from "@/lib/constants";
+
 export function formatPrice(
   amount: number,
-  currency = "INR",
-  locale = "en-IN"
+  currency = SITE_CONFIG.currency,
+  locale = SITE_CONFIG.locale
 ): string {
-  const formatted = new Intl.NumberFormat(locale, {
-    minimumFractionDigits: 2,
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency,
+    minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   }).format(amount);
-  return `Rs.${formatted}`;
 }

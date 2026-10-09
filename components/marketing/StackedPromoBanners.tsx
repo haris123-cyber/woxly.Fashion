@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/types/product";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export function RedSaleBanner() {
   return (
@@ -8,7 +9,7 @@ export function RedSaleBanner() {
       <p className="text-[10px] tracking-[0.2em] uppercase font-bold mb-4">Starting Now!</p>
       <p className="text-sm font-bold uppercase tracking-[0.1em] mb-1">Up To</p>
       <h2 className="text-6xl md:text-8xl font-black tracking-tight mb-2">60% OFF</h2>
-      <p className="text-[10px] tracking-[0.2em] uppercase font-bold mb-8">Online & In Store</p>
+      <p className="text-[10px] tracking-[0.2em] uppercase font-bold mb-8">Online exclusive</p>
 
       <div className="flex flex-wrap justify-center gap-3 max-w-2xl">
         <Link href="/products?category=women" className="bg-white text-black px-6 py-3 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-gray-100 transition-colors">Women</Link>
@@ -136,8 +137,8 @@ export function AccessoriesHeroBanner() {
 export function NewsletterPromoStrip() {
   return (
     <div className="bg-[#f5f5f5] text-black flex flex-col md:flex-row items-center justify-center py-6 px-4 text-center md:text-left gap-4 md:gap-8 border-y border-border">
-      <h4 className="text-sm md:text-base font-bold uppercase tracking-[0.1em]">Join The Woxly Club</h4>
-      <p className="text-[10px] md:text-xs font-medium uppercase tracking-[0.1em] text-gray-500">Get 15% off your first order</p>
+      <h4 className="text-sm md:text-base font-bold uppercase tracking-[0.1em]">Join {SITE_CONFIG.name}</h4>
+      <p className="text-[10px] md:text-xs font-medium uppercase tracking-[0.1em] text-gray-500">{SITE_CONFIG.primaryOffer.label}</p>
       <Link href="/login" className="bg-black text-white px-6 py-2 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-gray-800 transition-colors">Sign Up</Link>
     </div>
   );
@@ -151,7 +152,7 @@ export function SpringCollectionSplitGrid() {
           <Image src="https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?q=80&w=1600" alt="Spring Collection" fill className="object-cover" />
           <div className="absolute inset-0 flex flex-col items-start justify-end pb-16 px-8 md:px-16 bg-gradient-to-t from-black/60 to-transparent text-white">
             <p className="text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Fresh Arrivals</p>
-            <h3 className="text-4xl md:text-6xl font-bold uppercase tracking-widest mb-6">Spring '26</h3>
+            <h3 className="text-4xl md:text-6xl font-bold uppercase tracking-widest mb-6">Spring &apos;26</h3>
           </div>
         </div>
         <div className="bg-[#cc0000] text-white p-6 md:p-8 flex flex-col sm:flex-row items-center justify-between text-center sm:text-left gap-4">
@@ -211,7 +212,7 @@ export function PersonalizedSaleSplitGrid() {
 export function StackedPromoBanners() {
   return (
     <div className="w-full flex flex-col">
-      <ThinPromoStrip />
+      {SITE_CONFIG.physicalStoresEnabled && <ThinPromoStrip />}
       <MidnightCollectionBanner />
 
 
@@ -228,9 +229,9 @@ export function BeautyArrivalsGrid({ products }: { products?: Product[] }) {
     <div className="w-full bg-gradient-to-b from-[#fde7f9] to-white py-12 px-4 md:px-8 flex flex-col items-center border-b border-border">
       <div className="text-center mb-10">
         <h2 className="text-3xl md:text-4xl font-bold mb-2 text-[#001f3f]">
-          New At <span className="italic font-serif">WOXLY</span>
+          New At <span className="italic font-serif">{SITE_CONFIG.name}</span>
         </h2>
-        <p className="text-[#001f3f] text-sm md:text-base">Latest  Arrivals You'll Want To Own</p>
+        <p className="text-[#001f3f] text-sm md:text-base">Latest Arrivals You&apos;ll Want To Own</p>
       </div>
 
       <div className="grid grid-cols-3 md:grid-cols-3 gap-3 w-full  max-w-6xl mb-10">

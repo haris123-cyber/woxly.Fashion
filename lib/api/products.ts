@@ -13,11 +13,20 @@ export function getCategoryBySlug(slug: string): Category | undefined {
   return categories.find((c) => c.slug === slug);
 }
 
+export function getCollectionLabel(slug?: string): string | undefined {
+  if (!slug) return undefined;
+  if (slug === "new-in") return "New In";
+  if (slug === "sale") return "Sale";
+  return getCategoryBySlug(slug)?.name;
+}
+
 export function getProducts(filters: ProductFilters = {}): PaginatedResponse<Product> {
   let filtered = [...products];
 
   if (filters.category) {
-    filtered = filtered.filter((p) => p.categorySlug === filters.category);
+    if (filters.category === "new-in") filtered = filtered.filter((p) => p.isNew);
+    else if (filters.category === "sale") filtered = filtered.filter((p) => p.isSale);
+    else filtered = filtered.filter((p) => p.categorySlug === filters.category);
   }
   if (filters.minPrice !== undefined) {
     filtered = filtered.filter((p) => p.price >= filters.minPrice!);
@@ -117,21 +126,22 @@ export function searchProducts(query: string, limit = 20): Product[] {
   return getProducts({ q: query, limit }).data;
 }
 
-export function getFilterOptions() {
+export function getFilterOptions(category?: string) {
   const sizes = new Set<string>();
   const colors = new Set<string>();
-  products.forEach((p) => {
+  const scopedProducts = category ? getProducts({ category, limit: products.length }).data : products;
+  scopedProducts.forEach((p) => {
     p.variants.forEach((v) => {
       if (v.type === "size") sizes.add(v.value);
       if (v.type === "color") colors.add(v.value);
     });
   });
-  const prices = products.map((p) => p.price);
+  const prices = scopedProducts.map((p) => p.price);
   return {
     sizes: Array.from(sizes),
     colors: Array.from(colors),
-    minPrice: Math.min(...prices),
-    maxPrice: Math.max(...prices),
+    minPrice: prices.length ? Math.min(...prices) : 0,
+    maxPrice: prices.length ? Math.max(...prices) : 0,
     categories,
   };
 }

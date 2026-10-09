@@ -7,10 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductFiltersPanel } from "@/components/product/ProductFiltersPanel";
-import { EmptyState } from "@/components/shared/EmptyState";
-import { getProducts, getFilterOptions } from "@/lib/api/products";
+import { getProducts, getFilterOptions, getCollectionLabel } from "@/lib/api/products";
 import type { ProductFilters } from "@/types/product";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 interface ProductListingProps {
@@ -19,14 +17,10 @@ interface ProductListingProps {
 
 export function ProductListing({ searchParams }: ProductListingProps) {
   const router = useRouter();
-  const filterOptions = getFilterOptions();
+  const filterOptions = getFilterOptions(searchParams.category);
 
   const [page, setPage] = useState(1);
   const observerTarget = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setPage(1);
-  }, [searchParams]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -59,8 +53,16 @@ export function ProductListing({ searchParams }: ProductListingProps) {
 
   const result = getProducts(filters);
   const hasMore = result.total > result.data.length;
+  const activeCategoryLabel = getCollectionLabel(filters.category);
+  const appliedFilters = [
+    activeCategoryLabel && { key: "category", label: activeCategoryLabel },
+    filters.size && { key: "size", label: `Size ${filters.size}` },
+    filters.color && { key: "color", label: filters.color },
+    filters.minRating && { key: "minRating", label: `${filters.minRating}+ stars` },
+  ].filter(Boolean) as { key: string; label: string }[];
 
   const updateParams = (updates: Record<string, string | undefined>) => {
+    setPage(1);
     const params = new URLSearchParams();
     const merged = { ...searchParams, ...updates };
     Object.entries(merged).forEach(([key, val]) => {
@@ -80,13 +82,13 @@ export function ProductListing({ searchParams }: ProductListingProps) {
 
 
       <div className="flex-1">
-        <div className="flex items-center justify-between mb-8 gap-4 border-b border-border pb-6">
+        <div className="sticky top-[60px] lg:static z-30 bg-background flex items-center justify-between mb-4 gap-3 border-b border-border py-3 lg:pt-0 lg:pb-6">
 
 
           <div className="flex items-center gap-4">
             <Sheet>
-              <SheetTrigger className="lg:hidden h-10 px-4 border border-border text-foreground hover:border-[#cfae70] flex items-center justify-center text-[10px] uppercase tracking-[0.1em] font-bold transition-colors">
-                <SlidersHorizontal className="h-3 w-3 mr-2" /> Filters
+              <SheetTrigger className="lg:hidden h-11 px-3 border border-border text-foreground hover:border-[#cfae70] flex items-center justify-center text-[10px] uppercase tracking-[0.1em] font-bold transition-colors">
+                <SlidersHorizontal className="h-3 w-3 mr-2" /> Filter{appliedFilters.length ? ` (${appliedFilters.length})` : ""}
               </SheetTrigger>
               <SheetContent side="left" className="h-full bg-background border-r border-border text-foreground w-full sm:w-[400px]">
                 <SheetHeader className="mb-8 text-left border-b border-border pb-4">
@@ -102,7 +104,7 @@ export function ProductListing({ searchParams }: ProductListingProps) {
               value={filters.sort ?? "popularity"}
               onValueChange={(val) => updateParams({ sort: val })}
             >
-              <SelectTrigger className="w-[180px] bg-transparent border-border rounded-none focus:ring-[#cfae70] text-foreground text-[10px] uppercase tracking-[0.1em] font-bold h-10">
+              <SelectTrigger className="w-[150px] sm:w-[180px] bg-transparent border-border rounded-none focus:ring-[#cfae70] text-foreground text-[10px] uppercase tracking-[0.1em] font-bold h-11">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent className="bg-background border-border rounded-none text-foreground">
@@ -113,7 +115,24 @@ export function ProductListing({ searchParams }: ProductListingProps) {
               </SelectContent>
             </Select>
           </div>
+          <span className="hidden sm:block text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{result.total} results</span>
         </div>
+
+        {appliedFilters.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2 mb-6" aria-label="Applied filters">
+            {appliedFilters.map((filter) => (
+              <button
+                key={filter.key}
+                onClick={() => updateParams({ [filter.key]: undefined })}
+                className="min-h-11 border border-border px-3 text-[10px] font-bold uppercase tracking-[0.1em] hover:border-[#cfae70]"
+                aria-label={`Remove ${filter.label} filter`}
+              >
+                {filter.label} ×
+              </button>
+            ))}
+            <button onClick={() => router.push("/products", { scroll: false })} className="min-h-11 px-2 text-[10px] font-bold uppercase tracking-[0.1em] text-[#cfae70]">Clear all</button>
+          </div>
+        )}
 
         {result.data.length === 0 ? (
           <div className="text-center py-24 border border-border mt-8">

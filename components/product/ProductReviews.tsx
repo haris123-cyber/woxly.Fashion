@@ -1,80 +1,16 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { Star, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { showCustomToast } from "@/components/shared/CustomToast";
+import type { ProductReview } from "@/types/product";
 
-const REVIEW_POOL = [
-  {
-    id: 1,
-    author: "Sarah M.",
-    rating: 5,
-    date: "August 12, 2026",
-    title: "Absolutely in love!",
-    content: "The quality is outstanding. It fits perfectly and the material feels incredibly premium. Will definitely be purchasing more from Woxly.",
-    images: [
-      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&h=400&fit=crop"
-    ],
-  },
-  {
-    id: 2,
-    author: "Priya K.",
-    rating: 5,
-    date: "July 28, 2026",
-    title: "Beautiful design",
-    content: "I wore this to a dinner party and received so many compliments. The attention to detail is just superb. Highly recommend!",
-  },
-  {
-    id: 3,
-    author: "Elena R.",
-    rating: 4,
-    date: "July 15, 2026",
-    title: "Great but slightly long",
-    content: "The fabric is gorgeous and the packaging was beautiful. It's just a tiny bit long for me, but nothing a quick hem couldn't fix.",
-  },
-  {
-    id: 4,
-    author: "Aisha T.",
-    rating: 5,
-    date: "June 05, 2026",
-    title: "Perfect staple piece",
-    content: "I've worn this almost every day since I bought it. It washes incredibly well and still looks brand new. Attaching a pic from my vacation!",
-    images: [
-      "https://images.unsplash.com/photo-1475180098004-ca77a66827be?w=400&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1475180098004-ca77a66827be?w=400&h=400&fit=crop"
-    ],
-  },
-  {
-    id: 5,
-    author: "Chloe B.",
-    rating: 4,
-    date: "May 22, 2026",
-    title: "Very chic",
-    content: "Love the minimal design. It goes with almost everything in my wardrobe.",
-  },
-  {
-    id: 6,
-    author: "Nisha D.",
-    rating: 5,
-    date: "April 10, 2026",
-    title: "My new favorite!",
-    content: "Stunning! The color is exactly as shown online and the fit is true to size.",
-    images: ["https://images.unsplash.com/photo-1475180098004-ca77a66827be?w=400&h=400&fit=crop"],
-  }
-];
-
-function getReviewsForProduct(productId: string) {
-  const sum = productId.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const startIdx = sum % (REVIEW_POOL.length - 2);
-  return REVIEW_POOL.slice(startIdx, startIdx + 3);
-}
-
-export function ProductReviews({ productId }: { productId: string }) {
-  const reviews = useMemo(() => getReviewsForProduct(productId), [productId]);
-  const avgRating = (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1);
+export function ProductReviews({ reviews = [] }: { reviews?: ProductReview[] }) {
+  const avgRating = reviews.length > 0
+    ? (reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length).toFixed(1)
+    : "0.0";
   const [lightboxState, setLightboxState] = useState<{ images: string[], index: number } | null>(null);
 
   // Review form state
@@ -133,7 +69,7 @@ export function ProductReviews({ productId }: { productId: string }) {
 
   return (
     <>
-      <section className="mt-24 border-t border-border pt-16">
+      <section id="reviews" className="mt-24 border-t border-border pt-16 scroll-mt-24">
         <div className="grid lg:grid-cols-12 gap-12">
 
           {/* Left: Summary */}
@@ -238,7 +174,7 @@ export function ProductReviews({ productId }: { productId: string }) {
                   <span className="text-[9px] uppercase tracking-[0.1em] text-muted-foreground">{review.date}</span>
                 </div>
                 <p className="text-[11px] leading-relaxed text-foreground uppercase tracking-[0.05em] mb-4">
-                  {review.content}
+                  {review.body}
                 </p>
 
                 {review.images && review.images.length > 0 && (
@@ -260,6 +196,13 @@ export function ProductReviews({ productId }: { productId: string }) {
                 </p>
               </div>
             ))}
+
+            {reviews.length === 0 && (
+              <div className="border border-border p-8 bg-secondary/20 text-center">
+                <p className="font-fraunces text-xl text-foreground mb-2">No reviews yet</p>
+                <p className="text-sm text-muted-foreground">Be the first verified buyer to review this product.</p>
+              </div>
+            )}
 
           </div>
         </div>

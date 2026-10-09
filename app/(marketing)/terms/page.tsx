@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { StaticPageLayout } from "@/components/layout/StaticPageLayout";
 import Link from "next/link";
+import { SITE_CONFIG } from "@/lib/constants";
 export const metadata: Metadata = { title: "Terms of Service" };
 
 export default function TermsPage() {
@@ -50,15 +50,15 @@ export default function TermsPage() {
           <h1 className="text-4xl md:text-5xl font-bold text-[#111827] mb-8 tracking-tight">Terms & Conditions</h1>
 
           <div className="space-y-4 mb-16">
-            <p><strong>Store:</strong> Mini Mart</p>
-            <p><strong>Support Email:</strong> info@woxly.in</p>
-            <p><strong>Support Phone:</strong> +9173063 47297</p>
+            <p><strong>Store:</strong> {SITE_CONFIG.legalName}</p>
+            <p><strong>Support Email:</strong> {SITE_CONFIG.email}</p>
+            <p><strong>Support Phone:</strong> {SITE_CONFIG.phone}</p>
           </div>
 
           <section id="overview" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-bold text-[#111827] mb-4">Overview</h2>
             <div className="space-y-4">
-              <p>Welcome to Mini Mart. These terms define the rules for using our storefront, placing orders, and accessing services.</p>
+              <p>Welcome to {SITE_CONFIG.name}. These terms define the rules for using our storefront, placing orders, and accessing services.</p>
               <p>The below terms and conditions, together with any policies referenced herein, describe your rights and responsibilities when you use the Services.</p>
               <p>By visiting, interacting with or using our Services, you agree to be bound by these Terms of Service and our Privacy Policy.</p>
             </div>
@@ -84,7 +84,7 @@ export default function TermsPage() {
           <section id="section-3" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-bold text-[#111827] mb-4">Section 3 &ndash; Orders</h2>
             <div className="space-y-4">
-              <p>When you place an order, you are making an offer to purchase. Mini Mart reserves the right to accept or decline your order for any reason at its discretion. Your order is not accepted until we confirm acceptance.</p>
+              <p>When you place an order, you are making an offer to purchase. {SITE_CONFIG.legalName} reserves the right to accept or decline your order for any reason at its discretion. Your order is not accepted until we confirm acceptance.</p>
               <p>Your purchases are subject to return or exchange solely in accordance with our Return and Refund Policy.</p>
             </div>
           </section>
@@ -107,7 +107,7 @@ export default function TermsPage() {
           <section id="section-6" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-bold text-[#111827] mb-4">Section 6 &ndash; Intellectual Property</h2>
             <div className="space-y-4">
-              <p>Our Services, including all trademarks, brands, text, displays, images, graphics, videos and audio, are owned by Mini Mart, its affiliates or licensors and are protected by applicable intellectual property laws.</p>
+              <p>Our Services, including all trademarks, brands, text, displays, images, graphics, videos and audio, are owned by {SITE_CONFIG.legalName}, its affiliates or licensors and are protected by applicable intellectual property laws.</p>
             </div>
           </section>
 
@@ -149,21 +149,21 @@ export default function TermsPage() {
           <section id="section-12" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-bold text-[#111827] mb-4">Section 12 &ndash; Limitation of Liability</h2>
             <div className="space-y-4">
-              <p>To the fullest extent permitted by law, Mini Mart, its partners, directors, officers, employees, affiliates, agents, contractors, service providers or licensors are not liable for indirect, incidental, punitive, special, or consequential damages arising from your use of the Services.</p>
+              <p>To the fullest extent permitted by law, {SITE_CONFIG.legalName}, its partners, directors, officers, employees, affiliates, agents, contractors, service providers or licensors are not liable for indirect, incidental, punitive, special, or consequential damages arising from your use of the Services.</p>
             </div>
           </section>
 
           <section id="section-13" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-bold text-[#111827] mb-4">Section 13 &ndash; Indemnification</h2>
             <div className="space-y-4">
-              <p>You agree to indemnify, defend and hold harmless Mini Mart and its affiliates, partners, officers, directors, employees, agents, contractors, licensors, and service providers from losses, damages, liabilities or claims arising out of your breach of these Terms or your use of the Services.</p>
+              <p>You agree to indemnify, defend and hold harmless {SITE_CONFIG.legalName} and its affiliates, partners, officers, directors, employees, agents, contractors, licensors, and service providers from losses, damages, liabilities or claims arising out of your breach of these Terms or your use of the Services.</p>
             </div>
           </section>
 
           <section id="section-14" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-bold text-[#111827] mb-4">Section 14 &ndash; Governing Law</h2>
             <div className="space-y-4">
-              <p>These Terms are governed by and construed in accordance with the laws in the jurisdiction where Mini Mart is headquartered.</p>
+              <p>These Terms are governed by and construed in accordance with applicable Indian law.</p>
             </div>
           </section>
 
@@ -177,9 +177,9 @@ export default function TermsPage() {
           <section id="section-16" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-bold text-[#111827] mb-4">Section 16 &ndash; Contact Information</h2>
             <div className="space-y-4 mb-12">
-              <p><strong>Email:</strong> info@woxly.in</p>
-              <p><strong>Phone:</strong> +9173063 47297</p>
-              <p><strong>Address:</strong> [INSERT RETURN ADDRESS]</p>
+              <p><strong>Email:</strong> {SITE_CONFIG.email}</p>
+              <p><strong>Phone:</strong> {SITE_CONFIG.phone}</p>
+              {SITE_CONFIG.returnAddress && <p><strong>Address:</strong> {SITE_CONFIG.returnAddress}</p>}
             </div>
           </section>
         </div>

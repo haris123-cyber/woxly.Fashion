@@ -2,12 +2,13 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { Heart, Tag, Ticket, MapPin, Truck, Store, ArrowBigDown, ArrowDown, Droplets, ShieldCheck, Ban } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Heart, Tag, MapPin, Truck, Store, ArrowDown, RotateCcw, ShieldCheck } from "lucide-react";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductReviews } from "@/components/product/ProductReviews";
 import { useCartStore } from "@/store/cart-store";
 import { useUIStore } from "@/store/ui-store";
-import { cn } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import type { Product } from "@/types/product";
 import { SITE_CONFIG } from "@/lib/constants";
 import { showCustomToast } from "@/components/shared/CustomToast";
@@ -19,6 +20,11 @@ interface ProductDetailProps {
 }
 
 export function ProductDetail({ product, related }: ProductDetailProps) {
+    const router = useRouter();
+    const verifiedReviews = product.reviews ?? [];
+    const verifiedRating = verifiedReviews.length > 0
+        ? verifiedReviews.reduce((total, review) => total + review.rating, 0) / verifiedReviews.length
+        : null;
     const [selectedImage, setSelectedImage] = useState(0);
 
     const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -50,8 +56,9 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
     }; const sizes = product.variants.filter((v) => v.type === "size");
     const colors = product.variants.filter((v) => v.type === "color");
 
-    const [selectedSize, setSelectedSize] = useState<string | undefined>(sizes[0]?.value);
-    const [selectedColor, setSelectedColor] = useState<string | undefined>(colors[0]?.value);
+    const [selectedSize, setSelectedSize] = useState<string | undefined>();
+    const [selectedColor, setSelectedColor] = useState<string | undefined>();
+    const [variantError, setVariantError] = useState("");
     const [activeTab, setActiveTab] = useState<'DETAILS' | 'CARE' | 'DELIVERY'>('DETAILS');
     const [isWishlisted, setIsWishlisted] = useState(false);
 
@@ -64,6 +71,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
     const [deliveryMessage, setDeliveryMessage] = useState('');
 
     const mainButtonRef = useRef<HTMLDivElement>(null);
+    const variantSelectorRef = useRef<HTMLDivElement>(null);
 
     const checkDelivery = () => {
         if (pincode.length !== 6) return;
@@ -85,6 +93,19 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
     const addItem = useCartStore((s) => s.addItem);
 
     const handleAddToCart = () => {
+        const missingOptions = [
+            sizes.length > 0 && !selectedSize ? "size" : null,
+            colors.length > 0 && !selectedColor ? "colour" : null,
+        ].filter(Boolean);
+
+        if (missingOptions.length > 0) {
+            setVariantError(`Please select ${missingOptions.join(" and ")} before adding this item.`);
+            variantSelectorRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+            variantSelectorRef.current?.focus({ preventScroll: true });
+            return;
+        }
+
+        setVariantError("");
         addItem({
             productId: product.id,
             slug: product.slug,
@@ -236,9 +257,13 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
 
 
                     </div>
+                    <a href="#reviews" className="inline-flex min-h-11 items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+                        <span aria-hidden="true" className="text-[#cfae70]">★</span>
+                        {verifiedRating ? `${verifiedRating.toFixed(1)} · ${verifiedReviews.length} verified ${verifiedReviews.length === 1 ? "review" : "reviews"}` : "No verified reviews yet"}
+                    </a>
                     <div className="flex items-center gap-3 mb-8">
                         <p className="text-[#cfae70] font-fraunces text-2xl">
-                            ₹{product.price}
+                            {formatPrice(product.price)}
                         </p>
                         {(() => {
                             const comparePrice = product.compareAtPrice;
@@ -247,7 +272,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                                 return (
                                     <>
                                         <p className="text-muted-foreground line-through text-xl">
-                                            ₹{comparePrice}
+                                            {formatPrice(comparePrice)}
                                         </p>
                                         <p className="flex items-center whitespace-nowrap text-red-500 text-xl font-fraunces px-0 py-1 uppercase tracking-wider">
                                             <ArrowDown className="w-5 h-5" /> {discount}%
@@ -273,7 +298,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                     </p>
 
                     {/* Promo Banners */}
-                    <div className="mb-12 flex flex-col gap-3">
+                    <div className="mb-10 flex flex-col gap-3">
                         <div className="relative border border-dashed border-[#cfae70]/50 bg-[#cfae70]/5 p-4 flex items-start gap-3 overflow-hidden">
                             {/* Ticket cutouts */}
                             <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-background rounded-full border-r border-dashed border-[#cfae70]/50" />
@@ -281,23 +306,17 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
 
                             <Tag className="w-4 h-4 text-[#cfae70] mt-0.5 shrink-0" />
                             <div>
-                                <p className="text-[10px] font-bold text-foreground tracking-[0.1em] uppercase mb-1">Bank Offer</p>
-                                <p className="text-[11px] text-muted-foreground leading-relaxed">10% instant discount on HDFC Credit Cards. Use code <span className="font-bold text-[#cfae70]">HDFC10</span></p>
+                                <p className="text-[10px] font-bold text-foreground tracking-[0.1em] uppercase mb-1">Best available offer</p>
+                                <p className="text-[11px] text-muted-foreground leading-relaxed">{SITE_CONFIG.primaryOffer.label}. Use code <span className="font-bold text-[#cfae70]">{SITE_CONFIG.primaryOffer.code}</span></p>
                             </div>
                         </div>
-                        <div className="relative border border-dashed border-[#cfae70]/50 bg-[#cfae70]/5 p-4 flex items-start gap-3 overflow-hidden">
-                            {/* Ticket cutouts */}
-                            <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-background rounded-full border-r border-dashed border-[#cfae70]/50" />
-                            <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-background rounded-full border-l border-dashed border-[#cfae70]/50" />
-
-                            <Ticket className="w-4 h-4 text-[#cfae70] mt-0.5 shrink-0" />
-                            <div>
-                                <p className="text-[10px] font-bold text-foreground tracking-[0.1em] uppercase mb-1">Special Price</p>
-                                <p className="text-[11px] text-muted-foreground leading-relaxed">Get extra 15% off on your first order. Use code <span className="font-bold text-[#cfae70]">WELCOME15</span></p>
-                            </div>
-                        </div>
+                        <details className="text-[11px] text-muted-foreground">
+                            <summary className="min-h-11 flex cursor-pointer items-center text-[10px] font-bold uppercase tracking-[0.12em] text-foreground">View payment and eligibility details</summary>
+                            <p className="pb-2 leading-relaxed">Only one coupon can be applied per order. Payment offers, when available, are shown at checkout after eligibility is confirmed.</p>
+                        </details>
                     </div>
 
+                    <div ref={variantSelectorRef} tabIndex={-1} className="scroll-mt-28 outline-none">
                     {sizes.length > 0 && (
                         <div className="mb-8">
                             <div className="flex justify-between items-center mb-4">
@@ -314,9 +333,9 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                                     <button
                                         key={size.id}
                                         disabled={!size.inStock}
-                                        onClick={() => setSelectedSize(size.value)}
+                                        onClick={() => { setSelectedSize(size.value); setVariantError(""); }}
                                         className={cn(
-                                            "w-12 h-10 border text-[10px] uppercase font-bold transition-colors",
+                                            "min-w-11 h-11 px-3 border text-[10px] uppercase font-bold transition-colors",
                                             !size.inStock ? "opacity-50 cursor-not-allowed border-border text-[#444]" :
                                                 selectedSize === size.value
                                                     ? "border-[#cfae70] border-2 text-[#cfae70]"
@@ -335,27 +354,29 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                             <p className="text-foreground  text-[9px] font-bold tracking-[0.2em] uppercase mb-4">
                                 Colour — {colors.find(c => c.value === selectedColor)?.label || 'Select'}
                             </p>
-                            <div className="flex flex-wrap gap-3">
+                            <div className="flex flex-wrap gap-1">
                                 {colors.map((color) => {
                                     const bg = colorMap[color.value.toLowerCase()] || color.value;
                                     return (
                                         <button
                                             key={color.id}
                                             disabled={!color.inStock}
-                                            onClick={() => setSelectedColor(color.value)}
+                                            onClick={() => { setSelectedColor(color.value); setVariantError(""); }}
                                             className={cn(
-                                                "w-5 h-5 rounded-full  ring-2 ring-offset-2  transition-all",
+                                                "w-11 h-11 rounded-full flex items-center justify-center transition-all",
                                                 !color.inStock ? "opacity-50 cursor-not-allowed" : "",
-                                                selectedColor === color.value ? "ring-[#cfae70]" : "ring-white hover:ring-[#444]"
+                                                selectedColor === color.value ? "ring-2 ring-[#cfae70]" : "hover:ring-2 hover:ring-[#444]"
                                             )}
-                                            style={{ backgroundColor: bg }}
                                             aria-label={color.label}
-                                        />
+                                            aria-pressed={selectedColor === color.value}
+                                        ><span className="w-5 h-5 rounded-full ring-1 ring-black/20" style={{ backgroundColor: bg }} /></button>
                                     );
                                 })}
                             </div>
                         </div>
                     )}
+                    {variantError && <p role="alert" className="-mt-6 mb-8 text-sm font-medium text-red-600">{variantError}</p>}
+                    </div>
 
                     {/* Pincode Checker */}
                     <div className="mb-12 border-t border-border pt-8">
@@ -403,8 +424,8 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                                 <div className="p-4 flex items-start gap-3 border-b border-border">
                                     <Truck className="w-5 h-5 text-foreground shrink-0 mt-0.5" />
                                     <div>
-                                        <p className="font-bold text-foreground text-sm">Delivery by Sep 10, 2026</p>
-                                        <p className="text-muted-foreground text-xs mt-1">₹53.36 delivery · Delhivery Surface</p>
+                                        <p className="font-bold text-foreground text-sm">Estimated delivery in 3–5 business days</p>
+                                        <p className="text-muted-foreground text-xs mt-1">Shipping fee and COD eligibility are confirmed at checkout.</p>
                                     </div>
                                 </div>
                                 {/* Bottom section: General Info */}
@@ -430,7 +451,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                             disabled={product.stock === 0}
                             className="flex-1 border-1 border-[#cfae70]/80 hover:border-[#cfae70]/60  hover:bg-[#b5985d] disabled:bg-[#333] disabled:text-muted-foreground text-black h-12 text-[10px] font-bold tracking-[0.2em] uppercase transition-colors"
                         >
-                            {product.stock === 0 ? 'Out of Stock' : 'Add to Bag'}
+                            {product.stock === 0 ? 'Out of Stock' : sizes.length > 0 && !selectedSize ? 'Select size' : colors.length > 0 && !selectedColor ? 'Select colour' : 'Add to Bag'}
                         </button>
                         <button
                             onClick={() => setIsWishlisted(!isWishlisted)}
@@ -442,7 +463,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                             <Heart className={cn("h-4 w-4", isWishlisted ? "text-[#cfae70] fill-[#cfae70]" : "text-[#cfae70]")} />
                         </button>
                         <a
-                            href={`https://wa.me/${SITE_CONFIG?.phone?.replace(/[^0-9]/g, "") || "919876543210"}?text=${encodeURIComponent(`Hi, I'm interested in the ${product.name} (₹${product.price}).`)}`}
+                            href={`https://wa.me/${SITE_CONFIG.phone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hi, I'm interested in the ${product.name} (${formatPrice(product.price)}).`)}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="w-12 h-12 border border-border flex items-center justify-center text-[#25D366] hover:text-[#25D366] hover:border-[#25D366] transition-colors"
@@ -457,7 +478,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                     <button
                         onClick={() => {
                             if (window.innerWidth < 768) {
-                                window.location.href = "/cart"; // next/router push would be better but requires adding useRouter to component top
+                                router.push("/cart");
                             } else {
                                 useUIStore.getState().setCartDrawerOpen(true);
                             }
@@ -476,16 +497,16 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                     <div className="w-full overflow-hidden py-6 border-y border-border mb-8">
                         <div className="flex gap-4 sm:gap-6 md:justify-between overflow-x-auto hide-scrollbar pb-2">
                             <div className="flex flex-col items-center justify-center text-center gap-2 min-w-[85px] shrink-0">
-                                <Droplets className="w-5 h-5 text-muted-foreground" />
-                                <span className="text-[9px] uppercase font-bold tracking-[0.1em] text-muted-foreground">Washable</span>
+                                <ShieldCheck className="w-5 h-5 text-muted-foreground" />
+                                <span className="text-[9px] uppercase font-bold tracking-[0.1em] text-muted-foreground">Secure Payments</span>
                             </div>
                             <div className="flex flex-col items-center justify-center text-center gap-2 min-w-[85px] shrink-0">
-                                <Ban className="w-5 h-5 text-muted-foreground" />
-                                <span className="text-[9px] uppercase font-bold tracking-[0.1em] text-muted-foreground">No Returns</span>
+                                <RotateCcw className="w-5 h-5 text-muted-foreground" />
+                                <span className="text-[9px] uppercase font-bold tracking-[0.1em] text-muted-foreground">{product.returnEligible === false ? "Final Sale" : "30-Day Returns"}</span>
                             </div>
                             <div className="flex flex-col items-center justify-center text-center gap-2 min-w-[85px] shrink-0">
                                 <ShieldCheck className="w-5 h-5 text-muted-foreground" />
-                                <span className="text-[9px] uppercase font-bold tracking-[0.1em] text-muted-foreground">100% Authentic</span>
+                                <span className="text-[9px] uppercase font-bold tracking-[0.1em] text-muted-foreground">Product Verified</span>
                             </div>
                             <div className="flex flex-col items-center justify-center text-center gap-2 min-w-[85px] shrink-0">
                                 <Truck className="w-5 h-5 text-muted-foreground" />
@@ -497,10 +518,10 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                     {/* Tabs */}
                     <div>
                         <div className="border-b border-border flex gap-4 sm:gap-8 mb-8 flex-wrap">
-                            {['DETAILS', 'CARE', 'DELIVERY'].map((tab) => (
+                            {(['DETAILS', 'CARE', 'DELIVERY'] as const).map((tab) => (
                                 <button
                                     key={tab}
-                                    onClick={() => setActiveTab(tab as any)}
+                                    onClick={() => setActiveTab(tab)}
                                     className={cn(
                                         "pb-3 text-[9px] font-bold tracking-[0.2em] uppercase transition-colors border-b-2",
                                         activeTab === tab ? "border-[#cfae70] text-[#cfae70]" : "border-transparent text-muted-foreground hover:text-muted-foreground"
@@ -514,18 +535,18 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                         <div className="text-[11px] text-muted-foreground space-y-4 tracking-[0.05em]">
                             {activeTab === 'DETAILS' && (
                                 <>
-                                    <div className="grid grid-cols-12">
+                                    {product.material && <div className="grid grid-cols-12">
                                         <span className="col-span-4 uppercase tracking-[0.15em] text-[9px]">Material</span>
-                                        <span className="col-span-8 text-foreground">Premium Organic Cotton / Merino Blend</span>
-                                    </div>
-                                    <div className="grid grid-cols-12">
+                                        <span className="col-span-8 text-foreground">{product.material}</span>
+                                    </div>}
+                                    {colors.length > 0 && <div className="grid grid-cols-12">
                                         <span className="col-span-4 uppercase tracking-[0.15em] text-[9px]">Colour</span>
-                                        <span className="col-span-8 text-foreground capitalize">{selectedColor || product.variants.find(v => v.type === 'color')?.label}</span>
-                                    </div>
-                                    <div className="grid grid-cols-12">
+                                        <span className="col-span-8 text-foreground capitalize">{colors.find(v => v.value === selectedColor)?.label || "Select a colour"}</span>
+                                    </div>}
+                                    {product.countryOfOrigin && <div className="grid grid-cols-12">
                                         <span className="col-span-4 uppercase tracking-[0.15em] text-[9px]">Origin</span>
-                                        <span className="col-span-8 text-foreground">Made in Italy</span>
-                                    </div>
+                                        <span className="col-span-8 text-foreground">{product.countryOfOrigin}</span>
+                                    </div>}
                                     <div className="grid grid-cols-12">
                                         <span className="col-span-4 uppercase tracking-[0.15em] text-[9px]">Ref.</span>
                                         <span className="col-span-8 text-foreground uppercase">{product.sku || 'MN-AW25-005'}</span>
@@ -538,18 +559,18 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                             {activeTab === 'CARE' && (
                                 <div className="grid grid-cols-12">
                                     <span className="col-span-4 uppercase tracking-[0.15em] text-[9px]">Care</span>
-                                    <span className="col-span-8 text-foreground">Dry clean only. Do not tumble dry. Iron on low heat.</span>
+                                    <span className="col-span-8 text-foreground">{product.careInstructions || "See the product label for care instructions."}</span>
                                 </div>
                             )}
                             {activeTab === 'DELIVERY' && (
                                 <div className="space-y-4">
                                     <div className="grid grid-cols-12">
                                         <span className="col-span-4 uppercase tracking-[0.15em] text-[9px]">Standard</span>
-                                        <span className="col-span-8 text-foreground">Free on orders over ₹999 (3-5 business days)</span>
+                                        <span className="col-span-8 text-foreground">Free on orders over {formatPrice(999)} (3–5 business days)</span>
                                     </div>
                                     <div className="grid grid-cols-12">
                                         <span className="col-span-4 uppercase tracking-[0.15em] text-[9px]">Express</span>
-                                        <span className="col-span-8 text-foreground">₹250 (1-2 business days)</span>
+                                        <span className="col-span-8 text-foreground">{formatPrice(149)} (2–3 business days)</span>
                                     </div>
                                 </div>
                             )}
@@ -569,7 +590,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
             )}
 
             {/* Reviews */}
-            <ProductReviews productId={product.id} />
+            <ProductReviews reviews={product.reviews} />
 
             {/* Product Banners */}
             <section className="mt-24 pb-12">
@@ -604,14 +625,14 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
             >
                 <div className="flex-1 truncate pr-2">
                     <p className="text-[9px] uppercase tracking-[0.1em] text-muted-foreground truncate mb-0.5">{product.name}</p>
-                    <p className="text-[#cfae70] font-fraunces text-lg leading-none">₹{product.price}</p>
+                    <p className="text-[#cfae70] font-fraunces text-lg leading-none">{formatPrice(product.price)}</p>
                 </div>
                 <button
                     onClick={handleAddToCart}
                     disabled={product.stock === 0}
                     className="w-1/2 bg-[#cfae70] hover:bg-[#b5985d] disabled:bg-[#333] disabled:text-muted-foreground text-black h-12 text-[10px] font-bold tracking-[0.2em] uppercase transition-colors shrink-0"
                 >
-                    {product.stock === 0 ? 'Out of Stock' : 'Add to Bag'}
+                    {product.stock === 0 ? 'Out of Stock' : sizes.length > 0 && !selectedSize ? 'Select size' : colors.length > 0 && !selectedColor ? 'Select colour' : 'Add to Bag'}
                 </button>
             </div>
 

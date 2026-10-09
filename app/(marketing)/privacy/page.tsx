@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { Metadata } from "next";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = { title: "Privacy Policy" };
 
@@ -32,9 +33,9 @@ export default function PrivacyPage() {
           <div className="bg-card border border-border p-8 md:p-12 shadow-sm">
             <div className="mb-12 border-b border-border pb-8">
               <p className="text-sm text-muted-foreground uppercase tracking-wider font-semibold mb-4">Last updated: February 21, 2026</p>
-              <h2 className="text-3xl font-fraunces mb-4 text-foreground">Store: Mini Mart</h2>
+              <h2 className="text-3xl font-fraunces mb-4 text-foreground">Store: {SITE_CONFIG.legalName}</h2>
               <p className="text-muted-foreground leading-relaxed">
-                Mini Mart operates this store and related services. This policy explains how customer data is collected, used, stored, and shared.
+                {SITE_CONFIG.legalName} operates this store and related services. This policy explains how customer data is collected, used, stored, and shared.
               </p>
             </div>
 

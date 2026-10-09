@@ -19,8 +19,20 @@ export const SHIPPING_METHODS = [
 
 export const SITE_CONFIG = {
   name: "Woxly",
+  legalName: "Woxly",
   tagline: "Premium Fashion & Lifestyle",
+  description: "Curated fashion, accessories, and lifestyle pieces designed for everyday confidence.",
   url: "https://woxly.store",
-  email: "hello@woxly.store",
-  phone: "+91 98765 43210",
+  email: "info@woxly.in",
+  phone: "+91 73063 47297",
+  supportHours: "Monday to Sunday, 9:00 AM to 8:00 PM IST",
+  currency: "INR",
+  locale: "en-IN",
+  returnAddress: null as string | null,
+  physicalStoresEnabled: false,
+  instagramUrl: "https://instagram.com",
+  primaryOffer: {
+    code: "WOXLY10",
+    label: "10% off orders over ₹500",
+  },
 };

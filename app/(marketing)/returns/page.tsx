@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { StaticPageLayout } from "@/components/layout/StaticPageLayout";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = { title: "Returns & Refunds" };
 
@@ -11,11 +12,11 @@ export default function ReturnsPage() {
 
         <div className="text-[15px] text-gray-600 leading-relaxed">
           <div className="space-y-4 mb-12">
-            <p><strong>Store:</strong> Mini Mart</p>
-            <p><strong>Support Email:</strong> info@woxly.in</p>
-            <p><strong>Support Phone:</strong> +9173063 47297</p>
-            <p><strong>Return Address:</strong> [INSERT RETURN ADDRESS]</p>
-            <p><strong>Support Hours:</strong> Monday to Sunday, 9:00 AM to 8:00 PM</p>
+            <p><strong>Store:</strong> {SITE_CONFIG.legalName}</p>
+            <p><strong>Support Email:</strong> {SITE_CONFIG.email}</p>
+            <p><strong>Support Phone:</strong> {SITE_CONFIG.phone}</p>
+            {SITE_CONFIG.returnAddress && <p><strong>Return Address:</strong> {SITE_CONFIG.returnAddress}</p>}
+            <p><strong>Support Hours:</strong> {SITE_CONFIG.supportHours}</p>
           </div>
 
           <h2 className="text-2xl font-bold text-[#111827] mt-12 mb-4">Return Window</h2>
@@ -42,7 +43,7 @@ export default function ReturnsPage() {
 
           <h2 className="text-2xl font-bold text-[#111827] mt-12 mb-4">Need Help?</h2>
           <p className="mb-12">
-            For return-related questions, contact info@woxly.in
+            For return-related questions, contact {SITE_CONFIG.email}.
           </p>
         </div>
       </div>

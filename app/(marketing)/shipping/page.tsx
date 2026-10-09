@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { StaticPageLayout } from "@/components/layout/StaticPageLayout";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = { title: "Shipping Information" };
 
@@ -11,11 +12,10 @@ export default function ShippingPage() {
 
         <div className="text-[15px] text-gray-600 leading-relaxed">
           <div className="space-y-4 mb-12">
-            <p><strong>Store:</strong> Mini Mart</p>
-            <p><strong>Support Email:</strong> info@woxly.in</p>
-            <p><strong>Support Phone:</strong> +917306347297 / +917012802594</p>
-            <p><strong>Dispatch Address:</strong> 1st Floor, M K Tower, Near Al Thaamar, Thiruvannur, Kozhikode 673029, (H) No: 27, Near Liwa, Yashoda Nagar Bangalore, Karnataka - 560064, IN</p>
-            <p><strong>Support Hours:</strong> Mon-Sun, 9:00 AM - 9:00 PM</p>
+            <p><strong>Store:</strong> {SITE_CONFIG.legalName}</p>
+            <p><strong>Support Email:</strong> {SITE_CONFIG.email}</p>
+            <p><strong>Support Phone:</strong> {SITE_CONFIG.phone}</p>
+            <p><strong>Support Hours:</strong> {SITE_CONFIG.supportHours}</p>
           </div>
 
           <h2 className="text-2xl font-bold text-[#111827] mt-12 mb-4">Delivery Areas</h2>
@@ -57,7 +57,7 @@ export default function ShippingPage() {
 
           <h2 className="text-2xl font-bold text-[#111827] mt-12 mb-4">Need Help?</h2>
           <p className="mb-12">
-            For shipping-related questions, contact info@woxly.in.
+            For shipping-related questions, contact {SITE_CONFIG.email}.
           </p>
         </div>
       </div>
