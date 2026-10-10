@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { StaticPageLayout } from "@/components/layout/StaticPageLayout";
-import { SITE_CONFIG } from "@/lib/constants";
+import { formatStoreAddress, SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = { title: "Returns & Refunds" };
 
@@ -15,30 +15,30 @@ export default function ReturnsPage() {
             <p><strong>Store:</strong> {SITE_CONFIG.legalName}</p>
             <p><strong>Support Email:</strong> {SITE_CONFIG.email}</p>
             <p><strong>Support Phone:</strong> {SITE_CONFIG.phone}</p>
-            {SITE_CONFIG.returnAddress && <p><strong>Return Address:</strong> {SITE_CONFIG.returnAddress}</p>}
+            {SITE_CONFIG.returnAddress && <p><strong>Return Address:</strong> {formatStoreAddress(SITE_CONFIG.returnAddress)}</p>}
             <p><strong>Support Hours:</strong> {SITE_CONFIG.supportHours}</p>
           </div>
 
           <h2 className="text-2xl font-bold text-[#111827] mt-12 mb-4">Return Window</h2>
           <p className="mb-12">
-            Customers can request a return within 30 days of delivery, unless an item is marked as non-returnable.
+            Customers can request a return within {SITE_CONFIG.returns.windowDays} days of delivery, unless an item is marked as non-returnable or exchange-only.
           </p>
 
           <h2 className="text-2xl font-bold text-[#111827] mt-12 mb-4">Eligibility</h2>
           <ul className="list-disc pl-5 space-y-2 mb-12">
             <li>Item must be unused and in original condition.</li>
             <li>Original packaging, tags, and proof of purchase are required.</li>
-            <li>Customized, perishable, digital, and gift card items may be excluded.</li>
+            <li>Customized items, opened hygiene-sensitive goods, digital products, and gift cards may be excluded.</li>
           </ul>
 
           <h2 className="text-2xl font-bold text-[#111827] mt-12 mb-4">Return Process</h2>
           <p className="mb-12">
-            To request a return, contact us using the support details above. Approved requests receive step-by-step return instructions.
+            To request a return, contact us using the support details above. Approved requests receive step-by-step instructions and the correct return destination. Please do not send an item before authorization.
           </p>
 
           <h2 className="text-2xl font-bold text-[#111827] mt-12 mb-4">Refund Timeline</h2>
           <p className="mb-12">
-            Once inspected and approved, refunds are processed to the original payment method within 5-10 business days.
+            Once inspected and approved, refunds are processed to the original payment method within {SITE_CONFIG.returns.refundTimeline}.
           </p>
 
           <h2 className="text-2xl font-bold text-[#111827] mt-12 mb-4">Need Help?</h2>

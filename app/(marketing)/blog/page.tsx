@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { getPosts } from "@/lib/api/blog";
 import { BlogListing } from "@/components/blog/BlogListing";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "Style tips, trends, and stories from Woxly.",
+  description: `Style tips, trends, and stories from ${SITE_CONFIG.name}.`,
 };
 
 export default function BlogPage() {

@@ -1,5 +1,6 @@
 import { Shield, Truck, RotateCcw, CreditCard, Lock, Award } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
+import { FREE_SHIPPING_THRESHOLD, SITE_CONFIG } from "@/lib/constants";
 import type { LucideIcon } from "lucide-react";
 
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -25,8 +26,8 @@ interface TrustBadgesProps {
 
 const DEFAULT_BADGES: TrustBadge[] = [
   { icon: "lock", label: "Secure Checkout", description: "256-bit SSL encryption" },
-  { icon: "truck", label: "Free Shipping", description: "On orders over ₹999" },
-  { icon: "returns", label: "Easy Returns", description: "30-day return policy" },
+  { icon: "truck", label: "Free Shipping", description: `On orders over ${formatPrice(FREE_SHIPPING_THRESHOLD)}` },
+  { icon: "returns", label: "Easy Returns", description: `${SITE_CONFIG.returns.windowDays}-day return policy` },
   { icon: "shield", label: "Quality Guarantee", description: "100% authentic products" },
 ];
 

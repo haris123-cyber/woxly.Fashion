@@ -122,7 +122,7 @@ export function Footer() {
           {/* Copyright & Links Row */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-2 border-t border-border/50">
             <div className="text-[10px] tracking-[0.05em]">
-              &copy; {new Date().getFullYear()} {SITE_CONFIG.legalName}. All rights reserved.
+              &copy; {new Date().getFullYear()} {SITE_CONFIG.copyrightName}. All rights reserved.
             </div>
 
             <div className="flex items-center flex-wrap justify-center gap-6 text-[10px] tracking-[0.05em]">

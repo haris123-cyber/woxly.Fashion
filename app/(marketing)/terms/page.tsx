@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE_CONFIG } from "@/lib/constants";
+import { formatStoreAddress, SITE_CONFIG } from "@/lib/constants";
 export const metadata: Metadata = { title: "Terms of Service" };
 
 export default function TermsPage() {
@@ -179,7 +179,7 @@ export default function TermsPage() {
             <div className="space-y-4 mb-12">
               <p><strong>Email:</strong> {SITE_CONFIG.email}</p>
               <p><strong>Phone:</strong> {SITE_CONFIG.phone}</p>
-              {SITE_CONFIG.returnAddress && <p><strong>Address:</strong> {SITE_CONFIG.returnAddress}</p>}
+              {SITE_CONFIG.businessAddress && <p><strong>Address:</strong> {formatStoreAddress(SITE_CONFIG.businessAddress)}</p>}
             </div>
           </section>
         </div>

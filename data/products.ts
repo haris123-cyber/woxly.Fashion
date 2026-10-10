@@ -20,7 +20,13 @@ function makeVariants() {
   return variants;
 }
 
-export const MOCK_PRODUCTS: Product[] = [
+type CatalogProduct = Omit<Product, "rating" | "reviewCount" | "returnEligibility"> & {
+  rating?: number;
+  reviewCount?: number;
+  returnEligibility?: Product["returnEligibility"];
+};
+
+const PRODUCT_CATALOG: CatalogProduct[] = [
   {
     id: "prod-1", slug: "classic-linen-shirt", name: "Classic Linen Shirt",
     description: "Crafted from premium European linen, this timeless shirt offers breathability and effortless style. Perfect for warm weather and smart-casual occasions.",
@@ -33,8 +39,8 @@ export const MOCK_PRODUCTS: Product[] = [
     relatedSlugs: ["slim-fit-chinos", "leather-belt", "cotton-tee"],
     fbtSlugs: ["slim-fit-chinos", "leather-belt"],
     reviews: [
-      { id: "r1", author: "Rahul S.", rating: 5, title: "Perfect fit!", body: "The linen quality is exceptional. Fits perfectly and very comfortable.", date: "2026-08-15", verified: true },
-      { id: "r2", author: "Amit K.", rating: 4, title: "Great shirt", body: "Love the fabric. Slightly oversized which I prefer.", date: "2026-08-10", verified: true },
+      { id: "r1", productId: "prod-1", author: "Rahul S.", rating: 5, title: "Perfect fit!", body: "The linen quality is exceptional. Fits perfectly and very comfortable.", date: "2026-08-15", verified: true },
+      { id: "r2", productId: "prod-1", author: "Amit K.", rating: 4, title: "Great shirt", body: "Love the fabric. Slightly oversized which I prefer.", date: "2026-08-10", verified: true },
     ],
   },
   {
@@ -268,3 +274,18 @@ export const MOCK_PRODUCTS: Product[] = [
     tags: ["sunglasses", "accessories", "summer"], isSale: true, sku: "WOX-AS-003",
   },
 ];
+
+export const MOCK_PRODUCTS: Product[] = PRODUCT_CATALOG.map((product) => {
+  const reviews = (product.reviews ?? []).filter((review) => review.productId === product.id);
+  const rating = reviews.length > 0
+    ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
+    : 0;
+
+  return {
+    ...product,
+    reviews,
+    rating,
+    reviewCount: reviews.length,
+    returnEligibility: product.returnEligibility ?? "returnable",
+  };
+});

@@ -21,6 +21,7 @@ interface ProductDetailProps {
 
 export function ProductDetail({ product, related }: ProductDetailProps) {
     const router = useRouter();
+    const cartDrawerOpen = useUIStore((state) => state.cartDrawerOpen);
     const verifiedReviews = product.reviews ?? [];
     const verifiedRating = verifiedReviews.length > 0
         ? verifiedReviews.reduce((total, review) => total + review.rating, 0) / verifiedReviews.length
@@ -63,6 +64,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
     const [isWishlisted, setIsWishlisted] = useState(false);
 
     const [showStickyBar, setShowStickyBar] = useState(false);
+    const [keyboardOpen, setKeyboardOpen] = useState(false);
     const [justAdded, setJustAdded] = useState(false);
     const [showSizeGuide, setShowSizeGuide] = useState(false);
 
@@ -136,8 +138,8 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
-                // If the main button is NOT intersecting (visible), show the sticky bar
-                setShowStickyBar(!entry.isIntersecting);
+                // Only appear after the main CTA has passed above the viewport.
+                setShowStickyBar(!entry.isIntersecting && entry.boundingClientRect.bottom < 0);
             },
             { threshold: 0 } // Trigger as soon as 1 pixel is visible/hidden
         );
@@ -148,6 +150,23 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
 
         return () => observer.disconnect();
     }, []);
+
+    useEffect(() => {
+        const viewport = window.visualViewport;
+        if (!viewport) return;
+
+        const updateKeyboardState = () => {
+            setKeyboardOpen(window.innerHeight - viewport.height > 150);
+        };
+        viewport.addEventListener("resize", updateKeyboardState);
+        return () => viewport.removeEventListener("resize", updateKeyboardState);
+    }, []);
+
+    const returnMessage = product.returnEligibility === "non_returnable"
+        ? "Non-returnable"
+        : product.returnEligibility === "exchange_only"
+            ? "Exchange only"
+            : `${SITE_CONFIG.returns.windowDays}-day returns`;
 
     const colorMap: Record<string, string> = {
         black: '#111',
@@ -160,9 +179,9 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
 
     return (
         <>
-            <div className="grid lg:grid-cols-12 gap-12 lg:gap-24 mb-32 min-w-0">
+            <div className="grid lg:grid-cols-12 gap-8 lg:gap-24 mb-20 lg:mb-32 min-w-0">
                 {/* Left: Gallery */}
-                <div className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-4 h-[60vh] lg:h-[80vh] lg:sticky lg:top-24 min-w-0 mb-8 lg:mb-0">
+                <div className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-4 h-[52svh] min-h-[360px] max-h-[520px] lg:h-[80vh] lg:max-h-none lg:sticky lg:top-24 min-w-0 mb-4 lg:mb-0">
                     {product.images.length > 1 && (
                         <div className="flex md:flex-col gap-4 overflow-x-auto md:w-20 shrink-0 hide-scrollbar">
                             {product.images.map((img, i) => (
@@ -193,7 +212,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                             fill
                             sizes="(max-width: 1024px) 100vw, 50vw"
                             className="object-cover transition-opacity duration-300"
-                            priority
+                            loading="eager"
                         />
                         {product.isNew && (
                             <div className="absolute top-4 left-4 bg-background border border-[#cfae70] px-3 py-1">
@@ -286,35 +305,16 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
 
                     </div>
 
-                    {product.slug === "classic-linen-shirt" && (
+                    {product.stock > 0 && product.stock <= 3 && (
                         <div className="mb-8 flex items-center justify-center gap-3 text-red-500 bg-red-500/5 px-4 py-3 border border-red-500/20 w-fit">
                             <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse shrink-0" />
-                            <span className="text-[10px] font-bold tracking-[0.15em] uppercase mt-0.5">Hurry up! 2 items left</span>
+                            <span className="text-[10px] font-bold tracking-[0.15em] uppercase mt-0.5">Only {product.stock} {product.stock === 1 ? "item" : "items"} left</span>
                         </div>
                     )}
 
                     <p className="text-foreground text-[13px] leading-relaxed mb-8 max-w-sm">
                         {product.shortDescription}
                     </p>
-
-                    {/* Promo Banners */}
-                    <div className="mb-10 flex flex-col gap-3">
-                        <div className="relative border border-dashed border-[#cfae70]/50 bg-[#cfae70]/5 p-4 flex items-start gap-3 overflow-hidden">
-                            {/* Ticket cutouts */}
-                            <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-background rounded-full border-r border-dashed border-[#cfae70]/50" />
-                            <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-background rounded-full border-l border-dashed border-[#cfae70]/50" />
-
-                            <Tag className="w-4 h-4 text-[#cfae70] mt-0.5 shrink-0" />
-                            <div>
-                                <p className="text-[10px] font-bold text-foreground tracking-[0.1em] uppercase mb-1">Best available offer</p>
-                                <p className="text-[11px] text-muted-foreground leading-relaxed">{SITE_CONFIG.primaryOffer.label}. Use code <span className="font-bold text-[#cfae70]">{SITE_CONFIG.primaryOffer.code}</span></p>
-                            </div>
-                        </div>
-                        <details className="text-[11px] text-muted-foreground">
-                            <summary className="min-h-11 flex cursor-pointer items-center text-[10px] font-bold uppercase tracking-[0.12em] text-foreground">View payment and eligibility details</summary>
-                            <p className="pb-2 leading-relaxed">Only one coupon can be applied per order. Payment offers, when available, are shown at checkout after eligibility is confirmed.</p>
-                        </details>
-                    </div>
 
                     <div ref={variantSelectorRef} tabIndex={-1} className="scroll-mt-28 outline-none">
                     {sizes.length > 0 && (
@@ -378,6 +378,23 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                     {variantError && <p role="alert" className="-mt-6 mb-8 text-sm font-medium text-red-600">{variantError}</p>}
                     </div>
 
+                    {/* Primary offer follows the required variant decision. */}
+                    <div className="mb-8 flex flex-col gap-2">
+                        <div className="relative border border-dashed border-[#cfae70]/50 bg-[#cfae70]/5 p-4 flex items-start gap-3 overflow-hidden">
+                            <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-background rounded-full border-r border-dashed border-[#cfae70]/50" />
+                            <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-background rounded-full border-l border-dashed border-[#cfae70]/50" />
+                            <Tag className="w-4 h-4 text-[#cfae70] mt-0.5 shrink-0" />
+                            <div>
+                                <p className="text-[10px] font-bold text-foreground tracking-[0.1em] uppercase mb-1">Best available offer</p>
+                                <p className="text-[11px] text-muted-foreground leading-relaxed">{SITE_CONFIG.primaryOffer.label}. Use code <span className="font-bold text-[#cfae70]">{SITE_CONFIG.primaryOffer.code}</span></p>
+                            </div>
+                        </div>
+                        <details className="text-[11px] text-muted-foreground">
+                            <summary className="min-h-11 flex cursor-pointer items-center text-[10px] font-bold uppercase tracking-[0.12em] text-foreground">View payment and eligibility details</summary>
+                            <p className="pb-2 leading-relaxed">{SITE_CONFIG.primaryOffer.stackable ? "This coupon can be combined with eligible payment offers." : "Only one coupon can be applied per order."} Payment offers are confirmed at checkout.</p>
+                        </details>
+                    </div>
+
                     {/* Pincode Checker */}
                     <div className="mb-12 border-t border-border pt-8">
                         <p className="text-foreground text-[9px] font-bold tracking-[0.2em] uppercase mb-4">
@@ -387,6 +404,9 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                             <div className="flex gap-2">
                                 <input
                                     type="text"
+                                    inputMode="numeric"
+                                    autoComplete="postal-code"
+                                    aria-label="Delivery PIN code"
                                     placeholder="Enter Pincode"
                                     value={pincode}
                                     onChange={(e) => {
@@ -432,7 +452,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                                 <div className="p-4 flex items-start gap-3">
                                     <Store className="w-5 h-5 text-foreground shrink-0 mt-0.5" />
                                     <p className="text-muted-foreground text-xs leading-relaxed">
-                                        1-4 Working Days for Delivery (Kerala). 2-6 Working Days for Delivery (Tamil Nadu, Karnataka, Goa, Andhra Pradesh, Telangana). 3-9 Working Days for Delivery (Other States).
+                                        The final delivery window is calculated from the selected address and confirmed at checkout.
                                     </p>
                                 </div>
                             </div>
@@ -459,6 +479,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                                 "w-12 h-12 border flex items-center justify-center transition-colors",
                                 isWishlisted ? "border-[#cfae70] bg-[#cfae70]/10" : "border-border hover:border-[#666]"
                             )}
+                            aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
                         >
                             <Heart className={cn("h-4 w-4", isWishlisted ? "text-[#cfae70] fill-[#cfae70]" : "text-[#cfae70]")} />
                         </button>
@@ -502,7 +523,7 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                             </div>
                             <div className="flex flex-col items-center justify-center text-center gap-2 min-w-[85px] shrink-0">
                                 <RotateCcw className="w-5 h-5 text-muted-foreground" />
-                                <span className="text-[9px] uppercase font-bold tracking-[0.1em] text-muted-foreground">{product.returnEligible === false ? "Final Sale" : "30-Day Returns"}</span>
+                                <span className="text-[9px] uppercase font-bold tracking-[0.1em] text-muted-foreground">{returnMessage}</span>
                             </div>
                             <div className="flex flex-col items-center justify-center text-center gap-2 min-w-[85px] shrink-0">
                                 <ShieldCheck className="w-5 h-5 text-muted-foreground" />
@@ -579,18 +600,18 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
                 </div>
             </div>
 
+            {/* Reviews */}
+            <ProductReviews reviews={product.reviews} />
+
             {/* Related Products */}
             {related.length > 0 && (
                 <section className="mt-24 border-t border-border pt-16">
                     <h2 className="text-3xl font-fraunces font-normal text-foreground mb-12">You May Also Like</h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {related.map((p) => <ProductCard key={p.id} product={p} />)}
+                        {related.map((p) => <ProductCard key={p.id} product={p} showDetails />)}
                     </div>
                 </section>
             )}
-
-            {/* Reviews */}
-            <ProductReviews reviews={product.reviews} />
 
             {/* Product Banners */}
             <section className="mt-24 pb-12">
@@ -619,8 +640,8 @@ export function ProductDetail({ product, related }: ProductDetailProps) {
             {/* Mobile Sticky Add to Bag */}
             <div
                 className={cn(
-                    "lg:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 z-40 flex items-center gap-4 pb-safe transition-transform duration-300",
-                    showStickyBar ? "translate-y-0" : "translate-y-full"
+                    "lg:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 z-40 flex items-center gap-4 pb-[max(1rem,env(safe-area-inset-bottom))] transition-transform duration-300",
+                    showStickyBar && !cartDrawerOpen && !keyboardOpen ? "translate-y-0" : "translate-y-full pointer-events-none"
                 )}
             >
                 <div className="flex-1 truncate pr-2">

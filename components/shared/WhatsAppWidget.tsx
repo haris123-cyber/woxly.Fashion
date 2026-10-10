@@ -4,15 +4,15 @@ import Link from "next/link";
 import { SITE_CONFIG } from "@/lib/constants";
 
 export function WhatsAppWidget() {
-  const phoneNumber = SITE_CONFIG?.phone?.replace(/[^0-9]/g, "") || "919876543210";
-  const message = "Hello Woxly! I need some help.";
+  const phoneNumber = SITE_CONFIG.supportPhone.replace(/[^0-9]/g, "");
+  const message = `Hello ${SITE_CONFIG.name}! I need some help.`;
 
   return (
     <Link
       href={`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-18 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-300"
+      className="fixed bottom-18 right-6 z-50 hidden h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-300 sm:flex"
       aria-label="Chat with us on WhatsApp"
     >
       <svg

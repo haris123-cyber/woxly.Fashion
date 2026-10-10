@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { StaticPageLayout } from "@/components/layout/StaticPageLayout";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = { title: "FAQ" };
 
@@ -34,12 +35,12 @@ const faqs = [
   {
     question: "What items are not eligible for returns?",
     answer:
-      "Perishable items, unsealed personal care products, and items marked as 'Non-returnable' on the product page cannot be returned. Please refer to our return policy for more details.",
+      "Items marked as non-returnable on the product page cannot be returned. Exchange-only items follow the eligibility shown on their product page. Please refer to our return policy for full conditions.",
   },
   {
     question: "How do I contact support?",
     answer:
-      "You can reach out to our support team via the Contact Us page, email us at info@woxly.in, or WhatsApp us directly using the link in the footer. Our team is available 9:00 AM - 9:00 PM.",
+      `You can reach our support team through the Contact Us page, at ${SITE_CONFIG.supportEmail}, or on WhatsApp. Support hours are ${SITE_CONFIG.supportHours}.`,
   },
 ];
 
@@ -61,7 +62,7 @@ export default function FAQPage() {
         <div className="container mx-auto px-4 py-1 md:py-20 max-w-3xl min-h-[70vh]">
           <div className="flex flex-col items-center text-center mb-10">
             <p className="text-gray-500 text-[15px] self-start">
-              Answers about orders, delivery, returns, and payments at <span className="font-semibold text-gray-800">Woxly</span>.
+              Answers about orders, delivery, returns, and payments at <span className="font-semibold text-gray-800">{SITE_CONFIG.name}</span>.
             </p>
           </div>
 

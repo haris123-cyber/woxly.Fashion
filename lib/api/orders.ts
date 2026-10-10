@@ -1,5 +1,6 @@
 import type { Order, CreateOrderInput } from "@/types/order";
-import { PROMO_CODES } from "@/lib/constants";
+import { PARTIAL_COD_PERCENTAGE } from "@/lib/constants";
+import { calculateOrderTotals } from "@/lib/commerce/pricing";
 
 let memoryOrders: Order[] = [
   {
@@ -193,19 +194,13 @@ export function getOrdersByEmail(email: string): Order[] {
 export function createOrder(input: CreateOrderInput): Order {
   const orders = getOrders();
   const subtotal = input.items.reduce((sum, i) => sum + i.price * i.quantity, 0);
-  let discount = 0;
-  if (input.promoCode && PROMO_CODES[input.promoCode.toUpperCase()]) {
-    const promo = PROMO_CODES[input.promoCode.toUpperCase()];
-    if (!promo.minOrder || subtotal >= promo.minOrder) {
-      discount =
-        promo.discountType === "percentage"
-          ? subtotal * (promo.discountValue / 100)
-          : promo.discountValue;
-    }
-  }
-  const shipping = input.shippingMethod === "express" ? 149 : input.shippingMethod === "same-day" ? 249 : 49;
-  const total = subtotal + shipping - discount;
-  const partialCodAmount = input.partialCod ? total * 0.2 : undefined;
+  const { shipping, discount, total } = calculateOrderTotals({
+    subtotal,
+    promoCode: input.promoCode,
+    shippingMethod: input.shippingMethod,
+    paymentMethod: input.paymentMethod,
+  });
+  const partialCodAmount = input.partialCod ? total * (PARTIAL_COD_PERCENTAGE / 100) : undefined;
 
   const order: Order = {
     id: `ord-${Date.now()}`,

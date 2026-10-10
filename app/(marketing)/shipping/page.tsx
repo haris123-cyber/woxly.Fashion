@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { StaticPageLayout } from "@/components/layout/StaticPageLayout";
-import { SITE_CONFIG } from "@/lib/constants";
+import { formatStoreAddress, SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = { title: "Shipping Information" };
 
@@ -16,6 +16,7 @@ export default function ShippingPage() {
             <p><strong>Support Email:</strong> {SITE_CONFIG.email}</p>
             <p><strong>Support Phone:</strong> {SITE_CONFIG.phone}</p>
             <p><strong>Support Hours:</strong> {SITE_CONFIG.supportHours}</p>
+            {SITE_CONFIG.dispatchAddress && <p><strong>Dispatch Location:</strong> {formatStoreAddress(SITE_CONFIG.dispatchAddress)}</p>}
           </div>
 
           <h2 className="text-2xl font-bold text-[#111827] mt-12 mb-4">Delivery Areas</h2>

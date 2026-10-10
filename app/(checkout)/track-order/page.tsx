@@ -2,10 +2,11 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import { TrackOrderForm } from "@/components/checkout/TrackOrderForm";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Track Order",
-  description: "Track your Woxly order status.",
+  description: `Track your ${SITE_CONFIG.name} order status.`,
 };
 
 export default function TrackOrderPage() {

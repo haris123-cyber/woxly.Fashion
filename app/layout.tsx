@@ -7,7 +7,8 @@ import { Footer } from "@/components/layout/Footer";
 import { ClientShell } from "@/components/layout/ClientShell";
 import { Toaster } from "sonner";
 import { WhatsAppWidget } from "@/components/shared/WhatsAppWidget";
-import { SITE_CONFIG } from "@/lib/constants";
+import { FREE_SHIPPING_THRESHOLD, SITE_CONFIG } from "@/lib/constants";
+import { formatPrice } from "@/lib/utils";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
     default: `${SITE_CONFIG.name} — ${SITE_CONFIG.tagline}`,
     template: `%s | ${SITE_CONFIG.name}`,
   },
-  description: "Premium fashion and lifestyle products. Shop the latest collections with free shipping on orders over ₹999.",
+  description: `${SITE_CONFIG.description} Free shipping on orders over ${formatPrice(FREE_SHIPPING_THRESHOLD)}.`,
   metadataBase: new URL(SITE_CONFIG.url),
 };
 

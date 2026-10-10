@@ -72,7 +72,7 @@ export function BeautyArrivalsCarousel({ products }: { products?: Product[] }) {
                 )}
               >
                 <div className="relative w-full aspect-square mb-2 mt-2">
-                  <Image src={product.images[0]} alt={product.name} fill className="object-contain" />
+                  <Image src={product.images[0]} alt={product.name} fill sizes="(max-width: 768px) 55vw, 280px" className="object-contain" />
                 </div>
 
                 {/* Always render text to maintain consistent height, just toggle opacity */}

@@ -12,6 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { loginSchema, type LoginFormData } from "@/lib/validations/auth";
 import { showCustomToast } from "@/components/shared/CustomToast";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export function LoginForm() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export function LoginForm() {
   const onSubmit = async (_data: LoginFormData) => {
     // Mock auth — no real backend
     await new Promise((r) => setTimeout(r, 500));
-    showCustomToast({ title: "Welcome back to Woxly!", type: "success" });
+    showCustomToast({ title: `Welcome back to ${SITE_CONFIG.name}!`, type: "success" });
     router.push("/account/orders");
   };
 

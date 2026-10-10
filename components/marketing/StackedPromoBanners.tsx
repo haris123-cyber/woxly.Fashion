@@ -24,7 +24,7 @@ export function RedSaleBanner() {
 export function FallCollectionBanner() {
   return (
     <div className="relative w-full aspect-[4/5] md:aspect-[21/9]">
-      <Image src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2000" alt="Fall Collection" fill className="object-cover" />
+      <Image src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2000" alt="Fall Collection" fill sizes="100vw" className="object-cover" />
       <div className="absolute inset-0 flex flex-col items-center justify-end md:justify-center pb-20 md:pb-0 bg-black/20 text-white text-center px-4">
         <h3 className="text-4xl md:text-6xl font-fraunces font-normal mb-2 shadow-sm">Power. Glam. Sass.</h3>
         <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold mb-8 shadow-sm">The Fall Collection</p>
@@ -37,7 +37,7 @@ export function FallCollectionBanner() {
 export function MidnightCollectionBanner() {
   return (
     <div className="relative w-full aspect-[4/5] md:aspect-[21/9]">
-      <Image src="https://images.unsplash.com/photo-1571924848943-25c2c95bbb4b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="New Launch" fill className="object-cover object-top" />
+      <Image src="https://images.unsplash.com/photo-1571924848943-25c2c95bbb4b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="New Launch" fill sizes="100vw" className="object-cover object-top" />
       <div className="absolute inset-0 flex flex-col items-end justify-center pr-6 md:pr-24 bg-black/30 md:bg-black/10 text-white text-right">
         <p className="text-[10px] uppercase tracking-[0.2em] font-bold mb-3 shadow-sm">New Launch</p>
         <h3 className="text-4xl md:text-6xl font-bold tracking-tight mb-8 max-w-[300px] md:max-w-md shadow-sm leading-[1.1] uppercase">The Midnight Collection</h3>
@@ -61,7 +61,7 @@ export function SeasonalSplitGrid() {
   return (
     <div className="grid grid-cols-2 md:grid-cols-2">
       <div className="relative w-full aspect-[4/5] md:aspect-square">
-        <Image src="https://images.unsplash.com/photo-1589363358751-ab05797e5629?q=80&w=2127&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Kids Costume" fill className="object-cover" />
+        <Image src="https://images.unsplash.com/photo-1589363358751-ab05797e5629?q=80&w=2127&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Kids Costume" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
         <div className="absolute inset-0 flex flex-col items-center justify-end pb-16 bg-gradient-to-t from-black/70 via-black/20 to-transparent text-white text-center px-6">
           <p className="text-[10px] uppercase tracking-[0.2em] font-bold mb-3 shadow-sm">Online Only</p>
           <h3 className="text-3xl md:text-4xl font-bold uppercase tracking-widest mb-8 shadow-sm">Time to Dress Up</h3>
@@ -69,7 +69,7 @@ export function SeasonalSplitGrid() {
         </div>
       </div>
       <div className="relative w-full aspect-[4/5] md:aspect-square">
-        <Image src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000" alt="Women Party" fill className="object-cover" />
+        <Image src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000" alt="Women Party" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
         <div className="absolute inset-0 flex flex-col items-center justify-end pb-16 bg-gradient-to-t from-black/70 via-black/20 to-transparent text-white text-center px-6">
           <p className="text-[10px] uppercase tracking-[0.2em] font-bold mb-3 shadow-sm">Get Ready</p>
           <h3 className="text-3xl md:text-4xl font-bold uppercase tracking-widest mb-8 shadow-sm">Party Edit</h3>
@@ -83,7 +83,7 @@ export function SeasonalSplitGrid() {
 export function InteriorBanner() {
   return (
     <div className="relative w-full aspect-[4/5] md:aspect-[21/9]">
-      <Image src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=2000" alt="Interior" fill className="object-cover" />
+      <Image src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=2000" alt="Interior" fill sizes="100vw" className="object-cover" />
       <div className="absolute inset-0 flex flex-col items-center justify-end pb-20 bg-gradient-to-t from-black/50 via-transparent to-transparent text-white text-center">
         <p className="text-[10px] uppercase tracking-[0.2em] font-bold mb-3 shadow-sm text-black">Conscious Choice</p>
         <h3 className="text-4xl md:text-5xl font-black tracking-widest uppercase mb-8 shadow-sm text-black">Spot On</h3>
@@ -97,7 +97,7 @@ export function WoxlyEditionSplitGrid() {
   return (
     <div className="grid grid-cols-2 md:grid-cols-2">
       <div className="relative w-full aspect-[4/5] md:aspect-square">
-        <Image src="https://images.unsplash.com/photo-1509319117193-57bab727e09d?q=80&w=1000" alt="Weekend Essentials" fill className="object-cover" />
+        <Image src="https://images.unsplash.com/photo-1509319117193-57bab727e09d?q=80&w=1000" alt="Weekend Essentials" fill sizes="50vw" className="object-cover" />
         <div className="absolute inset-0 flex flex-col items-center justify-end pb-16 bg-gradient-to-t from-black/70 via-transparent to-transparent text-white text-center px-6">
           <p className="text-[10px] uppercase tracking-[0.2em] font-bold mb-3 shadow-sm">Layer Up</p>
           <h3 className="text-3xl md:text-4xl font-bold uppercase tracking-widest mb-8 shadow-sm max-w-[300px] leading-[1.2]">Weekend Essentials</h3>
@@ -111,7 +111,7 @@ export function WoxlyEditionSplitGrid() {
           <div className="absolute -bottom-32 -right-32 w-[600px] h-[600px] bg-[#e3c49e] rounded-full blur-[80px]"></div>
         </div>
         <div className="relative z-10 flex flex-col items-center h-full w-full">
-          <h3 className="text-5xl md:text-7xl font-black tracking-tighter mb-2 sm:mb-12">WOXLY<br />EDITION</h3>
+          <h3 className="text-5xl md:text-7xl font-black tracking-tighter mb-2 sm:mb-12">{SITE_CONFIG.name.toUpperCase()}<br />EDITION</h3>
           <p className="text-[10px] uppercase tracking-[0.2em] font-bold mb-1">New Collection</p>
           <p className="text-[11px] md:text-xs font-bold tracking-widest uppercase mb-4 sm:mb-10 text-gray-800">Available Online Now</p>
           <Link href="/products" className="bg-black text-white px-10 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-gray-800 transition-colors">Buy</Link>
@@ -124,7 +124,7 @@ export function WoxlyEditionSplitGrid() {
 export function AccessoriesHeroBanner() {
   return (
     <div className="relative w-full aspect-[4/5] md:aspect-[21/9]">
-      <Image src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=2000" alt="Accessories Collection" fill className="object-cover object-top" />
+      <Image src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=2000" alt="Accessories Collection" fill sizes="100vw" className="object-cover object-top" />
       <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 text-white text-center px-4">
         <p className="text-[10px] uppercase tracking-[0.3em] font-bold mb-4">The Finishing Touch</p>
         <h3 className="text-5xl md:text-7xl font-fraunces font-light mb-8">Statement Pieces</h3>
@@ -149,7 +149,7 @@ export function SpringCollectionSplitGrid() {
     <div className="grid grid-cols-2 md:grid-cols-3">
       <div className="md:col-span-2 flex flex-col w-full h-full">
         <div className="relative w-full aspect-[4/5] md:h-full md:min-h-[400px]">
-          <Image src="https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?q=80&w=1600" alt="Spring Collection" fill className="object-cover" />
+          <Image src="https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?q=80&w=1600" alt="Spring Collection" fill sizes="(max-width: 768px) 100vw, 66vw" className="object-cover" />
           <div className="absolute inset-0 flex flex-col items-start justify-end pb-16 px-8 md:px-16 bg-gradient-to-t from-black/60 to-transparent text-white">
             <p className="text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Fresh Arrivals</p>
             <h3 className="text-4xl md:text-6xl font-bold uppercase tracking-widest mb-6">Spring &apos;26</h3>
@@ -169,6 +169,7 @@ export function SpringCollectionSplitGrid() {
           src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=1200"
           alt="Spring Details"
           fill
+          sizes="(max-width: 768px) 100vw, 34vw"
           className="object-cover"
         />
         {/* Overlay */}
@@ -238,7 +239,7 @@ export function BeautyArrivalsGrid({ products }: { products?: Product[] }) {
         {displayProducts.map((product) => (
           <div key={product.id} className="flex flex-col items-center text-center bg-white  overflow-hidden shadow-sm hover:shadow-md transition-shadow p-1">
             <div className="relative w-full aspect-square mb-2 mt-2">
-              <Image src={product.images[0]} alt={product.name} fill className="object-contain " />
+              <Image src={product.images[0]} alt={product.name} fill sizes="(max-width: 768px) 33vw, 25vw" className="object-contain " />
 
             </div>
 
@@ -270,7 +271,7 @@ export function HelloNewBeautySection({ products }: { products?: Product[] }) {
 
       <div className="w-full max-w-6xl mb-6">
         <div className="relative w-full aspect-[16/9] md:aspect-[21/9]  overflow-hidden shadow-md">
-          <Image src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?q=80&w=2000" alt="New Beauty Campaign" fill className="object-cover" />
+          <Image src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?q=80&w=2000" alt="New Beauty Campaign" fill sizes="100vw" className="object-cover" />
           <div className="absolute inset-0 flex items-center justify-center bg-black/10">
             <h3 className="text-5xl md:text-7xl font-black text-white drop-shadow-lg tracking-tighter flex items-center text-center">
               <span className="text-blue-500 mr-2 text-6xl">✨</span> OUR FAVORITES
@@ -283,8 +284,8 @@ export function HelloNewBeautySection({ products }: { products?: Product[] }) {
         {displayProducts.map((product) => (
           <div key={product.id} className="flex flex-col items-center text-center bg-white  overflow-hidden shadow-sm hover:shadow-md transition-shadow p-0">
             <div className="relative w-full aspect-square mb-2 mt-2">
-              <Link href={`/products/${product.slug}`}>
-                <Image src={product.images[0]} alt={product.name} fill className="object-contain " />
+              <Link href={`/products/${product.slug}`} className="relative block h-full w-full">
+                <Image src={product.images[0]} alt={product.name} fill sizes="(max-width: 768px) 33vw, 20vw" className="object-contain " />
               </Link>
             </div>
 

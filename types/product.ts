@@ -10,6 +10,7 @@ export interface ProductVariant {
 
 export interface ProductReview {
   id: string;
+  productId: string;
   author: string;
   rating: number;
   title: string;
@@ -43,7 +44,7 @@ export interface Product {
   material?: string;
   careInstructions?: string;
   countryOfOrigin?: string;
-  returnEligible?: boolean;
+  returnEligibility: "returnable" | "non_returnable" | "exchange_only";
   reviews?: ProductReview[];
   relatedSlugs?: string[];
   fbtSlugs?: string[];

@@ -132,7 +132,7 @@ export function ProductCard({ product, className, priority = false, showDetails 
                         fill
                         sizes="(max-width: 768px) 50vw, 25vw"
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
-                        priority={priority}
+                        loading={priority ? "eager" : "lazy"}
                     />
                     {product.images[1] && (
                         <Image

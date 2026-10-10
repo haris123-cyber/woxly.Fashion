@@ -1,6 +1,16 @@
 export const FREE_SHIPPING_THRESHOLD = 999;
 export const PARTIAL_COD_PERCENTAGE = 20;
+export const PREPAID_DISCOUNT = 10;
 export const DEFAULT_PAGE_SIZE = 12;
+
+export interface StoreAddress {
+  line1: string;
+  line2?: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+}
 
 export const PROMO_CODES: Record<
   string,
@@ -20,19 +30,38 @@ export const SHIPPING_METHODS = [
 export const SITE_CONFIG = {
   name: "Woxly",
   legalName: "Woxly",
+  copyrightName: "Woxly",
+  logo: null as string | null,
   tagline: "Premium Fashion & Lifestyle",
   description: "Curated fashion, accessories, and lifestyle pieces designed for everyday confidence.",
   url: "https://woxly.store",
   email: "info@woxly.in",
+  supportEmail: "info@woxly.in",
   phone: "+91 73063 47297",
+  supportPhone: "+91 73063 47297",
   supportHours: "Monday to Sunday, 9:00 AM to 8:00 PM IST",
   currency: "INR",
   locale: "en-IN",
-  returnAddress: null as string | null,
+  country: "India",
+  businessAddress: null as StoreAddress | null,
+  dispatchAddress: null as StoreAddress | null,
+  returnAddress: null as StoreAddress | null,
   physicalStoresEnabled: false,
   instagramUrl: "https://instagram.com",
+  returns: {
+    windowDays: 30,
+    refundTimeline: "5–10 business days",
+    defaultEligibility: "returnable" as const,
+  },
   primaryOffer: {
     code: "WOXLY10",
     label: "10% off orders over ₹500",
+    stackable: false,
   },
 };
+
+export function formatStoreAddress(address: StoreAddress): string {
+  return [address.line1, address.line2, address.city, address.state, address.postalCode, address.country]
+    .filter(Boolean)
+    .join(", ");
+}

@@ -5,48 +5,18 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useCartStore, selectCartSubtotal } from "@/store/cart-store";
 import { checkoutSchema, type CheckoutFormData } from "@/lib/validations/checkout";
 import { createOrder } from "@/lib/api/orders";
 import { formatPrice, cn } from "@/lib/utils";
-import { SHIPPING_METHODS, PARTIAL_COD_PERCENTAGE } from "@/lib/constants";
+import { SHIPPING_METHODS, PARTIAL_COD_PERCENTAGE, PREPAID_DISCOUNT } from "@/lib/constants";
 import { showCustomToast } from "@/components/shared/CustomToast";
 import { Tag, Award } from "lucide-react";
-
-const MOCK_SAVED_ADDRESSES = [
-  {
-    id: "home",
-    title: "Home",
-    firstName: "John",
-    lastName: "Doe",
-    phone: "+91 9876543210",
-    addressLine1: "123 Main Street, Apt 4B",
-    city: "Mumbai",
-    state: "Maharashtra",
-    postalCode: "400001",
-    country: "India",
-  },
-  {
-    id: "work",
-    title: "Work",
-    firstName: "John",
-    lastName: "Doe",
-    phone: "+91 9876543210",
-    addressLine1: "456 Business Park, Tower A",
-    city: "Mumbai",
-    state: "Maharashtra",
-    postalCode: "400051",
-    country: "India",
-  }
-];
+import { calculateOrderTotals, calculateShipping } from "@/lib/commerce/pricing";
 
 // Custom Minimal Input
 const MinimalInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
@@ -78,16 +48,6 @@ export function CheckoutForm() {
   const subtotal = selectCartSubtotal(items);
   const [partialCod, setPartialCod] = useState(false);
 
-  const handleUseSavedAddress = (addr: typeof MOCK_SAVED_ADDRESSES[0]) => {
-    form.setValue("shippingAddress.firstName", addr.firstName);
-    form.setValue("shippingAddress.lastName", addr.lastName);
-    form.setValue("shippingAddress.phone", addr.phone);
-    form.setValue("shippingAddress.addressLine1", addr.addressLine1);
-    form.setValue("shippingAddress.city", addr.city);
-    form.setValue("shippingAddress.state", addr.state);
-    form.setValue("shippingAddress.postalCode", addr.postalCode);
-  };
-
   const form = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
@@ -103,12 +63,11 @@ export function CheckoutForm() {
   });
 
   const shippingMethod = form.watch("shippingMethod");
-  const shipping = SHIPPING_METHODS.find((m) => m.id === shippingMethod)?.price ?? 49;
   const paymentMethod = form.watch("paymentMethod");
-  const onlineDiscount = paymentMethod === "online" ? 10 : 0;
-  const total = subtotal + shipping - onlineDiscount;
-  const partialAmount = partialCod ? total * (PARTIAL_COD_PERCENTAGE / 100) : total;
-  const codAmount = partialCod ? total - partialAmount : 0;
+  const totals = calculateOrderTotals({ subtotal, promoCode, shippingMethod, paymentMethod });
+  const { shipping, total } = totals;
+  const partialAmount = total * (PARTIAL_COD_PERCENTAGE / 100);
+  const codAmount = total - partialAmount;
 
   const onSubmit = (data: CheckoutFormData) => {
     const order = createOrder({
@@ -163,67 +122,69 @@ export function CheckoutForm() {
                   <FormField control={form.control} name="email" render={({ field }) => (
                     <FormItem>
                       <MinimalLabel>Email Address</MinimalLabel>
-                      <FormControl><MinimalInput type="email" placeholder="you@example.com" {...field} /></FormControl>
+                      <FormControl><MinimalInput type="email" inputMode="email" autoComplete="email" placeholder="you@example.com" {...field} /></FormControl>
                       <FormMessage className="text-red-500 text-[10px]" />
                     </FormItem>
                   )} />
                 </AccordionContent>
                 <AccordionContent className="space-y-6 pb-8">
-                  <div className="mb-6 space-y-4 ">
-                    <p className="text-[11px] uppercase tracking-[0.1em] text-muted-foreground font-bold">Use a saved address</p>
-                    <Select onValueChange={(id) => {
-                      const addr = MOCK_SAVED_ADDRESSES.find(a => a.id === id);
-                      if (addr) handleUseSavedAddress(addr);
-                    }}>
-                      <SelectTrigger className="w-[50%] h-12 border-border bg-transparent rounded-none focus:ring-0 focus:border-[#cfae70]">
-                        <SelectValue placeholder="Select a saved address" />
-                      </SelectTrigger>
-                      <SelectContent className="rounded-none border-border">
-                        {MOCK_SAVED_ADDRESSES.map((addr) => (
-                          <SelectItem key={addr.id} value={addr.id} className="cursor-pointer">
-                            {addr.title} - {addr.addressLine1}, {addr.city}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-
-                  </div>
-
-                  <div className="flex items-center gap-4 my-6">
-                    <div className="h-px bg-border flex-1"></div>
-                    <span className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground font-bold">Or enter new address</span>
-                    <div className="h-px bg-border flex-1"></div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <FormField control={form.control} name="shippingAddress.firstName" render={({ field }) => (
-                      <FormItem><MinimalLabel>First Name</MinimalLabel><FormControl><MinimalInput {...field} /></FormControl><FormMessage className="text-red-500 text-[10px]" /></FormItem>
+                    <FormItem><MinimalLabel>First Name</MinimalLabel><FormControl><MinimalInput autoComplete="given-name" {...field} /></FormControl><FormMessage className="text-red-500 text-[10px]" /></FormItem>
                     )} />
                     <FormField control={form.control} name="shippingAddress.lastName" render={({ field }) => (
-                      <FormItem><MinimalLabel>Last Name</MinimalLabel><FormControl><MinimalInput {...field} /></FormControl><FormMessage className="text-red-500 text-[10px]" /></FormItem>
+                    <FormItem><MinimalLabel>Last Name</MinimalLabel><FormControl><MinimalInput autoComplete="family-name" {...field} /></FormControl><FormMessage className="text-red-500 text-[10px]" /></FormItem>
                     )} />
                   </div>
                   <FormField control={form.control} name="shippingAddress.phone" render={({ field }) => (
-                    <FormItem><MinimalLabel>Phone Number</MinimalLabel><FormControl><MinimalInput {...field} /></FormControl><FormMessage className="text-red-500 text-[10px]" /></FormItem>
+                    <FormItem><MinimalLabel>Phone Number</MinimalLabel><FormControl><MinimalInput type="tel" inputMode="tel" autoComplete="tel" {...field} /></FormControl><FormMessage className="text-red-500 text-[10px]" /></FormItem>
                   )} />
                   <FormField control={form.control} name="shippingAddress.addressLine1" render={({ field }) => (
-                    <FormItem><MinimalLabel>Address</MinimalLabel><FormControl><MinimalInput placeholder="Apartment, suite, etc." {...field} /></FormControl><FormMessage className="text-red-500 text-[10px]" /></FormItem>
+                    <FormItem><MinimalLabel>Address</MinimalLabel><FormControl><MinimalInput autoComplete="street-address" placeholder="Apartment, suite, etc." {...field} /></FormControl><FormMessage className="text-red-500 text-[10px]" /></FormItem>
                   )} />
-                  <div className="grid grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <FormField control={form.control} name="shippingAddress.city" render={({ field }) => (
-                      <FormItem><MinimalLabel>City</MinimalLabel><FormControl><MinimalInput {...field} /></FormControl><FormMessage className="text-red-500 text-[10px]" /></FormItem>
+                      <FormItem><MinimalLabel>City</MinimalLabel><FormControl><MinimalInput autoComplete="address-level2" {...field} /></FormControl><FormMessage className="text-red-500 text-[10px]" /></FormItem>
                     )} />
                     <FormField control={form.control} name="shippingAddress.state" render={({ field }) => (
-                      <FormItem><MinimalLabel>State</MinimalLabel><FormControl><MinimalInput {...field} /></FormControl><FormMessage className="text-red-500 text-[10px]" /></FormItem>
+                      <FormItem><MinimalLabel>State</MinimalLabel><FormControl><MinimalInput autoComplete="address-level1" {...field} /></FormControl><FormMessage className="text-red-500 text-[10px]" /></FormItem>
                     )} />
                   </div>
                   <FormField control={form.control} name="shippingAddress.postalCode" render={({ field }) => (
-                    <FormItem><MinimalLabel>PIN Code</MinimalLabel><FormControl><MinimalInput {...field} /></FormControl><FormMessage className="text-red-500 text-[10px]" /></FormItem>
+                    <FormItem><MinimalLabel>PIN Code</MinimalLabel><FormControl><MinimalInput inputMode="numeric" autoComplete="postal-code" maxLength={6} {...field} /></FormControl><FormMessage className="text-red-500 text-[10px]" /></FormItem>
                   )} />
                 </AccordionContent>
               </AccordionItem>
 
-
+              <AccordionItem value="delivery" className="border-b border-border px-0">
+                <AccordionTrigger className="font-fraunces text-2xl text-foreground hover:text-[#cfae70] transition-colors py-6 hover:no-underline">
+                  Delivery Method
+                </AccordionTrigger>
+                <AccordionContent className="space-y-4 pb-8">
+                  <FormField control={form.control} name="shippingMethod" render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <RadioGroup onValueChange={field.onChange} value={field.value} className="space-y-3">
+                          {SHIPPING_METHODS.map((method) => {
+                            const price = calculateShipping(method.id, subtotal);
+                            return (
+                              <label key={method.id} htmlFor={`shipping-${method.id}`} className={cn("flex min-h-16 cursor-pointer items-center gap-4 border p-4", field.value === method.id ? "border-[#cfae70] bg-[#cfae70]/5" : "border-border")}>
+                                <RadioGroupItem value={method.id} id={`shipping-${method.id}`} />
+                                <span className="flex-1">
+                                  <span className="block text-sm font-semibold text-foreground">{method.name}</span>
+                                  <span className="block text-xs text-muted-foreground">{method.eta}</span>
+                                </span>
+                                <span className="text-sm font-semibold text-foreground">{price === 0 ? "Free" : formatPrice(price)}</span>
+                              </label>
+                            );
+                          })}
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage className="text-red-500 text-[10px]" />
+                    </FormItem>
+                  )} />
+                </AccordionContent>
+              </AccordionItem>
 
               <AccordionItem value="payment" className="border-b border-border px-0">
                 <AccordionTrigger className="font-fraunces text-2xl text-foreground hover:text-[#cfae70] transition-colors py-6 hover:no-underline">
@@ -238,9 +199,9 @@ export function CheckoutForm() {
 
                           <div className="relative">
                             <div className="absolute -top-3 left-4 z-10">
-                              <span className="bg-[#16a34a] text-white text-[9px] font-bold px-2 py-1 uppercase tracking-wider ">SAVE ₹10 ON PREPAID ORDERS</span>
+                              <span className="bg-[#16a34a] text-white text-[9px] font-bold px-2 py-1 uppercase tracking-wider ">SAVE {formatPrice(PREPAID_DISCOUNT)} ON PREPAID ORDERS</span>
                             </div>
-                            <div className={cn("relative  border p-4 cursor-pointer transition-colors", field.value === "online" ? "border-[#cfae70] bg-[#f5f3ff]" : "border-border hover:border-[#7c3aed]")} onClick={() => field.onChange("online")}>
+                            <div className={cn("relative  border p-4 cursor-pointer transition-colors", field.value === "online" ? "border-[#cfae70] bg-[#f5f3ff]" : "border-border hover:border-[#7c3aed]")} onClick={() => { field.onChange("online"); setPartialCod(false); }}>
                               <div className="flex items-start space-x-4">
                                 <div className="mt-1">
                                   <RadioGroupItem value="online" id="pay-online" className="data-[state=checked]:border-[#cfae70] data-[state=checked]:text-[#cfae70] border-border" />
@@ -254,7 +215,7 @@ export function CheckoutForm() {
                                   </label>
                                   <p className="text-xs text-muted-foreground mt-1 mb-3">UPI, Credit/Debit Cards, or Netbanking. Secure & instant.</p>
                                   <div className="inline-flex items-center gap-1.5 bg-[#dcfce7] text-[#16a34a] px-2 py-1  text-[10px] font-semibold border border-[#bbf7d0]">
-                                    <Tag className="w-3 h-3" /> Extra ₹10 off — online payment only.
+                                    <Tag className="w-3 h-3" /> Extra {formatPrice(PREPAID_DISCOUNT)} off — online payment only.
                                   </div>
                                 </div>
                               </div>
@@ -297,17 +258,19 @@ export function CheckoutForm() {
                     <p className="text-[11px] text-muted-foreground mt-1">Min 100 Coins · Up to 20% of order</p>
                   </div>
 
-                  <div className="flex items-center gap-3 p-4 border border-border mt-4">
-                    <Checkbox
-                      id="partial-cod"
-                      checked={partialCod}
-                      onCheckedChange={(c) => setPartialCod(!!c)}
-                      className="border-[#cfae70] data-[state=checked]:bg-[#cfae70] data-[state=checked]:text-black"
-                    />
-                    <label htmlFor="partial-cod" className="text-[11px] tracking-[0.05em] text-muted-foreground cursor-pointer leading-relaxed">
-                      Pay <span className="text-[#cfae70]">{PARTIAL_COD_PERCENTAGE}% online</span> ({formatPrice(partialAmount)}), rest on delivery ({formatPrice(codAmount)})
-                    </label>
-                  </div>
+                  {paymentMethod === "cod" && (
+                    <div className="flex items-center gap-3 p-4 border border-border mt-4">
+                      <Checkbox
+                        id="partial-cod"
+                        checked={partialCod}
+                        onCheckedChange={(c) => setPartialCod(!!c)}
+                        className="border-[#cfae70] data-[state=checked]:bg-[#cfae70] data-[state=checked]:text-black"
+                      />
+                      <label htmlFor="partial-cod" className="text-[11px] tracking-[0.05em] text-muted-foreground cursor-pointer leading-relaxed">
+                        Pay <span className="text-[#cfae70]">{PARTIAL_COD_PERCENTAGE}% online</span> ({formatPrice(partialAmount)}), rest on delivery ({formatPrice(codAmount)})
+                      </label>
+                    </div>
+                  )}
 
 
                 </AccordionContent>
@@ -337,12 +300,18 @@ export function CheckoutForm() {
 
               <div className="space-y-4 text-[11px] uppercase tracking-[0.1em]">
                 <div className="flex justify-between text-muted-foreground"><span>Subtotal</span><span className="text-foreground">{formatPrice(subtotal)}</span></div>
-                {paymentMethod === "online" && (
-                  <div className="flex justify-between text-[#16a34a] font-medium"><span>Pay online discount</span><span>-₹10</span></div>
+                {totals.promotion.discount > 0 && (
+                  <div className="flex justify-between text-[#16a34a] font-medium"><span>Promo ({totals.promotion.code})</span><span>-{formatPrice(totals.promotion.discount)}</span></div>
+                )}
+                {totals.promotion.error && promoCode && (
+                  <div role="alert" className="normal-case tracking-normal text-red-600">Promo {promoCode} is no longer eligible for this cart.</div>
+                )}
+                {totals.paymentDiscount > 0 && (
+                  <div className="flex justify-between text-[#16a34a] font-medium"><span>Pay online discount</span><span>-{formatPrice(totals.paymentDiscount)}</span></div>
                 )}
                 {paymentMethod === "online" && (
                   <div className=" border border-[#cfae70] text-[#cfae70] text-xs p-2  mt-0 flex items-center">
-                    You'll earn <span className="font-bold mx-1">4 Coins</span> on this order.
+                    You&apos;ll earn <span className="font-bold mx-1">4 Coins</span> on this order.
                   </div>
                 )}
                 <div className="flex justify-between text-muted-foreground"><span>Shipping</span><span className="text-foreground">{formatPrice(shipping)}</span></div>

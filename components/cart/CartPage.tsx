@@ -3,18 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, Trash2, ShoppingBag, Tag } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { Price } from "@/components/shared/Price";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { ProductCard } from "@/components/product/ProductCard";
 import { useCartStore, selectCartSubtotal, selectFreeShippingProgress } from "@/store/cart-store";
 import { formatPrice } from "@/lib/utils";
-import { PROMO_CODES } from "@/lib/constants";
 import { getFeaturedProducts } from "@/lib/api/products";
 import { showCustomToast } from "@/components/shared/CustomToast";
 import { useState } from "react";
+import { calculateOrderTotals, calculatePromotion } from "@/lib/commerce/pricing";
 
 export function CartPage() {
   const items = useCartStore((s) => s.items);
@@ -29,19 +26,21 @@ export function CartPage() {
 
   const applyPromo = () => {
     const code = promoInput.toUpperCase();
-    if (PROMO_CODES[code]) {
+    const result = calculatePromotion(code, subtotal);
+    if (!result.error) {
       setPromoCode(code);
-      showCustomToast({ title: "Promo code applied!", type: "success" });
+      showCustomToast({ title: `Promo applied — you save ${formatPrice(result.discount)}`, type: "success" });
     } else {
-      showCustomToast({ title: "Invalid promo code", type: "error" });
+      const description = result.shortfall > 0
+        ? `Add ${formatPrice(result.shortfall)} more to use ${code}.`
+        : result.error;
+      setPromoCode(null);
+      showCustomToast({ title: "Promo code not applied", description, type: "error" });
     }
   };
 
-  let discount = 0;
-  if (promoCode && PROMO_CODES[promoCode]) {
-    const promo = PROMO_CODES[promoCode];
-    discount = promo.discountType === "percentage" ? subtotal * (promo.discountValue / 100) : promo.discountValue;
-  }
+  const totals = calculateOrderTotals({ subtotal, promoCode });
+  const { discount, shipping, total } = totals;
 
   if (items.length === 0) {
     return (
@@ -92,15 +91,15 @@ export function CartPage() {
 
                   <div className="flex items-center gap-4 mt-auto pt-4">
                     <div className="flex items-center border border-border">
-                      <button className="h-8 w-8 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onClick={() => updateQuantity(item.productId, item.quantity - 1, variantKey)} aria-label="Decrease">
+                      <button className="h-11 w-11 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onClick={() => updateQuantity(item.productId, item.quantity - 1, variantKey)} aria-label="Decrease quantity">
                         <Minus className="h-3 w-3" />
                       </button>
-                      <span className="w-8 text-center text-[10px] font-bold">{item.quantity}</span>
-                      <button className="h-8 w-8 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onClick={() => updateQuantity(item.productId, item.quantity + 1, variantKey)} aria-label="Increase">
+                      <span className="w-8 text-center text-[10px] font-bold" aria-live="polite">{item.quantity}</span>
+                      <button className="h-11 w-11 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onClick={() => updateQuantity(item.productId, item.quantity + 1, variantKey)} aria-label="Increase quantity">
                         <Plus className="h-3 w-3" />
                       </button>
                     </div>
-                    <button className="h-8 w-8 flex items-center justify-center text-muted-foreground hover:text-[#cfae70] transition-colors ml-auto" onClick={() => removeItem(item.productId, variantKey)} aria-label="Remove">
+                    <button className="h-11 w-11 flex items-center justify-center text-muted-foreground hover:text-[#cfae70] transition-colors ml-auto" onClick={() => removeItem(item.productId, variantKey)} aria-label={`Remove ${item.name}`}>
                       <Trash2 className="h-4 w-4" strokeWidth={1.5} />
                     </button>
                   </div>
@@ -124,18 +123,23 @@ export function CartPage() {
               onChange={(e) => setPromoInput(e.target.value)}
               aria-label="Promo code"
             />
-            <button className="bg-muted px-4 hover:bg-[#cfae70] hover:text-white transition-colors border border-l-0 border-border" onClick={applyPromo}>
+            <button className="min-h-11 min-w-11 bg-muted px-4 hover:bg-[#cfae70] hover:text-white transition-colors border border-l-0 border-border" onClick={applyPromo} aria-label="Apply promo code">
               <Tag className="h-4 w-4" />
             </button>
           </div>
-          {promoCode && <p className="text-[10px] uppercase tracking-[0.1em] text-success font-bold">Code {promoCode} applied</p>}
+          {promoCode && !totals.promotion.error && <p className="text-[10px] uppercase tracking-[0.1em] text-success font-bold">Code {promoCode} applied · saved {formatPrice(totals.promotion.discount)}</p>}
+          {promoCode && totals.promotion.error && (
+            <p role="alert" className="text-[10px] uppercase tracking-[0.1em] text-red-600 font-bold">
+              Add {formatPrice(totals.promotion.shortfall)} more to reactivate {promoCode}
+            </p>
+          )}
           <div className="space-y-4 text-[11px] uppercase tracking-[0.1em] text-muted-foreground pt-4">
             <div className="flex justify-between"><span>Subtotal</span><span className="text-foreground">{formatPrice(subtotal)}</span></div>
             {discount > 0 && <div className="flex justify-between text-success"><span>Discount</span><span>-{formatPrice(discount)}</span></div>}
-            <div className="flex justify-between"><span>Shipping</span><span className="text-foreground">{qualified ? "Free" : formatPrice(49)}</span></div>
+            <div className="flex justify-between"><span>Shipping</span><span className="text-foreground">{shipping === 0 ? "Free" : formatPrice(shipping)}</span></div>
             <div className="pt-4 border-t border-border flex justify-between font-bold text-foreground text-[12px] tracking-[0.15em]">
               <span>Total</span>
-              <span className="font-fraunces text-lg font-medium">{formatPrice(subtotal - discount + (qualified ? 0 : 49))}</span>
+              <span className="font-fraunces text-lg font-medium">{formatPrice(total)}</span>
             </div>
           </div>
           <Link href="/checkout" className="flex items-center justify-center bg-foreground text-background hover:bg-[#cfae70] hover:text-white transition-colors px-8 py-4 text-[10px] uppercase tracking-[0.2em] font-bold w-full mt-6">

@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { SITE_CONFIG } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 
@@ -55,7 +54,7 @@ export function HeroCarousel() {
 
   return (
     <div
-      className="relative w-full h-[calc(100vh-60px)] md:h-[calc(100vh-80px)] bg-muted overflow-hidden select-none"
+      className="relative w-full h-[68svh] min-h-[480px] max-h-[620px] md:h-[calc(100vh-80px)] md:max-h-none bg-muted overflow-hidden select-none"
       onTouchStart={(e) => handleSwipeStart(e.targetTouches[0].clientX)}
       onTouchMove={(e) => handleSwipeMove(e.targetTouches[0].clientX)}
       onTouchEnd={handleSwipeEnd}
@@ -81,7 +80,7 @@ export function HeroCarousel() {
             src={src}
             alt={`Hero Campaign ${idx + 1}`}
             fill
-            priority={idx === 0}
+            loading={idx === 0 ? "eager" : "lazy"}
             sizes="100vw"
             className="object-cover object-top pointer-events-none"
             draggable="false"
@@ -92,8 +91,8 @@ export function HeroCarousel() {
 
 
       {/* Bottom Action Area */}
-      <div className="absolute bottom-12 left-0 w-full flex flex-col items-center justify-end z-20 px-4">
-        <div className="flex flex-wrap items-center gap-8">
+      <div className="absolute bottom-6 md:bottom-12 left-0 w-full flex flex-col items-center justify-end z-20 px-4">
+        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8">
           <Button
             asChild
             className="bg-[#cfae70] hover:bg-[#b5985d] text-black rounded-none px-8 py-6 text-[10px] font-bold tracking-[0.15em] uppercase"

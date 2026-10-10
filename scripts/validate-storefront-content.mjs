@@ -9,6 +9,8 @@ const blockedPatterns = [
   { label: "misspelled offer code", pattern: /WELOCOM10/i },
   { label: "grocery demo copy", pattern: /Online Grocery|super\s*market/i },
 ];
+const currencyPattern = /(?:\$\s?\d|\bRs\.|\bUSD\b|₹)/;
+const currencyConfigPath = path.normalize("lib/constants/index.ts");
 
 async function collectFiles(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -28,7 +30,16 @@ for (const root of roots) {
     for (const blocked of blockedPatterns) {
       if (blocked.pattern.test(content)) failures.push(`${file}: ${blocked.label}`);
     }
+    if (path.normalize(file) !== currencyConfigPath && currencyPattern.test(content)) {
+      failures.push(`${file}: hardcoded currency presentation; use formatPrice`);
+    }
   }
+}
+
+const constantsSource = await readFile(currencyConfigPath, "utf8");
+const primaryOfferCode = constantsSource.match(/primaryOffer:\s*\{[\s\S]*?code:\s*["']([^"']+)["']/)?.[1];
+if (!primaryOfferCode || !new RegExp(`^\\s*${primaryOfferCode}:`, "m").test(constantsSource)) {
+  failures.push("lib/constants/index.ts: primary offer code is not an active configured promotion");
 }
 
 if (failures.length > 0) {
